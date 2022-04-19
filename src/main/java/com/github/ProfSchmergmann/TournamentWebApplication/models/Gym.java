@@ -10,22 +10,22 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Gym {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  private String name;
+	private String name;
 
-  private int capacity;
+	private int capacity;
 
-  @ManyToOne
-  private Location location;
+	@ManyToOne
+	private Location location;
 
-  public Long getId() {
-    return id;
-  }
+	public Long getId() {
+		return this.id;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

@@ -7,16 +7,16 @@ import javax.persistence.Id;
 
 @Entity
 public enum AgeGroup {
-  U10, U12, U14, U16, U18, U20, U22, MEN, MASTERS;
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+	U10, U12, U14, U16, U18, U20, U22, MEN, MASTERS;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  public Long getId() {
-    return id;
-  }
+	public Long getId() {
+		return this.id;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 }
