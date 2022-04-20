@@ -16,11 +16,10 @@ public class DbConfig {
 	@Bean
 	public DataSource dataSource() {
 		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(this.env.getProperty("driverClassName"));
-		dataSource.setUrl(this.env.getProperty("url"));
-		dataSource.setUsername(this.env.getProperty("user"));
-		dataSource.setPassword(this.env.getProperty("password"));
+		dataSource.setDriverClassName(this.env.getProperty("spring.datasource.driver-class-name"));
+		dataSource.setUrl(this.env.getProperty("spring.datasource.url"));
+		dataSource.setUsername(this.env.getProperty("spring.datasource.username"));
+		dataSource.setPassword(this.env.getProperty("spring.datasource.password"));
 		return dataSource;
 	}
-
 }
