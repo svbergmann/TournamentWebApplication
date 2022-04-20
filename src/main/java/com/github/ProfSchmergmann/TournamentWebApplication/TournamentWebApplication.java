@@ -8,7 +8,6 @@ public class TournamentWebApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TournamentWebApplication.class, args);
-
 	}
 
 }

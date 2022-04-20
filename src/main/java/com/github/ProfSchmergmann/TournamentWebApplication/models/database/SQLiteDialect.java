@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.models.service;
+package com.github.ProfSchmergmann.TournamentWebApplication.models.database;
 
 import java.sql.Types;
 import org.hibernate.dialect.Dialect;

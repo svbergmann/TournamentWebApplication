@@ -1,12 +1,13 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.models.location;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class City {
+public class City implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
