@@ -3,6 +3,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Location {
+public class Location implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

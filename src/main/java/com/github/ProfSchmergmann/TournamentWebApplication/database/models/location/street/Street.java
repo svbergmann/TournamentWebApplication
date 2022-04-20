@@ -1,19 +1,34 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
 
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Street {
+public class Street implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private String name;
+
+	@ManyToOne
+	private City city;
+
+	public City getCity() {
+		return this.city;
+	}
+
+	public void setCity(
+			City city) {
+		this.city = city;
+	}
 
 	public long getId() {
 		return this.id;
@@ -33,7 +48,7 @@ public class Street {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.id, this.name);
+		return Objects.hash(this.id, this.name, this.city);
 	}
 
 	@Override
@@ -44,6 +59,7 @@ public class Street {
 		if (!(o instanceof Street street)) {
 			return false;
 		}
-		return Objects.equals(this.name, street.name);
+		return Objects.equals(this.name, street.name) && Objects.equals(
+				this.city, street.city);
 	}
 }
