@@ -1,7 +1,7 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.models.database.service.city.CityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.models.location.City;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -33,7 +33,7 @@ public class CityForm extends FormLayout {
 		this.save.addClickListener(click -> {
 			var city = new City();
 			city.setName(this.nameField.getValue());
-			this.service.saveCity(city);
+			this.service.create(city);
 			this.nameField.clear();
 			this.save.setEnabled(false);
 		});

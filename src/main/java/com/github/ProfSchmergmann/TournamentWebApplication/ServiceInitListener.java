@@ -18,11 +18,6 @@ public class ServiceInitListener implements VaadinServiceInitListener {
 	@Autowired
 	private I18NProvider i18nProvider;
 
-	@Override
-	public void serviceInit(ServiceInitEvent event) {
-		event.getSource().addUIInitListener(e -> this.initLanguage(e.getUI()));
-	}
-
 	private void initLanguage(UI ui) {
 		Optional<Cookie> localeCookie = Optional.empty();
 
@@ -48,5 +43,10 @@ public class ServiceInitListener implements VaadinServiceInitListener {
 		}
 
 		ui.setLocale(locale);
+	}
+
+	@Override
+	public void serviceInit(ServiceInitEvent event) {
+		event.getSource().addUIInitListener(e -> this.initLanguage(e.getUI()));
 	}
 }

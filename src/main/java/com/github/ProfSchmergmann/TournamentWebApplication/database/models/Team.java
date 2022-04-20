@@ -1,6 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.models;
+package com.github.ProfSchmergmann.TournamentWebApplication.database.models;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.models.location.Country;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +12,7 @@ public class Team {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private long id;
 
 	private Integer amount;
 
@@ -25,6 +25,22 @@ public class Team {
 
 	@ManyToOne
 	private Country country;
+
+	public AgeGroup getAgeGroup() {
+		return this.ageGroup;
+	}
+
+	public void setAgeGroup(AgeGroup ageGroup) {
+		this.ageGroup = ageGroup;
+	}
+
+	public Integer getAmount() {
+		return this.amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
 
 	public Country getCountry() {
 		return this.country;
@@ -43,12 +59,12 @@ public class Team {
 		this.gender = gender;
 	}
 
-	public AgeGroup getAgeGroup() {
-		return this.ageGroup;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setAgeGroup(AgeGroup ageGroup) {
-		this.ageGroup = ageGroup;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -57,21 +73,5 @@ public class Team {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getAmount() {
-		return this.amount;
-	}
-
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 }

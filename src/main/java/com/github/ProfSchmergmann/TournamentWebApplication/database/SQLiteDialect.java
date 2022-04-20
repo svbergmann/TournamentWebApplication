@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.models.database;
+package com.github.ProfSchmergmann.TournamentWebApplication.database;
 
 import java.sql.Types;
 import org.hibernate.dialect.Dialect;
@@ -40,32 +40,19 @@ public class SQLiteDialect extends Dialect {
 		this.registerFunction("substring", new StandardSQLFunction("substr", StringType.INSTANCE));
 	}
 
-	public boolean supportsIdentityColumns() {
-		return true;
-	}
-
-	public boolean hasDataTypeInIdentityColumn() {
+	public boolean dropTemporaryTableAfterUse() {
 		return false;
-	}
-
-	public String getIdentityColumnString() {
-		// return "integer primary key autoincrement";
-		return "integer";
-	}
-
-	public String getIdentitySelectString() {
-		return "select last_insert_rowid()";
-	}
-
-	public boolean supportsTemporaryTables() {
-		return true;
 	}
 
 	public String getCreateTemporaryTableString() {
 		return "create temporary table if not exists";
 	}
 
-	public boolean dropTemporaryTableAfterUse() {
+	public String getForUpdateString() {
+		return "";
+	}
+
+	public boolean supportsOuterJoinForUpdate() {
 		return false;
 	}
 
@@ -97,14 +84,6 @@ public class SQLiteDialect extends Dialect {
 		return "add column";
 	}
 
-	public String getForUpdateString() {
-		return "";
-	}
-
-	public boolean supportsOuterJoinForUpdate() {
-		return false;
-	}
-
 	public String getDropForeignKeyString() {
 		throw new UnsupportedOperationException(
 				"No drop foreign key syntax supported by SQLiteDialect");
@@ -125,5 +104,26 @@ public class SQLiteDialect extends Dialect {
 
 	public boolean supportsCascadeDelete() {
 		return false;
+	}
+
+	public String getIdentityColumnString() {
+		// return "integer primary key autoincrement";
+		return "integer";
+	}
+
+	public String getIdentitySelectString() {
+		return "select last_insert_rowid()";
+	}
+
+	public boolean hasDataTypeInIdentityColumn() {
+		return false;
+	}
+
+	public boolean supportsIdentityColumns() {
+		return true;
+	}
+
+	public boolean supportsTemporaryTables() {
+		return true;
 	}
 }

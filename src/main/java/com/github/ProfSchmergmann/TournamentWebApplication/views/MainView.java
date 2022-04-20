@@ -1,7 +1,5 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.services.GreetService;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -30,7 +28,6 @@ public class MainView extends VerticalLayout implements LocaleChangeObserver {
 	private static final Logger LOGGER = Logger.getLogger(MainView.class.getName());
 
 	private final TextField nameField;
-	private final Button greetingButton;
 	private final Select<Locale> languageSelect;
 
 	private final Span helpCookieNotFound = new Span();
@@ -38,7 +35,7 @@ public class MainView extends VerticalLayout implements LocaleChangeObserver {
 	private final Span helpSelectLang = new Span();
 	private final String cookieLang;
 
-	public MainView(@Autowired GreetService service, @Autowired I18NProvider i18NProvider) {
+	public MainView(@Autowired I18NProvider i18NProvider) {
 		H1 heading = new H1("Tournament games");
 
 		LOGGER.info("Current locale is " + UI.getCurrent().getLocale());
@@ -73,13 +70,11 @@ public class MainView extends VerticalLayout implements LocaleChangeObserver {
 		this.nameField = new TextField();
 		this.add(this.nameField);
 
-		// The service can use the i18nProvider too.
-		this.greetingButton = new Button();
-		this.greetingButton.addClickListener(
-				e -> Notification.show(service.greet(this.nameField.getValue(), this.getLocale())));
-		this.greetingButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		this.greetingButton.addClickShortcut(Key.ENTER);
-		this.add(this.greetingButton);
+	}
+
+	private void clearLocalePreference() {
+		VaadinService.getCurrentResponse().addCookie(new Cookie("locale", null));
+		this.getUI().get().getPage().reload();
 	}
 
 	private String findLocaleFromCookie() {
@@ -92,17 +87,6 @@ public class MainView extends VerticalLayout implements LocaleChangeObserver {
 		return cookie.orElse("");
 	}
 
-	private void clearLocalePreference() {
-		VaadinService.getCurrentResponse().addCookie(new Cookie("locale", null));
-		this.getUI().get().getPage().reload();
-	}
-
-	private void saveLocalePreference(Locale locale) {
-		this.getUI().get().setLocale(locale);
-		VaadinService.getCurrentResponse().addCookie(new Cookie("locale", locale.toLanguageTag()));
-		Notification.show(this.getTranslation("view.help.localesaved"));
-	}
-
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
 		this.helpCookieNotFound.setText(this.getTranslation("view.help.nopreferencefound"));
@@ -112,7 +96,12 @@ public class MainView extends VerticalLayout implements LocaleChangeObserver {
 
 		this.languageSelect.setLabel(this.getTranslation("view.langSelect"));
 		this.nameField.setLabel(this.getTranslation("view.nameField"));
-		this.greetingButton.setText(this.getTranslation("view.helloButton"));
+	}
+
+	private void saveLocalePreference(Locale locale) {
+		this.getUI().get().setLocale(locale);
+		VaadinService.getCurrentResponse().addCookie(new Cookie("locale", locale.toLanguageTag()));
+		Notification.show(this.getTranslation("view.help.localesaved"));
 	}
 
 }

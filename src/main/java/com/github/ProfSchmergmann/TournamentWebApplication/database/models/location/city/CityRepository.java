@@ -1,6 +1,5 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.models.database.service.city;
+package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.models.location.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +7,4 @@ import org.springframework.stereotype.Repository;
 public interface CityRepository extends JpaRepository<City, Long> {
 
 	City findByName(String name);
-
 }

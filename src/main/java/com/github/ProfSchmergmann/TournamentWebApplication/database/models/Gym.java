@@ -1,6 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.models;
+package com.github.ProfSchmergmann.TournamentWebApplication.database.models;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.models.location.Location;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +12,7 @@ public class Gym {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private long id;
 
 	private String name;
 
@@ -21,11 +21,11 @@ public class Gym {
 	@ManyToOne
 	private Location location;
 
-	public Long getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 }

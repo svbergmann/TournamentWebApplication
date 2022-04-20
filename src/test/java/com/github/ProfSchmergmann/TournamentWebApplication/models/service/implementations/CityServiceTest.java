@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.models.database.service.city.CityRepository;
-import com.github.ProfSchmergmann.TournamentWebApplication.models.database.service.city.CityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.models.location.City;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityRepository;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +39,7 @@ class CityServiceTest {
 
 	@Test
 	void saveCity() {
-		this.cityService.saveCity(this.berlin);
+		this.cityService.create(this.berlin);
 		verify(this.cityRepository).save(this.berlin);
 	}
 
@@ -59,9 +59,9 @@ class CityServiceTest {
 
 	@Test
 	void deleteCityById() {
-		when(this.cityService.saveCity(this.aachen)).thenReturn(this.aachen);
-		var savedCity = this.cityService.saveCity(this.aachen);
-		this.cityService.deleteCityById(savedCity.getId());
-		Assertions.assertNull(this.cityService.findCityByName("Aachen"));
+		when(this.cityService.create(this.aachen)).thenReturn(this.aachen);
+		var savedCity = this.cityService.create(this.aachen);
+		this.cityService.deleteById(savedCity.getId());
+		Assertions.assertNull(this.cityService.findByName("Aachen"));
 	}
 }
