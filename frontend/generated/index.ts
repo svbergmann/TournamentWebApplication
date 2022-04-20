@@ -17,7 +17,7 @@ import { Router } from '@vaadin/router';
 import { Flow } from '@vaadin/flow-frontend/Flow';
 
 const { serverSideRoutes } = new Flow({
-  imports: () => import('../../target/frontend/generated-flow-imports')
+  imports: () => import('../../build/frontend/generated-flow-imports')
 });
 
 const routes = [

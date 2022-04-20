@@ -1,7 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'com.vaadin' version '0.14.6.0'
+	id 'com.vaadin' version '23.0.6'
 	id 'java'
 }
 
@@ -38,4 +38,13 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+vaadin {
+	nodeAutoUpdate = true
+	nodeVersion = 'v18.0.0'
+	optimizeBundle = true
+	pnpmEnable = true
+	productionMode = false
+	runNpmInstall = true
 }
