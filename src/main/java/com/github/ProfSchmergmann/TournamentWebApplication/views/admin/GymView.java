@@ -1,6 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.LocationView.notSet;
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.Gym;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.GymService;

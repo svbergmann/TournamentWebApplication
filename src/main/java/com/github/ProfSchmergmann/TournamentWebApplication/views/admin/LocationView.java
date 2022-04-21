@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.LocationService;
