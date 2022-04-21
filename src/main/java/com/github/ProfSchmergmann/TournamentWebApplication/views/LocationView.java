@@ -66,16 +66,12 @@ public class LocationView extends VerticalLayout {
 	private void createButtons() {
 		this.addCountryButton = new Button("Add new Country");
 		this.addCountryButton.addClickListener(click -> this.openCountryDialog());
-		this.addCountryButton.addClickShortcut(Key.ENTER);
 		this.addCityButton = new Button("Add new City");
 		this.addCityButton.addClickListener(click -> this.openCityDialog());
-		this.addCityButton.addClickShortcut(Key.ENTER);
 		this.addStreetButton = new Button("Add new Street");
 		this.addStreetButton.addClickListener(click -> this.openStreetDialog());
-		this.addStreetButton.addClickShortcut(Key.ENTER);
 		this.addLocationButton = new Button("Add new Location");
 		this.addLocationButton.addClickListener(click -> this.openLocationDialog());
-		this.addLocationButton.addClickShortcut(Key.ENTER);
 	}
 
 	private void createCityGrid() {
@@ -245,6 +241,7 @@ public class LocationView extends VerticalLayout {
 		final VerticalLayout fields = new VerticalLayout(countrySelect, cityTextField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
+		addButton.addClickShortcut(Key.ENTER);
 		final Button abortButton = new Button("Abort", e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		buttons.setPadding(true);
@@ -268,6 +265,7 @@ public class LocationView extends VerticalLayout {
 		final Dialog dialog = new Dialog();
 		final TextField countryTextField = new TextField("Country");
 		final Button addButton = new Button("Add");
+		addButton.addClickShortcut(Key.ENTER);
 		final Button abortButton = new Button("Abort", e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		dialog.add(countryTextField, buttons);
@@ -311,17 +309,18 @@ public class LocationView extends VerticalLayout {
 				numberIntegerField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
+		addButton.addClickShortcut(Key.ENTER);
 		final Button abortButton = new Button("Abort", e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		addButton.addClickListener(click -> {
-			var locationDB = new Location();
-			locationDB.setCountry(countrySelect.getValue());
-			locationDB.setCity(citySelect.getValue());
-			locationDB.setStreet(streetSelect.getValue());
-			locationDB.setPostalCode(postalCodeNumberField.getValue());
-			locationDB.setNumber(numberIntegerField.getValue());
-			if (this.locationService.findAll().stream().noneMatch(l -> l.equals(locationDB))) {
-				this.locationService.create(locationDB);
+			var location = new Location();
+			location.setCountry(countrySelect.getValue());
+			location.setCity(citySelect.getValue());
+			location.setStreet(streetSelect.getValue());
+			location.setPostalCode(postalCodeNumberField.getValue());
+			location.setNumber(numberIntegerField.getValue());
+			if (this.locationService.findAll().stream().noneMatch(l -> l.equals(location))) {
+				this.locationService.create(location);
 				this.updateGrids();
 			}
 			dialog.close();
@@ -354,6 +353,7 @@ public class LocationView extends VerticalLayout {
 		final VerticalLayout fields = new VerticalLayout(countrySelect, citySelect, streetTextField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
+		addButton.addClickShortcut(Key.ENTER);
 		final Button abortButton = new Button("Abort", e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		addButton.addClickListener(click -> {

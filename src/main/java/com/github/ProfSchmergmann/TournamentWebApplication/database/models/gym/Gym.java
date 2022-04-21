@@ -21,6 +21,8 @@ public class Gym implements Serializable, IModel {
 	@ManyToOne
 	private Location location;
 
+	private int number;
+
 	public int getCapacity() {
 		return this.capacity;
 	}
@@ -52,6 +54,14 @@ public class Gym implements Serializable, IModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getNumber() {
+		return this.number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 	@Override
