@@ -1,6 +1,7 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -50,5 +51,9 @@ public class CityService implements ModelService<City> {
 			return this.repository.save(c);
 		}
 		return null;
+	}
+
+	public List<City> findAllFromCountry(Country country) {
+		return this.repository.findAll().stream().filter(c -> c.getCountry().equals(country)).toList();
 	}
 }
