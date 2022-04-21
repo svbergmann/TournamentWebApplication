@@ -78,24 +78,98 @@ public class LocationView extends VerticalLayout {
 		this.addLocationButton.addClickShortcut(Key.ENTER);
 	}
 
+	private void createCityGrid() {
+		this.cityGrid = new Grid<>(City.class, false);
+		this.cityGrid.addColumn(c -> c.getCountry() == null ?
+						notSet : c.getCountry().getName())
+				.setHeader("Country")
+				.setSortable(true)
+				.setAutoWidth(true);
+		this.cityGrid.addColumn(City::getName)
+				.setHeader("Name")
+				.setSortable(true)
+				.setAutoWidth(true);
+		this.cityGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		final GridContextMenu<City> cityGridContextMenu = this.cityGrid.addContextMenu();
+		cityGridContextMenu.addItem("delete", event -> {
+			final Dialog dialog = new Dialog();
+			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+			final Button yesButton = new Button("Yes");
+			final Button abortButton = new Button("Abort", e -> dialog.close());
+			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+			dialog.add(buttons);
+			yesButton.addClickListener(click -> {
+				this.cityService.deleteById(event.getItem().get().getId());
+				dialog.close();
+				cityGridContextMenu.close();
+			});
+			abortButton.addClickListener(click -> {
+				dialog.close();
+				cityGridContextMenu.close();
+			});
+			dialog.open();
+		});
+		cityGridContextMenu.addItem("refactor");
+	}
+
+	private void createCountryGrid() {
+		this.countryGrid = new Grid<>(Country.class, false);
+		this.countryGrid.addColumn(Country::getName)
+				.setHeader("Name")
+				.setSortable(true)
+				.setAutoWidth(true);
+		this.countryGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		final GridContextMenu<Country> countryGridContextMenu = this.countryGrid.addContextMenu();
+		countryGridContextMenu.addItem("delete", event -> {
+			final Dialog dialog = new Dialog();
+			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+			final Button yesButton = new Button("Yes");
+			final Button abortButton = new Button("Abort", e -> dialog.close());
+			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+			dialog.add(buttons);
+			yesButton.addClickListener(click -> {
+				this.countryService.deleteById(event.getItem().get().getId());
+				dialog.close();
+				countryGridContextMenu.close();
+			});
+			abortButton.addClickListener(click -> {
+				dialog.close();
+				countryGridContextMenu.close();
+			});
+			dialog.open();
+		});
+		countryGridContextMenu.addItem("refactor");
+	}
+
 	private void createGrids() {
+		this.createLocationGrid();
+		this.createCountryGrid();
+		this.createCityGrid();
+		this.createStreetGrid();
+	}
+
+	private void createLocationGrid() {
 		this.locationGrid = new Grid<>(Location.class, false);
 		this.locationGrid.addColumn(
 						l -> l.getCity() == null || l.getCity().getCountry() == null ?
 								notSet
-								: l.getCity().getCountry().getName()
-				).setHeader("Country")
+								: l.getCity().getCountry().getName())
+				.setHeader("Country")
+				.setSortable(true)
 				.setAutoWidth(true);
 		this.locationGrid.addColumn(Location::getPostalCode)
 				.setHeader("Postal Code");
 		this.locationGrid.addColumn(l -> l.getCity() == null ? notSet : l.getCity().getName())
 				.setHeader("City")
+				.setSortable(true)
 				.setAutoWidth(true);
 		this.locationGrid.addColumn(l -> l.getStreet() == null ? notSet : l.getStreet().getName())
 				.setHeader("Street")
+				.setSortable(true)
 				.setAutoWidth(true);
 		this.locationGrid.addColumn(Location::getNumber)
 				.setHeader("Number")
+				.setSortable(true)
 				.setAutoWidth(true);
 		this.locationGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<Location> locationGridContextMenu = this.locationGrid.addContextMenu();
@@ -117,26 +191,10 @@ public class LocationView extends VerticalLayout {
 			});
 			dialog.open();
 		});
+		locationGridContextMenu.addItem("refactor");
+	}
 
-		this.countryGrid = new Grid<>(Country.class, false);
-		this.countryGrid.addColumn(Country::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
-		this.countryGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-
-		this.cityGrid = new Grid<>(City.class, false);
-		this.cityGrid.addColumn(c -> c.getCountry() == null ?
-						notSet : c.getCountry().getName())
-				.setHeader("Country")
-				.setSortable(true)
-				.setAutoWidth(true);
-		this.cityGrid.addColumn(City::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
-		this.cityGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-
+	private void createStreetGrid() {
 		this.streetGrid = new Grid<>(Street.class, false);
 		this.streetGrid.addColumn(
 						s -> s.getCity() == null || s.getCity().getCountry() == null ?
@@ -155,6 +213,26 @@ public class LocationView extends VerticalLayout {
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.streetGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		final GridContextMenu<Street> streetGridContextMenu = this.streetGrid.addContextMenu();
+		streetGridContextMenu.addItem("delete", event -> {
+			final Dialog dialog = new Dialog();
+			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+			final Button yesButton = new Button("Yes");
+			final Button abortButton = new Button("Abort", e -> dialog.close());
+			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+			dialog.add(buttons);
+			yesButton.addClickListener(click -> {
+				this.streetService.deleteById(event.getItem().get().getId());
+				dialog.close();
+				streetGridContextMenu.close();
+			});
+			abortButton.addClickListener(click -> {
+				dialog.close();
+				streetGridContextMenu.close();
+			});
+			dialog.open();
+		});
+		streetGridContextMenu.addItem("refactor");
 	}
 
 	private void openCityDialog() {
@@ -236,14 +314,14 @@ public class LocationView extends VerticalLayout {
 		final Button abortButton = new Button("Abort", e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		addButton.addClickListener(click -> {
-			var location = new Location();
-			location.setCountry(countrySelect.getValue());
-			location.setCity(citySelect.getValue());
-			location.setStreet(streetSelect.getValue());
-			location.setPostalCode(postalCodeNumberField.getValue());
-			location.setNumber(numberIntegerField.getValue());
-			if (this.locationService.findAll().stream().noneMatch(l -> l.equals(location))) {
-				this.locationService.create(location);
+			var locationDB = new Location();
+			locationDB.setCountry(countrySelect.getValue());
+			locationDB.setCity(citySelect.getValue());
+			locationDB.setStreet(streetSelect.getValue());
+			locationDB.setPostalCode(postalCodeNumberField.getValue());
+			locationDB.setNumber(numberIntegerField.getValue());
+			if (this.locationService.findAll().stream().noneMatch(l -> l.equals(locationDB))) {
+				this.locationService.create(locationDB);
 				this.updateGrids();
 			}
 			dialog.close();

@@ -1,6 +1,6 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TeamService implements ModelService<Team> {
+public class TeamService implements IModelService<Team> {
 
 	@Autowired
 	private TeamRepository repository;

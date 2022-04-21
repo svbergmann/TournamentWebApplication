@@ -1,13 +1,13 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CountryService implements ModelService<Country> {
+public class CountryService implements IModelService<Country> {
 
 	@Autowired
 	private CountryRepository repository;

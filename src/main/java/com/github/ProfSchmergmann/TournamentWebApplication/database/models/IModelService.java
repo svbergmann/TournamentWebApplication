@@ -2,7 +2,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models;
 
 import java.util.List;
 
-public interface ModelService<T> {
+public interface IModelService<T> {
 
 	T create(T t);
 

@@ -1,12 +1,12 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GymService implements ModelService<Gym> {
+public class GymService implements IModelService<Gym> {
 
 	@Autowired
 	private GymRepository repository;

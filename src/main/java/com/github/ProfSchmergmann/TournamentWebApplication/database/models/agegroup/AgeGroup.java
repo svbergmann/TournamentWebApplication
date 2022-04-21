@@ -1,5 +1,6 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup;
 
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -8,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class AgeGroup implements Serializable {
+public class AgeGroup implements Serializable, IModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

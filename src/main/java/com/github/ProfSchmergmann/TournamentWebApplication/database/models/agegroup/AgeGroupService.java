@@ -1,12 +1,12 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AgeGroupService implements ModelService<AgeGroup> {
+public class AgeGroupService implements IModelService<AgeGroup> {
 
 	@Autowired
 	private AgeGroupRepository repository;

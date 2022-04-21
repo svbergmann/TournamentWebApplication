@@ -1,12 +1,12 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LocationService implements ModelService<Location> {
+public class LocationService implements IModelService<Location> {
 
 	@Autowired
 	private LocationRepository repository;

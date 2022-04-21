@@ -1,12 +1,12 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.club;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ClubService implements ModelService<Club> {
+public class ClubService implements IModelService<Club> {
 
 	@Autowired
 	private ClubRepository repository;

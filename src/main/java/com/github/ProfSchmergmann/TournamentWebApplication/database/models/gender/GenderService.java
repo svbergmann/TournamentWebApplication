@@ -1,13 +1,12 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GenderService implements ModelService<Gender> {
+public class GenderService implements IModelService<Gender> {
 
 	@Autowired
 	private GenderRepository repository;

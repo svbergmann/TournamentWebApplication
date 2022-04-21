@@ -1,8 +1,10 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team;
 
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Team {
+public class Team implements Serializable, IModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

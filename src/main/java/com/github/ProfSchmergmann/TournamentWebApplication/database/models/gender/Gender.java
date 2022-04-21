@@ -1,5 +1,7 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
 
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Gender {
+public class Gender implements Serializable, IModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

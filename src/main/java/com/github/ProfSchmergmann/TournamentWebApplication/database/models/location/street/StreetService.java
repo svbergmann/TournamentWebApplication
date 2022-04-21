@@ -1,6 +1,6 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.ModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StreetService implements ModelService<Street> {
+public class StreetService implements IModelService<Street> {
 
 	@Autowired
 	private StreetRepository repository;
