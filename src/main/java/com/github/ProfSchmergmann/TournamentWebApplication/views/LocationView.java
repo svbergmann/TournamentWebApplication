@@ -13,6 +13,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -97,6 +98,25 @@ public class LocationView extends VerticalLayout {
 				.setHeader("Number")
 				.setAutoWidth(true);
 		this.locationGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		final GridContextMenu<Location> locationGridContextMenu = this.locationGrid.addContextMenu();
+		locationGridContextMenu.addItem("delete", event -> {
+			final Dialog dialog = new Dialog();
+			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+			final Button yesButton = new Button("Yes");
+			final Button abortButton = new Button("Abort", e -> dialog.close());
+			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+			dialog.add(buttons);
+			yesButton.addClickListener(click -> {
+				this.locationService.deleteById(event.getItem().get().getId());
+				dialog.close();
+				locationGridContextMenu.close();
+			});
+			abortButton.addClickListener(click -> {
+				dialog.close();
+				locationGridContextMenu.close();
+			});
+			dialog.open();
+		});
 
 		this.countryGrid = new Grid<>(Country.class, false);
 		this.countryGrid.addColumn(Country::getName)
