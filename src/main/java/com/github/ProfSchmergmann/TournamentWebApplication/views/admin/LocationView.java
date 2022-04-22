@@ -8,6 +8,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.locat
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.StreetService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -20,10 +21,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "locations")
+import javax.annotation.security.PermitAll;
+
+@PermitAll
+@Route(value = "locations", layout = MainLayout.class)
+@PageTitle("Locations | Tournament")
 public class LocationView extends VerticalLayout {
 
 	public static final String notSet = "not set";
@@ -41,7 +47,7 @@ public class LocationView extends VerticalLayout {
 	private Grid<Street> streetGrid;
 
 	public LocationView(@Autowired CountryService countryService, @Autowired CityService cityService,
-			@Autowired StreetService streetService, @Autowired LocationService locationService) {
+	                    @Autowired StreetService streetService, @Autowired LocationService locationService) {
 		this.countryService = countryService;
 		this.cityService = cityService;
 		this.streetService = streetService;
@@ -49,17 +55,17 @@ public class LocationView extends VerticalLayout {
 		this.createGrids();
 		this.createButtons();
 		this.add(new H2("Locations"),
-				this.locationGrid,
-				this.addLocationButton,
-				new H2("Countries"),
-				this.countryGrid,
-				this.addCountryButton,
-				new H2("Cities"),
-				this.cityGrid,
-				this.addCityButton,
-				new H2("Streets"),
-				this.streetGrid,
-				this.addStreetButton);
+		         this.locationGrid,
+		         this.addLocationButton,
+		         new H2("Countries"),
+		         this.countryGrid,
+		         this.addCountryButton,
+		         new H2("Cities"),
+		         this.cityGrid,
+		         this.addCityButton,
+		         new H2("Streets"),
+		         this.streetGrid,
+		         this.addStreetButton);
 		this.updateGrids();
 	}
 
@@ -77,7 +83,7 @@ public class LocationView extends VerticalLayout {
 	private void createCityGrid() {
 		this.cityGrid = new Grid<>(City.class, false);
 		this.cityGrid.addColumn(c -> c.getCountry() == null ?
-						notSet : c.getCountry().getName())
+		                             notSet : c.getCountry().getName())
 				.setHeader("Country")
 				.setSortable(true)
 				.setAutoWidth(true);
@@ -148,8 +154,8 @@ public class LocationView extends VerticalLayout {
 		this.locationGrid = new Grid<>(Location.class, false);
 		this.locationGrid.addColumn(
 						l -> l.getCity() == null || l.getCity().getCountry() == null ?
-								notSet
-								: l.getCity().getCountry().getName())
+						     notSet
+						                                                             : l.getCity().getCountry().getName())
 				.setHeader("Country")
 				.setSortable(true)
 				.setAutoWidth(true);
@@ -194,13 +200,13 @@ public class LocationView extends VerticalLayout {
 		this.streetGrid = new Grid<>(Street.class, false);
 		this.streetGrid.addColumn(
 						s -> s.getCity() == null || s.getCity().getCountry() == null ?
-								notSet
-								: s.getCity().getCountry().getName())
+						     notSet
+						                                                             : s.getCity().getCountry().getName())
 				.setHeader("Country")
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.streetGrid.addColumn(s -> s.getCity() == null ?
-						notSet : s.getCity().getName())
+		                               notSet : s.getCity().getName())
 				.setHeader("City")
 				.setSortable(true)
 				.setAutoWidth(true);
@@ -303,10 +309,10 @@ public class LocationView extends VerticalLayout {
 		numberIntegerField.setHelperText("Only Numbers");
 		numberIntegerField.setMin(0);
 		final VerticalLayout fields = new VerticalLayout(countrySelect,
-				citySelect,
-				streetSelect,
-				postalCodeNumberField,
-				numberIntegerField);
+		                                                 citySelect,
+		                                                 streetSelect,
+		                                                 postalCodeNumberField,
+		                                                 numberIntegerField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
 		addButton.addClickShortcut(Key.ENTER);

@@ -6,11 +6,12 @@ import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.spring.annotation.SpringComponent;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
-import javax.servlet.http.Cookie;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 public class ServiceInitListener implements VaadinServiceInitListener {

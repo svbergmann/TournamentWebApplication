@@ -1,13 +1,14 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import java.io.Serializable;
-import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class Country implements Serializable, IModel {

@@ -2,6 +2,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -12,10 +13,15 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "agegroups")
+import javax.annotation.security.PermitAll;
+
+@PermitAll
+@Route(value = "agegroups", layout = MainLayout.class)
+@PageTitle("Gyms | Tournament")
 public class AgeGroupView extends VerticalLayout {
 
 	private final AgeGroupService ageGroupService;
@@ -27,8 +33,8 @@ public class AgeGroupView extends VerticalLayout {
 		Button addNewAgeGroupButton = new Button("Add new Age Group");
 		addNewAgeGroupButton.addClickListener(click -> this.openAgeGroupDialog());
 		this.add(new H2("Age Groups"),
-				this.ageGroupGrid,
-				addNewAgeGroupButton);
+		         this.ageGroupGrid,
+		         addNewAgeGroupButton);
 	}
 
 	private void createAgeGroupsGrid() {

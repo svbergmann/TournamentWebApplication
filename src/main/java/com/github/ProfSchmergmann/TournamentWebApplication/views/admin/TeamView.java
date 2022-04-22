@@ -1,16 +1,14 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
-
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -23,10 +21,17 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "teams")
+import javax.annotation.security.PermitAll;
+
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
+
+@PermitAll
+@Route(value = "teams", layout = MainLayout.class)
+@PageTitle("Teams | Tournament")
 public class TeamView extends VerticalLayout {
 
 	private final ClubService clubService;
@@ -36,9 +41,9 @@ public class TeamView extends VerticalLayout {
 	private Grid<Team> teamGrid;
 
 	public TeamView(@Autowired ClubService clubService,
-			@Autowired AgeGroupService ageGroupService,
-			@Autowired GenderService genderService,
-			@Autowired TeamService teamService
+	                @Autowired AgeGroupService ageGroupService,
+	                @Autowired GenderService genderService,
+	                @Autowired TeamService teamService
 	) {
 		this.clubService = clubService;
 		this.ageGroupService = ageGroupService;
@@ -47,16 +52,16 @@ public class TeamView extends VerticalLayout {
 		this.createTeamGrid();
 		Button addTeamButton = new Button("Add new Team");
 		addTeamButton.addClickListener(click -> this.openTeamDialog());
-		this.add(new H2("Clubs"),
-				this.teamGrid,
-				addTeamButton);
+		this.add(new H2("Teams"),
+		         this.teamGrid,
+		         addTeamButton);
 	}
 
 	private void createTeamGrid() {
 		this.teamGrid = new Grid<>(Team.class, false);
 		this.teamGrid.addColumn(team ->
-						team.getClub() == null || team.getClub().getCountry() == null ?
-								notSet : team.getClub().getCountry().getName())
+				                        team.getClub() == null || team.getClub().getCountry() == null ?
+				                        notSet : team.getClub().getCountry().getName())
 				.setHeader("Country")
 				.setSortable(true)
 				.setAutoWidth(true);
@@ -121,10 +126,10 @@ public class TeamView extends VerticalLayout {
 		amountIntegerField.setHasControls(true);
 		final TextField teamTextField = new TextField("Name");
 		final VerticalLayout fields = new VerticalLayout(clubSelect,
-				ageGroupSelect,
-				genderSelect,
-				amountIntegerField,
-				teamTextField);
+		                                                 ageGroupSelect,
+		                                                 genderSelect,
+		                                                 amountIntegerField,
+		                                                 teamTextField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
 		addButton.addClickShortcut(Key.ENTER);

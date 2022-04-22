@@ -116,7 +116,8 @@
       "@vaadin/virtual-list": "23.0.6",
       "construct-style-sheets-polyfill": "3.0.4",
       "date-fns": "2.23.0",
-      "lit": "2.1.4"
+      "lit": "2.1.4",
+      "lumo-css-framework": "^4.0.10"
     },
     "devDependencies": {
       "chokidar": "^3.5.0",
@@ -140,7 +141,7 @@
       "workbox-precaching": "6.5.0",
       "workbox-webpack-plugin": "6.5.0"
     },
-    "hash": "e24c3d31447ce74bd5ba54b939af6ff6d4627e8ff82ff67f47f2143e3c1029a3"
+    "hash": "4b4dc69d63b6a7f8d564853d138eb944cd31995cf8176686ed704005dbf87191"
   },
   "dependencies": {
     "@polymer/iron-icon": "3.0.1",
@@ -257,7 +258,8 @@
     "@vaadin/virtual-list": "23.0.6",
     "construct-style-sheets-polyfill": "3.0.4",
     "date-fns": "2.23.0",
-    "lit": "2.1.4"
+    "lit": "2.1.4",
+    "lumo-css-framework": "^4.0.10"
   },
   "devDependencies": {
     "chokidar": "^3.5.0",

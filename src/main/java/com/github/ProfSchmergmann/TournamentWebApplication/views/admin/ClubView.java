@@ -1,11 +1,10 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
-
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -17,10 +16,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "clubs")
+import javax.annotation.security.PermitAll;
+
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
+
+@PermitAll
+@Route(value = "clubs", layout = MainLayout.class)
+@PageTitle("Clubs | Tournament")
 public class ClubView extends VerticalLayout {
 
 	private final CountryService countryService;
@@ -34,8 +40,8 @@ public class ClubView extends VerticalLayout {
 		Button addClubButton = new Button("Add new Club");
 		addClubButton.addClickListener(click -> this.openClubDialog());
 		this.add(new H2("Clubs"),
-				this.clubGrid,
-				addClubButton);
+		         this.clubGrid,
+		         addClubButton);
 	}
 
 	private void createClubGrid() {

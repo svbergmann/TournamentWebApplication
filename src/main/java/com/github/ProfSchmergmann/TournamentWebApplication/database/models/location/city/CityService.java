@@ -2,10 +2,11 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CityService implements IModelService<City> {

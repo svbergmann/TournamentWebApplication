@@ -1,9 +1,10 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GenderService implements IModelService<Gender> {

@@ -2,13 +2,14 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import java.io.Serializable;
-import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class Street implements Serializable, IModel {

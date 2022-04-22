@@ -1,11 +1,10 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
-
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.Gym;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.GymService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.LocationService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,10 +17,17 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "gyms")
+import javax.annotation.security.PermitAll;
+
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
+
+@PermitAll
+@Route(value = "gyms", layout = MainLayout.class)
+@PageTitle("Gyms | Tournament")
 public class GymView extends VerticalLayout {
 
 	private final GymService gymService;
@@ -36,8 +42,8 @@ public class GymView extends VerticalLayout {
 		Button addGymButton = new Button("Add new Gym");
 		addGymButton.addClickListener(click -> this.openGymDialog());
 		this.add(new H2("Gyms"),
-				this.gymGrid,
-				addGymButton);
+		         this.gymGrid,
+		         addGymButton);
 	}
 
 	private void createGymGrid() {
@@ -48,33 +54,33 @@ public class GymView extends VerticalLayout {
 				.setAutoWidth(true);
 		this.gymGrid.addColumn(
 						gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-								notSet
-								: gym.getLocation().getCountry().getName())
+						       notSet
+						                                                                           : gym.getLocation().getCountry().getName())
 				.setHeader("Country")
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-						notSet
-						: gym.getLocation().getPostalCode())
+		                              notSet
+		                                                        : gym.getLocation().getPostalCode())
 				.setHeader("Postal Code")
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null || gym.getLocation().getCity() == null ?
-						notSet
-						: gym.getLocation().getCity().getName())
+		                              notSet
+		                                                                                               : gym.getLocation().getCity().getName())
 				.setHeader("City")
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.gymGrid.addColumn(
 						gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
-								notSet
-								: gym.getLocation().getStreet().getName())
+						       notSet
+						                                                                          : gym.getLocation().getStreet().getName())
 				.setHeader("Street")
 				.setSortable(true)
 				.setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-						notSet
-						: gym.getLocation().getNumber())
+		                              notSet
+		                                                        : gym.getLocation().getNumber())
 				.setHeader("Number")
 				.setSortable(true)
 				.setAutoWidth(true);
@@ -107,19 +113,19 @@ public class GymView extends VerticalLayout {
 		locationSelect.setLabel("Location");
 		locationSelect.setItems(this.locationService.findAll());
 		locationSelect.setItemLabelGenerator(l ->
-				l.getCountry().getName() + ", "
-						+ l.getPostalCode() + ", "
-						+ l.getCity().getName() + ", "
-						+ l.getStreet().getName() + ", "
-						+ l.getNumber());
+				                                     l.getCountry().getName() + ", "
+						                                     + l.getPostalCode() + ", "
+						                                     + l.getCity().getName() + ", "
+						                                     + l.getStreet().getName() + ", "
+						                                     + l.getNumber());
 		final Label gymLabel = new Label("Gym");
 		final IntegerField gymIntegerField = new IntegerField("Gym Number");
 		gymIntegerField.setMin(1);
 		final IntegerField gymCapacityField = new IntegerField("Gym Capacity");
 		gymCapacityField.setMin(0);
 		final HorizontalLayout gymLayout = new HorizontalLayout(gymLabel,
-				gymIntegerField,
-				gymCapacityField);
+		                                                        gymIntegerField,
+		                                                        gymCapacityField);
 		gymLayout.setAlignItems(Alignment.CENTER);
 		final VerticalLayout fields = new VerticalLayout(locationSelect, gymLayout);
 		fields.setPadding(true);

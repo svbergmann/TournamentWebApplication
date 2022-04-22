@@ -1,8 +1,8 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -13,10 +13,15 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "gender")
+import javax.annotation.security.PermitAll;
+
+@PermitAll
+@Route(value = "gender", layout = MainLayout.class)
+@PageTitle("Gyms | Tournament")
 public class GenderView extends VerticalLayout {
 
 	private final GenderService genderService;
@@ -28,8 +33,8 @@ public class GenderView extends VerticalLayout {
 		Button addGenderButton = new Button("Add new Gender");
 		addGenderButton.addClickListener(click -> this.openGenderDialog());
 		this.add(new H2("Genders"),
-				this.genderGrid,
-				addGenderButton);
+		         this.genderGrid,
+		         addGenderButton);
 	}
 
 	private void createGenderGrid() {

@@ -1,16 +1,17 @@
 package com.github.ProfSchmergmann.TournamentWebApplication;
 
-import static java.util.Locale.ENGLISH;
-import static java.util.Locale.FRENCH;
-import static java.util.Locale.GERMAN;
-import static java.util.ResourceBundle.getBundle;
-
 import com.vaadin.flow.i18n.I18NProvider;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-import org.springframework.stereotype.Component;
+
+import static java.util.Locale.ENGLISH;
+import static java.util.Locale.FRENCH;
+import static java.util.Locale.GERMAN;
+import static java.util.ResourceBundle.getBundle;
 
 @Component
 public class TournamentI18NProvider implements I18NProvider {
