@@ -14,10 +14,8 @@ public class LocationService implements IModelService<Location> {
 
 	@Override
 	public Location create(Location location) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(location))) {
-			return null;
-		}
-		return this.repository.save(location);
+		return this.findAll().stream().anyMatch(l -> l.equals(location)) ?
+		       null : this.repository.save(location);
 	}
 
 	@Override

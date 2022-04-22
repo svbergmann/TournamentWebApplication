@@ -16,19 +16,17 @@ import java.util.Objects;
 @Entity
 public class Location implements Serializable, IModel {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
-	@ManyToOne
-	private Country country;
-
 	@ManyToOne
 	private City city;
 	@ManyToOne
-	private Street street;
+	private Country country;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 	private int number;
 	private int postalCode;
+	@ManyToOne
+	private Street street;
 
 	public City getCity() {
 		return this.city;

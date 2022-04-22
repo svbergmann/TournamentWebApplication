@@ -16,10 +16,8 @@ public class CityService implements IModelService<City> {
 
 	@Override
 	public City create(City city) {
-		if (this.repository.findByName(city.getName()) != null) {
-			return null;
-		}
-		return this.repository.save(city);
+		return this.repository.findByName(city.getName()) != null ?
+		       null : this.repository.save(city);
 	}
 
 	@Override

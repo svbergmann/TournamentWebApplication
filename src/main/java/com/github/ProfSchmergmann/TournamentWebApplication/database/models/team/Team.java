@@ -16,20 +16,16 @@ import java.util.Objects;
 @Entity
 public class Team implements Serializable, IModel {
 
+	@ManyToOne
+	private AgeGroup ageGroup;
+	private int amount;
+	@ManyToOne
+	private Club club;
+	@ManyToOne
+	private Gender gender;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	private int amount;
-
-	@ManyToOne
-	private AgeGroup ageGroup;
-
-	@ManyToOne
-	private Gender gender;
-
-	@ManyToOne
-	private Club club;
 
 	public AgeGroup getAgeGroup() {
 		return this.ageGroup;

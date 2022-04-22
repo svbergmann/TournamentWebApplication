@@ -13,12 +13,9 @@ public class ClubService implements IModelService<Club> {
 	private ClubRepository repository;
 
 	@Override
-	public Club create(
-			Club club) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(club))) {
-			return null;
-		}
-		return this.repository.save(club);
+	public Club create(Club club) {
+		return this.findAll().stream().anyMatch(l -> l.equals(club)) ?
+		       null : this.repository.save(club);
 	}
 
 	@Override

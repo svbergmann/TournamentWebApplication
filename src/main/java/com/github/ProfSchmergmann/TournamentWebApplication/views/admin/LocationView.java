@@ -37,13 +37,13 @@ public class LocationView extends VerticalLayout {
 	private final CityService cityService;
 	private final StreetService streetService;
 	private final LocationService locationService;
-	private Button addCountryButton;
 	private Button addCityButton;
-	private Button addStreetButton;
+	private Button addCountryButton;
 	private Button addLocationButton;
-	private Grid<Location> locationGrid;
+	private Button addStreetButton;
 	private Grid<City> cityGrid;
 	private Grid<Country> countryGrid;
+	private Grid<Location> locationGrid;
 	private Grid<Street> streetGrid;
 
 	public LocationView(@Autowired CountryService countryService, @Autowired CityService cityService,

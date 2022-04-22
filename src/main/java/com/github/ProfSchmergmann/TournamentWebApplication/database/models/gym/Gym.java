@@ -14,14 +14,13 @@ import java.util.Objects;
 @Entity
 public class Gym implements Serializable, IModel {
 
+	private int capacity;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String name;
-	private int capacity;
 	@ManyToOne
 	private Location location;
-
+	private String name;
 	private int number;
 
 	public int getCapacity() {

@@ -16,10 +16,8 @@ public class TeamService implements IModelService<Team> {
 
 	@Override
 	public Team create(Team team) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(team))) {
-			return null;
-		}
-		return this.repository.save(team);
+		return this.findAll().stream().anyMatch(l -> l.equals(team)) ?
+		       null : this.repository.save(team);
 	}
 
 	@Override

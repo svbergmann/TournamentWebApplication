@@ -14,14 +14,12 @@ import java.util.Objects;
 @Entity
 public class Street implements Serializable, IModel {
 
+	@ManyToOne
+	private City city;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
 	private String name;
-
-	@ManyToOne
-	private City city;
 
 	public City getCity() {
 		return this.city;

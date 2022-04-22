@@ -14,10 +14,8 @@ public class AgeGroupService implements IModelService<AgeGroup> {
 
 	@Override
 	public AgeGroup create(AgeGroup ageGroup) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(ageGroup))) {
-			return null;
-		}
-		return this.repository.save(ageGroup);
+		return this.findAll().stream().anyMatch(l -> l.equals(ageGroup)) ?
+		       null : this.repository.save(ageGroup);
 	}
 
 	@Override

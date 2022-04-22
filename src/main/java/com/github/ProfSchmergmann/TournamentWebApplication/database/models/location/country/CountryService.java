@@ -15,10 +15,8 @@ public class CountryService implements IModelService<Country> {
 
 	@Override
 	public Country create(Country country) {
-		if (this.repository.findByName(country.getName()) != null) {
-			return null;
-		}
-		return this.repository.save(country);
+		return this.repository.findByName(country.getName()) != null ?
+		       null : this.repository.save(country);
 	}
 
 	@Override

@@ -16,10 +16,8 @@ public class StreetService implements IModelService<Street> {
 
 	@Override
 	public Street create(Street street) {
-		if (this.repository.findByName(street.getName()) != null) {
-			return null;
-		}
-		return this.repository.save(street);
+		return this.repository.findByName(street.getName()) != null ?
+		       null : this.repository.save(street);
 	}
 
 	@Override

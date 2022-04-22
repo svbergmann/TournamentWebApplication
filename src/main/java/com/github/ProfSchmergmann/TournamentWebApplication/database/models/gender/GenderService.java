@@ -14,10 +14,8 @@ public class GenderService implements IModelService<Gender> {
 
 	@Override
 	public Gender create(Gender gender) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(gender))) {
-			return null;
-		}
-		return this.repository.save(gender);
+		return this.findAll().stream().anyMatch(l -> l.equals(gender)) ?
+		       null : this.repository.save(gender);
 	}
 
 	@Override

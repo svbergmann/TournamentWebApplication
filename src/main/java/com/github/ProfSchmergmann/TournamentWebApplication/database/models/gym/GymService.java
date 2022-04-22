@@ -14,10 +14,8 @@ public class GymService implements IModelService<Gym> {
 
 	@Override
 	public Gym create(Gym gym) {
-		if (this.findAll().stream().anyMatch(l -> l.equals(gym))) {
-			return null;
-		}
-		return this.repository.save(gym);
+		return this.findAll().stream().anyMatch(l -> l.equals(gym)) ?
+		       null : this.repository.save(gym);
 	}
 
 	@Override
