@@ -37,7 +37,7 @@ public class CityView extends VerticalLayout {
 		this.countryService = countryService;
 		this.cityService = cityService;
 		this.createCityGrid();
-		Button addClubButton = new Button("Add new City");
+		var addClubButton = new Button("Add new City");
 		addClubButton.addClickListener(click -> this.openCityDialog());
 		this.add(new H2("Cities"),
 		         this.cityGrid,
@@ -56,6 +56,7 @@ public class CityView extends VerticalLayout {
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.cityGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<City> cityGridContextMenu = this.cityGrid.addContextMenu();
 		cityGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -66,7 +67,7 @@ public class CityView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.cityService.deleteById(event.getItem().get().getId());
-				this.cityGrid.setItems(this.cityService.findAll());
+				this.updateGrid();
 				dialog.close();
 				cityGridContextMenu.close();
 			});
@@ -100,7 +101,7 @@ public class CityView extends VerticalLayout {
 				city.setName(cityTextField.getValue());
 				if (this.cityService.findAll().stream().noneMatch(c -> c.equals(city))) {
 					this.cityService.create(city);
-					this.cityGrid.setItems(this.cityService.findAll());
+					this.updateGrid();
 				}
 				dialog.close();
 			}
@@ -109,4 +110,7 @@ public class CityView extends VerticalLayout {
 		dialog.open();
 	}
 
+	private void updateGrid() {
+		this.cityGrid.setItems(this.cityService.findAll());
+	}
 }

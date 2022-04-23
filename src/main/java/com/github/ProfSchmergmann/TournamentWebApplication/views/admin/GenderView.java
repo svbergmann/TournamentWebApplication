@@ -30,7 +30,7 @@ public class GenderView extends VerticalLayout {
 	public GenderView(@Autowired GenderService genderService) {
 		this.genderService = genderService;
 		this.createGenderGrid();
-		Button addGenderButton = new Button("Add new Gender");
+		var addGenderButton = new Button("Add new Gender");
 		addGenderButton.addClickListener(click -> this.openGenderDialog());
 		this.add(new H2("Genders"),
 		         this.genderGrid,
@@ -44,6 +44,7 @@ public class GenderView extends VerticalLayout {
 		               .setSortable(true)
 		               .setAutoWidth(true);
 		this.genderGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Gender> ageGroupGridContextMenu = this.genderGrid.addContextMenu();
 		ageGroupGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -54,6 +55,7 @@ public class GenderView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.genderService.deleteById(event.getItem().get().getId());
+				this.updateGrid();
 				dialog.close();
 				ageGroupGridContextMenu.close();
 			});
@@ -80,11 +82,15 @@ public class GenderView extends VerticalLayout {
 			if (this.genderService.findAll().stream()
 			                      .noneMatch(ageGroup1 -> ageGroup1.equals(gender))) {
 				this.genderService.create(gender);
-				this.genderGrid.setItems(this.genderService.findAll());
+				this.updateGrid();
 			}
 			dialog.close();
 		});
 		dialog.add(genderTextField, buttons);
 		dialog.open();
+	}
+
+	private void updateGrid() {
+		this.genderGrid.setItems(this.genderService.findAll());
 	}
 }

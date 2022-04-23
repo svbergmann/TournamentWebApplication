@@ -36,7 +36,6 @@ public class LocationView extends VerticalLayout {
 	private final CityService cityService;
 	private final StreetService streetService;
 	private final LocationService locationService;
-	private Button addLocationButton;
 	private Grid<Location> locationGrid;
 
 	public LocationView(@Autowired CountryService countryService, @Autowired CityService cityService,
@@ -46,15 +45,11 @@ public class LocationView extends VerticalLayout {
 		this.streetService = streetService;
 		this.locationService = locationService;
 		this.createLocationGrid();
-		this.createButtons();
+		var addLocationButton = new Button("Add new Location");
+		addLocationButton.addClickListener(click -> this.openLocationDialog());
 		this.add(new H2("Locations"),
 		         this.locationGrid,
-		         this.addLocationButton);
-	}
-
-	private void createButtons() {
-		this.addLocationButton = new Button("Add new Location");
-		this.addLocationButton.addClickListener(click -> this.openLocationDialog());
+		         addLocationButton);
 	}
 
 	private void createLocationGrid() {
@@ -80,7 +75,7 @@ public class LocationView extends VerticalLayout {
 		                 .setSortable(true)
 		                 .setAutoWidth(true);
 		this.locationGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		this.locationGrid.setItems(this.locationService.findAll());
+		this.updateGrid();
 		final GridContextMenu<Location> locationGridContextMenu = this.locationGrid.addContextMenu();
 		locationGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -91,7 +86,7 @@ public class LocationView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.locationService.deleteById(event.getItem().get().getId());
-				this.locationGrid.setItems(this.locationService.findAll());
+				this.updateGrid();
 				dialog.close();
 				locationGridContextMenu.close();
 			});
@@ -141,7 +136,7 @@ public class LocationView extends VerticalLayout {
 			location.setNumber(numberIntegerField.getValue());
 			if (this.locationService.findAll().stream().noneMatch(l -> l.equals(location))) {
 				this.locationService.create(location);
-				this.locationGrid.setItems(this.locationService.findAll());
+				this.updateGrid();
 			}
 			dialog.close();
 		});
@@ -159,5 +154,9 @@ public class LocationView extends VerticalLayout {
 		});
 		dialog.add(fields, buttons);
 		dialog.open();
+	}
+
+	private void updateGrid() {
+		this.locationGrid.setItems(this.locationService.findAll());
 	}
 }

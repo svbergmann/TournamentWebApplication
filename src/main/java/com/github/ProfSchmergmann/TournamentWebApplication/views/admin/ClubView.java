@@ -37,7 +37,7 @@ public class ClubView extends VerticalLayout {
 		this.countryService = countryService;
 		this.clubService = clubService;
 		this.createClubGrid();
-		Button addClubButton = new Button("Add new Club");
+		var addClubButton = new Button("Add new Club");
 		addClubButton.addClickListener(click -> this.openClubDialog());
 		this.add(new H2("Clubs"),
 		         this.clubGrid,
@@ -56,6 +56,7 @@ public class ClubView extends VerticalLayout {
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.clubGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Club> clubGridContextMenu = this.clubGrid.addContextMenu();
 		clubGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -66,6 +67,7 @@ public class ClubView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.clubService.deleteById(event.getItem().get().getId());
+				this.updateGrid();
 				dialog.close();
 				clubGridContextMenu.close();
 			});
@@ -99,7 +101,7 @@ public class ClubView extends VerticalLayout {
 				club.setName(clubTextField.getValue());
 				if (this.clubService.findAll().stream().noneMatch(c -> c.equals(club))) {
 					this.clubService.create(club);
-					this.clubGrid.setItems(this.clubService.findAll());
+					this.updateGrid();
 				}
 				dialog.close();
 			}
@@ -108,4 +110,7 @@ public class ClubView extends VerticalLayout {
 		dialog.open();
 	}
 
+	private void updateGrid() {
+		this.clubGrid.setItems(this.clubService.findAll());
+	}
 }

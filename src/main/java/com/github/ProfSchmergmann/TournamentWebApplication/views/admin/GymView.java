@@ -32,14 +32,13 @@ public class GymView extends VerticalLayout {
 
 	private final GymService gymService;
 	private final LocationService locationService;
-
 	private Grid<Gym> gymGrid;
 
 	public GymView(@Autowired GymService gymService, @Autowired LocationService locationService) {
 		this.gymService = gymService;
 		this.locationService = locationService;
 		this.createGymGrid();
-		Button addGymButton = new Button("Add new Gym");
+		var addGymButton = new Button("Add new Gym");
 		addGymButton.addClickListener(click -> this.openGymDialog());
 		this.add(new H2("Gyms"),
 		         this.gymGrid,
@@ -54,37 +53,33 @@ public class GymView extends VerticalLayout {
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(
 				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-				           notSet
-				                                                                               : gym.getLocation().getCountry().getName())
+				           notSet : gym.getLocation().getCountry().getName())
 		            .setHeader("Country")
 		            .setSortable(true)
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-		                              notSet
-		                                                        : gym.getLocation().getPostalCode())
+		                              notSet : gym.getLocation().getPostalCode())
 		            .setHeader("Postal Code")
 		            .setSortable(true)
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null || gym.getLocation().getCity() == null ?
-		                              notSet
-		                                                                                               : gym.getLocation().getCity().getName())
+		                              notSet : gym.getLocation().getCity().getName())
 		            .setHeader("City")
 		            .setSortable(true)
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(
 				    gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
-				           notSet
-				                                                                              : gym.getLocation().getStreet().getName())
+				           notSet : gym.getLocation().getStreet().getName())
 		            .setHeader("Street")
 		            .setSortable(true)
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-		                              notSet
-		                                                        : gym.getLocation().getNumber())
+		                              notSet : gym.getLocation().getNumber())
 		            .setHeader("Number")
 		            .setSortable(true)
 		            .setAutoWidth(true);
 		this.gymGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Gym> countryGridContextMenu = this.gymGrid.addContextMenu();
 		countryGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -95,6 +90,7 @@ public class GymView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.gymService.deleteById(event.getItem().get().getId());
+				this.updateGrid();
 				dialog.close();
 				countryGridContextMenu.close();
 			});
@@ -141,11 +137,15 @@ public class GymView extends VerticalLayout {
 			gym.setName(gymLabel.getText() + " " + gym.getNumber());
 			if (this.gymService.findAll().stream().noneMatch(g -> g.getNumber() == gym.getNumber())) {
 				this.gymService.create(gym);
-				this.gymGrid.setItems(this.gymService.findAll());
+				this.updateGrid();
 			}
 			dialog.close();
 		});
 		dialog.add(fields, buttons);
 		dialog.open();
+	}
+
+	private void updateGrid() {
+		this.gymGrid.setItems(this.gymService.findAll());
 	}
 }

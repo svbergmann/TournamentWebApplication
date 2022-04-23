@@ -21,7 +21,7 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Gyms | Tournament")
+@PageTitle("Age Groups | Tournament")
 public class AgeGroupView extends VerticalLayout {
 
 	private final AgeGroupService ageGroupService;
@@ -30,7 +30,7 @@ public class AgeGroupView extends VerticalLayout {
 	public AgeGroupView(@Autowired AgeGroupService ageGroupService) {
 		this.ageGroupService = ageGroupService;
 		this.createAgeGroupsGrid();
-		Button addNewAgeGroupButton = new Button("Add new Age Group");
+		var addNewAgeGroupButton = new Button("Add new Age Group");
 		addNewAgeGroupButton.addClickListener(click -> this.openAgeGroupDialog());
 		this.add(new H2("Age Groups"),
 		         this.ageGroupGrid,
@@ -44,6 +44,7 @@ public class AgeGroupView extends VerticalLayout {
 		                 .setSortable(true)
 		                 .setAutoWidth(true);
 		this.ageGroupGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<AgeGroup> ageGroupGridContextMenu = this.ageGroupGrid.addContextMenu();
 		ageGroupGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -54,6 +55,7 @@ public class AgeGroupView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.ageGroupService.deleteById(event.getItem().get().getId());
+				this.updateGrid();
 				dialog.close();
 				ageGroupGridContextMenu.close();
 			});
@@ -80,11 +82,15 @@ public class AgeGroupView extends VerticalLayout {
 			if (this.ageGroupService.findAll().stream()
 			                        .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
 				this.ageGroupService.create(ageGroup);
-				this.ageGroupGrid.setItems(this.ageGroupService.findAll());
+				this.updateGrid();
 			}
 			dialog.close();
 		});
 		dialog.add(ageGroupTextField, buttons);
 		dialog.open();
+	}
+
+	private void updateGrid() {
+		this.ageGroupGrid.setItems(this.ageGroupService.findAll());
 	}
 }

@@ -50,7 +50,7 @@ public class TeamView extends VerticalLayout {
 		this.genderService = genderService;
 		this.teamService = teamService;
 		this.createTeamGrid();
-		Button addTeamButton = new Button("Add new Team");
+		var addTeamButton = new Button("Add new Team");
 		addTeamButton.addClickListener(click -> this.openTeamDialog());
 		this.add(new H2("Teams"),
 		         this.teamGrid,
@@ -84,6 +84,7 @@ public class TeamView extends VerticalLayout {
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Team> teamGridContextMenu = this.teamGrid.addContextMenu();
 		teamGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -94,6 +95,7 @@ public class TeamView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.teamService.deleteById(event.getItem().get().getId());
+				this.updateGrid();
 				dialog.close();
 				teamGridContextMenu.close();
 			});
@@ -145,7 +147,7 @@ public class TeamView extends VerticalLayout {
 				team.setAmount(amountIntegerField.getValue());
 				if (this.teamService.findAll().stream().noneMatch(t -> t.equals(team))) {
 					this.teamService.create(team);
-					this.teamGrid.setItems(this.teamService.findAll());
+					this.updateGrid();
 				}
 				dialog.close();
 			}
@@ -154,5 +156,8 @@ public class TeamView extends VerticalLayout {
 		dialog.open();
 	}
 
+	private void updateGrid() {
+		this.teamGrid.setItems(this.teamService.findAll());
+	}
 }
 

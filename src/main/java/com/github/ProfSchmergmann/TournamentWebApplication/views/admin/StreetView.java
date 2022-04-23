@@ -67,6 +67,7 @@ public class StreetView extends VerticalLayout {
 		               .setSortable(true)
 		               .setAutoWidth(true);
 		this.streetGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Street> streetGridContextMenu = this.streetGrid.addContextMenu();
 		streetGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -77,7 +78,7 @@ public class StreetView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.streetService.deleteById(event.getItem().get().getId());
-				this.streetGrid.setItems(this.streetService.findAll());
+				this.updateGrid();
 				dialog.close();
 				streetGridContextMenu.close();
 			});
@@ -113,7 +114,7 @@ public class StreetView extends VerticalLayout {
 				street.setCity(citySelect.getValue());
 				if (this.streetService.findAll().stream().noneMatch(s -> s.equals(street))) {
 					this.streetService.create(street);
-					this.streetGrid.setItems(this.streetService.findAll());
+					this.updateGrid();
 				}
 				dialog.close();
 			}
@@ -127,4 +128,7 @@ public class StreetView extends VerticalLayout {
 		dialog.open();
 	}
 
+	private void updateGrid() {
+		this.streetGrid.setItems(this.streetService.findAll());
+	}
 }

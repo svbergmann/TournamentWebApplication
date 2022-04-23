@@ -30,7 +30,7 @@ public class CountryView extends VerticalLayout {
 	public CountryView(@Autowired CountryService countryService) {
 		this.countryService = countryService;
 		this.createCountryGrid();
-		Button addCountryButton = new Button("Add new Country");
+		var addCountryButton = new Button("Add new Country");
 		addCountryButton.addClickListener(click -> this.openCountryDialog());
 		this.add(new H2("Countries"),
 		         this.countryGrid,
@@ -44,6 +44,7 @@ public class CountryView extends VerticalLayout {
 		                .setSortable(true)
 		                .setAutoWidth(true);
 		this.countryGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		this.updateGrid();
 		final GridContextMenu<Country> countryGridContextMenu = this.countryGrid.addContextMenu();
 		countryGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
@@ -54,7 +55,7 @@ public class CountryView extends VerticalLayout {
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
 				this.countryService.deleteById(event.getItem().get().getId());
-				this.countryGrid.setItems(this.countryService.findAll());
+				this.updateGrid();
 				dialog.close();
 				countryGridContextMenu.close();
 			});
@@ -81,13 +82,17 @@ public class CountryView extends VerticalLayout {
 				country.setName(countryTextField.getValue());
 				if (this.countryService.findAll().stream().noneMatch(c -> c.equals(country))) {
 					this.countryService.create(country);
-					this.countryGrid.setItems(this.countryService.findAll());
+					this.updateGrid();
 				}
 				dialog.close();
 			}
 		});
 		dialog.add(countryTextField, buttons);
 		dialog.open();
+	}
+
+	private void updateGrid() {
+		this.countryGrid.setItems(this.countryService.findAll());
 	}
 
 }
