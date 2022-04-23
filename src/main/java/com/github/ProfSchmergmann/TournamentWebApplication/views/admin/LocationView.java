@@ -38,11 +38,9 @@ public class LocationView extends VerticalLayout {
 	private final StreetService streetService;
 	private final LocationService locationService;
 	private Button addCityButton;
-	private Button addCountryButton;
 	private Button addLocationButton;
 	private Button addStreetButton;
 	private Grid<City> cityGrid;
-	private Grid<Country> countryGrid;
 	private Grid<Location> locationGrid;
 	private Grid<Street> streetGrid;
 
@@ -57,9 +55,6 @@ public class LocationView extends VerticalLayout {
 		this.add(new H2("Locations"),
 		         this.locationGrid,
 		         this.addLocationButton,
-		         new H2("Countries"),
-		         this.countryGrid,
-		         this.addCountryButton,
 		         new H2("Cities"),
 		         this.cityGrid,
 		         this.addCityButton,
@@ -70,8 +65,6 @@ public class LocationView extends VerticalLayout {
 	}
 
 	private void createButtons() {
-		this.addCountryButton = new Button("Add new Country");
-		this.addCountryButton.addClickListener(click -> this.openCountryDialog());
 		this.addCityButton = new Button("Add new City");
 		this.addCityButton.addClickListener(click -> this.openCityDialog());
 		this.addStreetButton = new Button("Add new Street");
@@ -114,38 +107,8 @@ public class LocationView extends VerticalLayout {
 		cityGridContextMenu.addItem("refactor");
 	}
 
-	private void createCountryGrid() {
-		this.countryGrid = new Grid<>(Country.class, false);
-		this.countryGrid.addColumn(Country::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
-		this.countryGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		final GridContextMenu<Country> countryGridContextMenu = this.countryGrid.addContextMenu();
-		countryGridContextMenu.addItem("delete", event -> {
-			final Dialog dialog = new Dialog();
-			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
-			final Button yesButton = new Button("Yes");
-			final Button abortButton = new Button("Abort", e -> dialog.close());
-			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
-			dialog.add(buttons);
-			yesButton.addClickListener(click -> {
-				this.countryService.deleteById(event.getItem().get().getId());
-				dialog.close();
-				countryGridContextMenu.close();
-			});
-			abortButton.addClickListener(click -> {
-				dialog.close();
-				countryGridContextMenu.close();
-			});
-			dialog.open();
-		});
-		countryGridContextMenu.addItem("refactor");
-	}
-
 	private void createGrids() {
 		this.createLocationGrid();
-		this.createCountryGrid();
 		this.createCityGrid();
 		this.createStreetGrid();
 	}
@@ -267,29 +230,6 @@ public class LocationView extends VerticalLayout {
 		dialog.open();
 	}
 
-	private void openCountryDialog() {
-		final Dialog dialog = new Dialog();
-		final TextField countryTextField = new TextField("Country");
-		final Button addButton = new Button("Add");
-		addButton.addClickShortcut(Key.ENTER);
-		final Button abortButton = new Button("Abort", e -> dialog.close());
-		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
-		dialog.add(countryTextField, buttons);
-		addButton.addClickListener(click -> {
-			if (countryTextField.getValue().trim().length() > 3) {
-				var country = new Country();
-				country.setName(countryTextField.getValue().trim());
-				if (this.countryService.findAll().stream().noneMatch(c -> c.equals(country))) {
-					this.countryService.create(country);
-					this.updateGrids();
-				}
-				dialog.close();
-			}
-		});
-		abortButton.addClickListener(click -> dialog.close());
-		dialog.open();
-	}
-
 	private void openLocationDialog() {
 		final Dialog dialog = new Dialog();
 		final Select<Country> countrySelect = new Select<>();
@@ -385,7 +325,6 @@ public class LocationView extends VerticalLayout {
 
 	private void updateGrids() {
 		this.locationGrid.setItems(this.locationService.findAll());
-		this.countryGrid.setItems(this.countryService.findAll());
 		this.cityGrid.setItems(this.cityService.findAll());
 		this.streetGrid.setItems(this.streetService.findAll());
 	}

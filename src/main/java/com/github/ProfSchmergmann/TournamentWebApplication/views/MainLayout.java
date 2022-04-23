@@ -3,6 +3,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.AgeGroupView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.ClubView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.CountryView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GenderView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GymView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView;
@@ -49,6 +50,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 		this.addToDrawer(new VerticalLayout(
 				new RouterLink("Age Groups", AgeGroupView.class),
 				new RouterLink("Clubs", ClubView.class),
+				new RouterLink("Countries", CountryView.class),
 				new RouterLink("Genders", GenderView.class),
 				new RouterLink("Gyms", GymView.class),
 				new RouterLink("Locations", LocationView.class),
