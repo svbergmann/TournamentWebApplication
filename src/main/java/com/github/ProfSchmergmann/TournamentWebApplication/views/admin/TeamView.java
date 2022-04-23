@@ -62,27 +62,27 @@ public class TeamView extends VerticalLayout {
 		this.teamGrid.addColumn(team ->
 				                        team.getClub() == null || team.getClub().getCountry() == null ?
 				                        notSet : team.getClub().getCountry().getName())
-				.setHeader("Country")
-				.setSortable(true)
-				.setAutoWidth(true);
+		             .setHeader("Country")
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
-				.setHeader("Club Name")
-				.setSortable(true)
-				.setAutoWidth(true);
+		             .setHeader("Club Name")
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.addColumn(
-						club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
-				.setHeader("Age Group")
-				.setSortable(true)
-				.setAutoWidth(true);
+				    club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
+		             .setHeader("Age Group")
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.addColumn(
-						club -> club.getGender() == null ? notSet : club.getGender().getName())
-				.setHeader("Gender")
-				.setSortable(true)
-				.setAutoWidth(true);
+				    club -> club.getGender() == null ? notSet : club.getGender().getName())
+		             .setHeader("Gender")
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.addColumn(Team::getAmount)
-				.setHeader("Amount of Players")
-				.setSortable(true)
-				.setAutoWidth(true);
+		             .setHeader("Amount of Players")
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<Team> teamGridContextMenu = this.teamGrid.addContextMenu();
 		teamGridContextMenu.addItem("delete", event -> {

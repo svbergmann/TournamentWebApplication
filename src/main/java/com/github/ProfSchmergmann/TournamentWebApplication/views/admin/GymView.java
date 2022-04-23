@@ -49,41 +49,41 @@ public class GymView extends VerticalLayout {
 	private void createGymGrid() {
 		this.gymGrid = new Grid<>(Gym.class, false);
 		this.gymGrid.addColumn(Gym::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
+		            .setHeader("Name")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addColumn(
-						gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-						       notSet
-						                                                                           : gym.getLocation().getCountry().getName())
-				.setHeader("Country")
-				.setSortable(true)
-				.setAutoWidth(true);
+				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
+				           notSet
+				                                                                               : gym.getLocation().getCountry().getName())
+		            .setHeader("Country")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
 		                              notSet
 		                                                        : gym.getLocation().getPostalCode())
-				.setHeader("Postal Code")
-				.setSortable(true)
-				.setAutoWidth(true);
+		            .setHeader("Postal Code")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null || gym.getLocation().getCity() == null ?
 		                              notSet
 		                                                                                               : gym.getLocation().getCity().getName())
-				.setHeader("City")
-				.setSortable(true)
-				.setAutoWidth(true);
+		            .setHeader("City")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addColumn(
-						gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
-						       notSet
-						                                                                          : gym.getLocation().getStreet().getName())
-				.setHeader("Street")
-				.setSortable(true)
-				.setAutoWidth(true);
+				    gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
+				           notSet
+				                                                                              : gym.getLocation().getStreet().getName())
+		            .setHeader("Street")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
 		                              notSet
 		                                                        : gym.getLocation().getNumber())
-				.setHeader("Number")
-				.setSortable(true)
-				.setAutoWidth(true);
+		            .setHeader("Number")
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<Gym> countryGridContextMenu = this.gymGrid.addContextMenu();
 		countryGridContextMenu.addItem("delete", event -> {

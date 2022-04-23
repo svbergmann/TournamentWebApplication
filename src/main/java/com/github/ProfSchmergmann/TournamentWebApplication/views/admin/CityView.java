@@ -1,7 +1,7 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
@@ -25,39 +25,39 @@ import javax.annotation.security.PermitAll;
 import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 @PermitAll
-@Route(value = "clubs", layout = MainLayout.class)
-@PageTitle("Clubs | Tournament")
-public class ClubView extends VerticalLayout {
+@Route(value = "cities", layout = MainLayout.class)
+@PageTitle("Cities | Tournament")
+public class CityView extends VerticalLayout {
 
 	private final CountryService countryService;
-	private final ClubService clubService;
-	private Grid<Club> clubGrid;
+	private final CityService cityService;
+	private Grid<City> cityGrid;
 
-	public ClubView(@Autowired CountryService countryService, @Autowired ClubService clubService) {
+	public CityView(@Autowired CountryService countryService, @Autowired CityService cityService) {
 		this.countryService = countryService;
-		this.clubService = clubService;
-		this.createClubGrid();
-		Button addClubButton = new Button("Add new Club");
-		addClubButton.addClickListener(click -> this.openClubDialog());
-		this.add(new H2("Clubs"),
-		         this.clubGrid,
+		this.cityService = cityService;
+		this.createCityGrid();
+		Button addClubButton = new Button("Add new City");
+		addClubButton.addClickListener(click -> this.openCityDialog());
+		this.add(new H2("Cities"),
+		         this.cityGrid,
 		         addClubButton);
 	}
 
-	private void createClubGrid() {
-		this.clubGrid = new Grid<>(Club.class, false);
-		this.clubGrid.addColumn(Club::getName)
-		             .setHeader("Name")
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.clubGrid.addColumn(
-				    club -> club.getCountry() == null ? notSet : club.getCountry().getName())
+	private void createCityGrid() {
+		this.cityGrid = new Grid<>(City.class, false);
+		this.cityGrid.addColumn(c -> c.getCountry() == null ?
+		                             notSet : c.getCountry().getName())
 		             .setHeader("Country")
 		             .setSortable(true)
 		             .setAutoWidth(true);
-		this.clubGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		final GridContextMenu<Club> clubGridContextMenu = this.clubGrid.addContextMenu();
-		clubGridContextMenu.addItem("delete", event -> {
+		this.cityGrid.addColumn(City::getName)
+		             .setHeader("Name")
+		             .setSortable(true)
+		             .setAutoWidth(true);
+		this.cityGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		final GridContextMenu<City> cityGridContextMenu = this.cityGrid.addContextMenu();
+		cityGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
 			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
 			final Button yesButton = new Button("Yes");
@@ -65,27 +65,28 @@ public class ClubView extends VerticalLayout {
 			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
-				this.clubService.deleteById(event.getItem().get().getId());
+				this.cityService.deleteById(event.getItem().get().getId());
+				this.cityGrid.setItems(this.cityService.findAll());
 				dialog.close();
-				clubGridContextMenu.close();
+				cityGridContextMenu.close();
 			});
 			abortButton.addClickListener(click -> {
 				dialog.close();
-				clubGridContextMenu.close();
+				cityGridContextMenu.close();
 			});
 			dialog.open();
 		});
-		clubGridContextMenu.addItem("refactor");
+		cityGridContextMenu.addItem("refactor");
 	}
 
-	private void openClubDialog() {
+	private void openCityDialog() {
 		final Dialog dialog = new Dialog();
 		final Select<Country> countrySelect = new Select<>();
 		countrySelect.setLabel("Country");
 		countrySelect.setItems(this.countryService.findAll());
 		countrySelect.setItemLabelGenerator(Country::getName);
-		final TextField clubTextField = new TextField("Name");
-		final VerticalLayout fields = new VerticalLayout(countrySelect, clubTextField);
+		final TextField cityTextField = new TextField("Name");
+		final VerticalLayout fields = new VerticalLayout(countrySelect, cityTextField);
 		fields.setPadding(true);
 		final Button addButton = new Button("Add");
 		addButton.addClickShortcut(Key.ENTER);
@@ -93,13 +94,13 @@ public class ClubView extends VerticalLayout {
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		buttons.setPadding(true);
 		addButton.addClickListener(click -> {
-			if (clubTextField.getValue().length() > 3) {
-				var club = new Club();
-				club.setCountry(countrySelect.getValue());
-				club.setName(clubTextField.getValue());
-				if (this.clubService.findAll().stream().noneMatch(c -> c.equals(club))) {
-					this.clubService.create(club);
-					this.clubGrid.setItems(this.clubService.findAll());
+			if (cityTextField.getValue().length() > 3) {
+				var city = new City();
+				city.setCountry(countrySelect.getValue());
+				city.setName(cityTextField.getValue());
+				if (this.cityService.findAll().stream().noneMatch(c -> c.equals(city))) {
+					this.cityService.create(city);
+					this.cityGrid.setItems(this.cityService.findAll());
 				}
 				dialog.close();
 			}

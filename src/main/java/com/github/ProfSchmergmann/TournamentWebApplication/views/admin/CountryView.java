@@ -1,6 +1,5 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
@@ -13,15 +12,12 @@ import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 @PermitAll
 @Route(value = "countries", layout = MainLayout.class)
@@ -44,9 +40,9 @@ public class CountryView extends VerticalLayout {
 	private void createCountryGrid() {
 		this.countryGrid = new Grid<>(Country.class, false);
 		this.countryGrid.addColumn(Country::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
+		                .setHeader("Name")
+		                .setSortable(true)
+		                .setAutoWidth(true);
 		this.countryGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<Country> countryGridContextMenu = this.countryGrid.addContextMenu();
 		countryGridContextMenu.addItem("delete", event -> {

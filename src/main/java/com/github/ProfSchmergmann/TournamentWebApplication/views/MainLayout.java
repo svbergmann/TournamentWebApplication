@@ -2,11 +2,13 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.AgeGroupView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.CityView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.ClubView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.CountryView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GenderView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GymView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.StreetView;
 import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.TeamView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -32,7 +34,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-
 public class MainLayout extends AppLayout implements LocaleChangeObserver {
 
 	private static final Logger LOGGER = Logger.getLogger(MainLayout.class.getName());
@@ -49,11 +50,13 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	private void createDrawer() {
 		this.addToDrawer(new VerticalLayout(
 				new RouterLink("Age Groups", AgeGroupView.class),
+				new RouterLink("Cities", CityView.class),
 				new RouterLink("Clubs", ClubView.class),
 				new RouterLink("Countries", CountryView.class),
 				new RouterLink("Genders", GenderView.class),
 				new RouterLink("Gyms", GymView.class),
 				new RouterLink("Locations", LocationView.class),
+				new RouterLink("Streets", StreetView.class),
 				new RouterLink("Teams", TeamView.class))
 		);
 	}

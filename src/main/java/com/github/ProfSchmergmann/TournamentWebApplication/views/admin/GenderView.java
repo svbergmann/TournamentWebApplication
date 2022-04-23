@@ -21,7 +21,7 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "gender", layout = MainLayout.class)
-@PageTitle("Gyms | Tournament")
+@PageTitle("Genders | Tournament")
 public class GenderView extends VerticalLayout {
 
 	private final GenderService genderService;
@@ -40,9 +40,9 @@ public class GenderView extends VerticalLayout {
 	private void createGenderGrid() {
 		this.genderGrid = new Grid<>(Gender.class, false);
 		this.genderGrid.addColumn(Gender::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
+		               .setHeader("Name")
+		               .setSortable(true)
+		               .setAutoWidth(true);
 		this.genderGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<Gender> ageGroupGridContextMenu = this.genderGrid.addContextMenu();
 		ageGroupGridContextMenu.addItem("delete", event -> {
@@ -78,7 +78,7 @@ public class GenderView extends VerticalLayout {
 			var gender = new Gender();
 			gender.setName(genderTextField.getValue());
 			if (this.genderService.findAll().stream()
-					.noneMatch(ageGroup1 -> ageGroup1.equals(gender))) {
+			                      .noneMatch(ageGroup1 -> ageGroup1.equals(gender))) {
 				this.genderService.create(gender);
 				this.genderGrid.setItems(this.genderService.findAll());
 			}

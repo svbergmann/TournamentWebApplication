@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "agegroups", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Gyms | Tournament")
 public class AgeGroupView extends VerticalLayout {
 
@@ -40,9 +40,9 @@ public class AgeGroupView extends VerticalLayout {
 	private void createAgeGroupsGrid() {
 		this.ageGroupGrid = new Grid<>(AgeGroup.class, false);
 		this.ageGroupGrid.addColumn(AgeGroup::getName)
-				.setHeader("Name")
-				.setSortable(true)
-				.setAutoWidth(true);
+		                 .setHeader("Name")
+		                 .setSortable(true)
+		                 .setAutoWidth(true);
 		this.ageGroupGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		final GridContextMenu<AgeGroup> ageGroupGridContextMenu = this.ageGroupGrid.addContextMenu();
 		ageGroupGridContextMenu.addItem("delete", event -> {
@@ -78,7 +78,7 @@ public class AgeGroupView extends VerticalLayout {
 			var ageGroup = new AgeGroup();
 			ageGroup.setName(ageGroupTextField.getValue());
 			if (this.ageGroupService.findAll().stream()
-					.noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
+			                        .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
 				this.ageGroupService.create(ageGroup);
 				this.ageGroupGrid.setItems(this.ageGroupService.findAll());
 			}
