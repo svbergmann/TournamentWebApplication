@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "gender", layout = AdminMainLayout.class)
+@Route(value = "gender", layout = MainLayout.class)
 @PageTitle("Genders | Tournament")
 public class GenderView extends VerticalLayout {
 

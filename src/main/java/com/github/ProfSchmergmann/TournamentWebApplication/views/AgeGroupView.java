@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "", layout = AdminMainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Age Groups | Tournament")
 public class AgeGroupView extends VerticalLayout {
 

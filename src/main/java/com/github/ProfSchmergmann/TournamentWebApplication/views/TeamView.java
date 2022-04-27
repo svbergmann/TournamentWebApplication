@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
@@ -8,7 +8,9 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gende
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -20,40 +22,45 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.i18n.LocaleChangeEvent;
+import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.security.PermitAll;
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.LocationView.notSet;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
-
-@PermitAll
-@Route(value = "teams", layout = AdminMainLayout.class)
+@AnonymousAllowed
+@Route(value = "teams", layout = MainLayout.class)
 @PageTitle("Teams | Tournament")
-public class TeamView extends VerticalLayout {
+public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 
 	private final ClubService clubService;
 	private final AgeGroupService ageGroupService;
 	private final GenderService genderService;
 	private final TeamService teamService;
+	private final SecurityService securityService;
 	private Grid<Team> teamGrid;
 
 	public TeamView(@Autowired ClubService clubService,
 	                @Autowired AgeGroupService ageGroupService,
 	                @Autowired GenderService genderService,
-	                @Autowired TeamService teamService
+	                @Autowired TeamService teamService,
+	                @Autowired SecurityService securityService
 	) {
 		this.clubService = clubService;
 		this.ageGroupService = ageGroupService;
 		this.genderService = genderService;
 		this.teamService = teamService;
+		this.securityService = securityService;
 		this.createTeamGrid();
-		var addTeamButton = new Button("Add new Team");
-		addTeamButton.addClickListener(click -> this.openTeamDialog());
-		this.add(new H2("Teams"),
-		         this.teamGrid,
-		         addTeamButton);
+		this.add(new H2(this.getTranslation("team.pl")), this.teamGrid);
+		if (this.securityService.getAuthenticatedUser() != null) {
+			var addTeamButton = new Button(this.getTranslation("add.new.team"));
+			addTeamButton.addClickListener(click -> this.openTeamDialog());
+			this.add(addTeamButton);
+		}
 	}
 
 	private void createTeamGrid() {
@@ -61,35 +68,35 @@ public class TeamView extends VerticalLayout {
 		this.teamGrid.addColumn(team ->
 				                        team.getClub() == null || team.getClub().getCountry() == null ?
 				                        notSet : team.getClub().getCountry().getName())
-		             .setHeader("Country")
+		             .setHeader(this.getTranslation("country"))
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
-		             .setHeader("Club Name")
+		             .setHeader(this.getTranslation("club") + " " + this.getTranslation("name"))
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addColumn(
 				    club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
-		             .setHeader("Age Group")
+		             .setHeader(this.getTranslation("age.group"))
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addColumn(
 				    club -> club.getGender() == null ? notSet : club.getGender().getName())
-		             .setHeader("Gender")
+		             .setHeader(this.getTranslation("gender"))
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addColumn(Team::getAmount)
-		             .setHeader("Amount of Players")
+		             .setHeader(this.getTranslation("amount.of.players"))
 		             .setSortable(true)
 		             .setAutoWidth(true);
 		this.teamGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.updateGrid();
 		final GridContextMenu<Team> teamGridContextMenu = this.teamGrid.addContextMenu();
-		teamGridContextMenu.addItem("delete", event -> {
+		teamGridContextMenu.addItem(this.getTranslation("delete"), event -> {
 			final Dialog dialog = new Dialog();
 			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
-			final Button yesButton = new Button("Yes");
-			final Button abortButton = new Button("Abort", e -> dialog.close());
+			final Button yesButton = new Button(this.getTranslation("yes"));
+			final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
 			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
 			dialog.add(buttons);
 			yesButton.addClickListener(click -> {
@@ -104,37 +111,42 @@ public class TeamView extends VerticalLayout {
 			});
 			dialog.open();
 		});
-		teamGridContextMenu.addItem("refactor");
+		teamGridContextMenu.addItem(this.getTranslation("refactor"));
+	}
+
+	@Override
+	public void localeChange(LocaleChangeEvent event) {
+//		UI.getCurrent().getPage().reload();
 	}
 
 	private void openTeamDialog() {
 		final Dialog dialog = new Dialog();
 		final Select<Club> clubSelect = new Select<>();
-		clubSelect.setLabel("Club");
+		clubSelect.setLabel(this.getTranslation("club"));
 		clubSelect.setItems(this.clubService.findAll());
 		clubSelect.setItemLabelGenerator(Club::getName);
 		final Select<AgeGroup> ageGroupSelect = new Select<>();
-		ageGroupSelect.setLabel("Age Group");
+		ageGroupSelect.setLabel(this.getTranslation("age.group"));
 		ageGroupSelect.setItems(this.ageGroupService.findAll());
 		ageGroupSelect.setItemLabelGenerator(AgeGroup::getName);
 		final Select<Gender> genderSelect = new Select<>();
-		genderSelect.setLabel("Gender");
+		genderSelect.setLabel(this.getTranslation("gender"));
 		genderSelect.setItems(this.genderService.findAll());
 		genderSelect.setItemLabelGenerator(Gender::getName);
-		final IntegerField amountIntegerField = new IntegerField("Amount of players");
+		final IntegerField amountIntegerField = new IntegerField(this.getTranslation("amount.of.players"));
 		amountIntegerField.setMin(5);
 		amountIntegerField.setStep(1);
 		amountIntegerField.setHasControls(true);
-		final TextField teamTextField = new TextField("Name");
+		final TextField teamTextField = new TextField(this.getTranslation("name"));
 		final VerticalLayout fields = new VerticalLayout(clubSelect,
 		                                                 ageGroupSelect,
 		                                                 genderSelect,
 		                                                 amountIntegerField,
 		                                                 teamTextField);
 		fields.setPadding(true);
-		final Button addButton = new Button("Add");
+		final Button addButton = new Button(this.getTranslation("add"));
 		addButton.addClickShortcut(Key.ENTER);
-		final Button abortButton = new Button("Abort", e -> dialog.close());
+		final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
 		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
 		buttons.setPadding(true);
 		addButton.addClickListener(click -> {

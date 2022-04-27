@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 @PermitAll
-@Route(value = "countries", layout = AdminMainLayout.class)
+@Route(value = "countries", layout = MainLayout.class)
 @PageTitle("Countries | Tournament")
 public class CountryView extends VerticalLayout implements LocaleChangeObserver {
 

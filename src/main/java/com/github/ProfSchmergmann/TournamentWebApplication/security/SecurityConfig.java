@@ -1,6 +1,6 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.security;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LoginView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,6 @@ public class SecurityConfig extends VaadinWebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
-
 		this.setLoginView(http, LoginView.class);
 	}
 

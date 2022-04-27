@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.LocationService;
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "locations", layout = AdminMainLayout.class)
+@Route(value = "locations", layout = MainLayout.class)
 @PageTitle("Locations | Tournament")
 public class LocationView extends VerticalLayout {
 

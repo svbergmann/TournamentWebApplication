@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
+package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
@@ -21,10 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.LocationView.notSet;
 
 @PermitAll
-@Route(value = "clubs", layout = AdminMainLayout.class)
+@Route(value = "clubs", layout = MainLayout.class)
 @PageTitle("Clubs | Tournament")
 public class ClubView extends VerticalLayout {
 
