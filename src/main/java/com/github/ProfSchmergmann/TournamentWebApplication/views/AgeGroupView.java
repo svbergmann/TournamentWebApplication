@@ -19,77 +19,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "", layout = MainLayout.class)
+@Route(value = "agegroups", layout = MainLayout.class)
 @PageTitle("Age Groups | Tournament")
-public class AgeGroupView extends VerticalLayout {
-
-	private final AgeGroupService ageGroupService;
-	private Grid<AgeGroup> ageGroupGrid;
+public class AgeGroupView extends EntityView<AgeGroup> {
 
 	public AgeGroupView(@Autowired AgeGroupService ageGroupService) {
-		this.ageGroupService = ageGroupService;
-		this.createAgeGroupsGrid();
-		var addNewAgeGroupButton = new Button("Add new Age Group");
-		addNewAgeGroupButton.addClickListener(click -> this.openAgeGroupDialog());
-		this.add(new H2("Age Groups"),
-		         this.ageGroupGrid,
-		         addNewAgeGroupButton);
+		super("age.group", new Grid<>(), ageGroupService);
 	}
 
-	private void createAgeGroupsGrid() {
-		this.ageGroupGrid = new Grid<>(AgeGroup.class, false);
-		this.ageGroupGrid.addColumn(AgeGroup::getName)
-		                 .setHeader("Name")
-		                 .setSortable(true)
-		                 .setAutoWidth(true);
-		this.ageGroupGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		this.updateGrid();
-		final GridContextMenu<AgeGroup> ageGroupGridContextMenu = this.ageGroupGrid.addContextMenu();
-		ageGroupGridContextMenu.addItem("delete", event -> {
-			final Dialog dialog = new Dialog();
-			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
-			final Button yesButton = new Button("Yes");
-			final Button abortButton = new Button("Abort", e -> dialog.close());
-			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
-			dialog.add(buttons);
-			yesButton.addClickListener(click -> {
-				this.ageGroupService.deleteById(event.getItem().get().getId());
-				this.updateGrid();
-				dialog.close();
-				ageGroupGridContextMenu.close();
-			});
-			abortButton.addClickListener(click -> {
-				dialog.close();
-				ageGroupGridContextMenu.close();
-			});
-			dialog.open();
-		});
-		ageGroupGridContextMenu.addItem("refactor");
-	}
-
-	private void openAgeGroupDialog() {
-		final Dialog dialog = new Dialog();
-		final TextField ageGroupTextField = new TextField("Name");
-		final Button addButton = new Button("Add");
-		addButton.addClickShortcut(Key.ENTER);
-		final Button abortButton = new Button("Abort", e -> dialog.close());
-		final HorizontalLayout buttons = new HorizontalLayout(addButton, abortButton);
-		buttons.setPadding(true);
+	@Override
+	protected VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
+		final TextField ageGroupTextField = new TextField(this.getTranslation("name"));
 		addButton.addClickListener(click -> {
 			var ageGroup = new AgeGroup();
 			ageGroup.setName(ageGroupTextField.getValue());
-			if (this.ageGroupService.findAll().stream()
-			                        .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
-				this.ageGroupService.create(ageGroup);
-				this.updateGrid();
+			if (this.entityService.findAll().stream()
+			                      .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
+				this.entityService.create(ageGroup);
+				this.updateGridItems();
 			}
 			dialog.close();
 		});
-		dialog.add(ageGroupTextField, buttons);
-		dialog.open();
+		return new VerticalLayout(ageGroupTextField);
 	}
 
-	private void updateGrid() {
-		this.ageGroupGrid.setItems(this.ageGroupService.findAll());
+	@Override
+	void updateGridHeaders() {
+		this.grid.addColumn(AgeGroup::getName)
+		         .setHeader(this.getTranslation("name"))
+		         .setSortable(true)
+		         .setAutoWidth(true);
 	}
 }

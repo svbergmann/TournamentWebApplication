@@ -6,6 +6,8 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,9 +16,14 @@ import com.vaadin.flow.i18n.I18NProvider;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.Cookie;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class MainLayout extends AppLayout implements LocaleChangeObserver {
@@ -24,10 +31,20 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	private static final Logger LOGGER = Logger.getLogger(MainLayout.class.getName());
 	private final I18NProvider i18NProvider;
 	private final SecurityService securityService;
+	private final Span helpCookieNotFound = new Span();
+	private final Span helpCookieFound = new Span();
+	private final Span helpSelectLang = new Span();
+	private final String cookieLang;
 
 	public MainLayout(@Autowired I18NProvider i18NProvider, @Autowired SecurityService securityService) {
 		this.securityService = securityService;
 		this.i18NProvider = i18NProvider;
+		this.cookieLang = this.findLocaleFromCookie();
+		if ("".equals(this.cookieLang)) {
+			this.addToNavbar(this.helpCookieNotFound);
+		} else {
+			this.addToNavbar(this.helpCookieFound);
+		}
 		this.createHeader();
 		this.createDrawer();
 	}
@@ -56,19 +73,21 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 
 		var languageSelect = new Select<Locale>();
 		languageSelect.setItems(this.i18NProvider.getProvidedLocales());
+		languageSelect.setValue(this.findLocaleFromCookie().equals("en") ?
+		                        Locale.ENGLISH :
+		                        Locale.GERMAN);
 		languageSelect.setItemLabelGenerator(l -> this.getTranslation(l.toLanguageTag()));
-		languageSelect.setValue(UI.getCurrent().getLocale() == null ? Locale.ENGLISH : UI.getCurrent().getLocale());
 		languageSelect.addValueChangeListener(event -> this.saveLocalePreference(event.getValue()));
 
-		var header = new HorizontalLayout(new DrawerToggle(), logo, languageSelect);
-
-		if (this.securityService.getAuthenticatedUser() != null) {
-			var logout = new Button(this.getTranslation("log.out"), e -> this.securityService.logout());
-			header.add(logout);
-		} else {
-			var login = new Button(this.getTranslation("log.in"), e -> UI.getCurrent().navigate(LoginView.class));
-			header.add(login);
-		}
+		var header = new HorizontalLayout(new DrawerToggle(),
+		                                  logo,
+		                                  languageSelect,
+		                                  this.securityService.getAuthenticatedUser() != null ?
+		                                  new Button(this.getTranslation("log.out"),
+		                                             e -> this.securityService.logout()) :
+		                                  new Button(this.getTranslation("log.in"),
+		                                             e -> UI.getCurrent().navigate(LoginView.class))
+		);
 
 		header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 		header.expand(logo);
@@ -79,14 +98,27 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 		this.addToNavbar(header);
 	}
 
+	private String findLocaleFromCookie() {
+		final Cookie[] cookies = VaadinRequest.getCurrent().getCookies();
+		if (cookies == null) {
+			return "";
+		}
+		final Optional<String> cookie = Arrays.stream(cookies)
+		                                      .filter(c -> "locale".equals(c.getName()))
+		                                      .map(Cookie::getValue)
+		                                      .findFirst();
+		return cookie.orElse(Locale.ENGLISH.getLanguage());
+	}
+
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-		// TODO: Update Routerlinks
+
 	}
 
 	private void saveLocalePreference(Locale locale) {
-		UI.getCurrent().getSession().setLocale(locale);
-		//TODO: Save locale inside cookie
+		this.getUI().get().setLocale(locale);
+		VaadinService.getCurrentResponse().addCookie(new Cookie("locale", locale.toLanguageTag()));
+		Notification.show(this.getTranslation("view.help.localesaved"));
 	}
 
 }

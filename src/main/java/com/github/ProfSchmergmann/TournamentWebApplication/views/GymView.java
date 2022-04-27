@@ -27,13 +27,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.github.ProfSchmergmann.TournamentWebApplication.views.LocationView.notSet;
 
 @AnonymousAllowed
-@Route(value = "gyms", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Gyms | Tournament")
 public class GymView extends VerticalLayout implements LocaleChangeObserver {
 
 	private final GymService gymService;
 	private final LocationService locationService;
 	private final SecurityService securityService;
+	private final H2 header;
+	private Button addButton;
 	private Grid<Gym> gymGrid;
 
 	public GymView(@Autowired GymService gymService,
@@ -42,78 +44,27 @@ public class GymView extends VerticalLayout implements LocaleChangeObserver {
 		this.gymService = gymService;
 		this.locationService = locationService;
 		this.securityService = securityService;
+		this.header = new H2(this.getTranslation("gym.pl"));
 		this.createGymGrid();
-		this.add(new H2(this.getTranslation("gym.pl")), this.gymGrid);
+		this.add(this.header, this.gymGrid);
 		if (this.securityService.getAuthenticatedUser() != null) {
-			var addGymButton = new Button(this.getTranslation("add.new.gym"));
-			addGymButton.addClickListener(click -> this.openGymDialog());
-			this.add(addGymButton);
+			this.addButton = new Button(this.getTranslation("add.new.gym"));
+			this.addButton.addClickListener(click -> this.openGymDialog());
+			this.add(this.addButton);
 		}
 	}
 
 	private void createGymGrid() {
 		this.gymGrid = new Grid<>(Gym.class, false);
-		this.gymGrid.addColumn(Gym::getName)
-		            .setHeader(this.getTranslation("name"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
-		this.gymGrid.addColumn(
-				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-				           notSet : gym.getLocation().getCountry().getName())
-		            .setHeader(this.getTranslation("country"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
-		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-		                              notSet : gym.getLocation().getPostalCode())
-		            .setHeader(this.getTranslation("plz"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
-		this.gymGrid.addColumn(gym -> gym.getLocation() == null || gym.getLocation().getCity() == null ?
-		                              notSet : gym.getLocation().getCity().getName())
-		            .setHeader(this.getTranslation("city"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
-		this.gymGrid.addColumn(
-				    gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
-				           notSet : gym.getLocation().getStreet().getName())
-		            .setHeader(this.getTranslation("street"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
-		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
-		                              notSet : gym.getLocation().getNumber())
-		            .setHeader(this.getTranslation("number"))
-		            .setSortable(true)
-		            .setAutoWidth(true);
 		this.gymGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.updateGrid();
-		if (this.securityService.getAuthenticatedUser() != null) {
-			final GridContextMenu<Gym> countryGridContextMenu = this.gymGrid.addContextMenu();
-			countryGridContextMenu.addItem("delete", event -> {
-				final Dialog dialog = new Dialog();
-				dialog.add("Are you sure you want to delete " + event.getItem() + "?");
-				final Button yesButton = new Button(this.getTranslation("yes"));
-				final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
-				final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
-				dialog.add(buttons);
-				yesButton.addClickListener(click -> {
-					this.gymService.deleteById(event.getItem().get().getId());
-					this.updateGrid();
-					dialog.close();
-					countryGridContextMenu.close();
-				});
-				abortButton.addClickListener(click -> {
-					dialog.close();
-					countryGridContextMenu.close();
-				});
-				dialog.open();
-			});
-			countryGridContextMenu.addItem(this.getTranslation("refactor"));
-		}
 	}
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-		//TODO: Update grid headers
+		this.header.setText(this.getTranslation("gym.pl"));
+		this.updateGrid();
+		if (this.addButton != null) this.addButton.setText(this.getTranslation("add.new.gym"));
 	}
 
 	private void openGymDialog() {
@@ -163,6 +114,61 @@ public class GymView extends VerticalLayout implements LocaleChangeObserver {
 	}
 
 	private void updateGrid() {
+		this.gymGrid.removeAllColumns();
+		this.gymGrid.addColumn(Gym::getName)
+		            .setHeader(this.getTranslation("name"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
+		this.gymGrid.addColumn(
+				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
+				           notSet : gym.getLocation().getCountry().getName())
+		            .setHeader(this.getTranslation("country"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
+		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
+		                              notSet : gym.getLocation().getPostalCode())
+		            .setHeader(this.getTranslation("plz"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
+		this.gymGrid.addColumn(gym -> gym.getLocation() == null || gym.getLocation().getCity() == null ?
+		                              notSet : gym.getLocation().getCity().getName())
+		            .setHeader(this.getTranslation("city"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
+		this.gymGrid.addColumn(
+				    gym -> gym.getLocation() == null || gym.getLocation().getStreet() == null ?
+				           notSet : gym.getLocation().getStreet().getName())
+		            .setHeader(this.getTranslation("street"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
+		this.gymGrid.addColumn(gym -> gym.getLocation() == null ?
+		                              notSet : gym.getLocation().getNumber())
+		            .setHeader(this.getTranslation("number"))
+		            .setSortable(true)
+		            .setAutoWidth(true);
 		this.gymGrid.setItems(this.gymService.findAll());
+		if (this.securityService.getAuthenticatedUser() != null) {
+			final GridContextMenu<Gym> countryGridContextMenu = this.gymGrid.addContextMenu();
+			countryGridContextMenu.addItem("delete", event -> {
+				final Dialog dialog = new Dialog();
+				dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+				final Button yesButton = new Button(this.getTranslation("yes"));
+				final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
+				final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+				dialog.add(buttons);
+				yesButton.addClickListener(click -> {
+					this.gymService.deleteById(event.getItem().get().getId());
+					this.updateGrid();
+					dialog.close();
+					countryGridContextMenu.close();
+				});
+				abortButton.addClickListener(click -> {
+					dialog.close();
+					countryGridContextMenu.close();
+				});
+				dialog.open();
+			});
+			countryGridContextMenu.addItem(this.getTranslation("refactor"));
+		}
 	}
 }

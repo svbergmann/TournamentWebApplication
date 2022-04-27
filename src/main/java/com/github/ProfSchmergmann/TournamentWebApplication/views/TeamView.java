@@ -40,6 +40,8 @@ public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 	private final GenderService genderService;
 	private final TeamService teamService;
 	private final SecurityService securityService;
+	private final H2 header;
+	private Button addButton;
 	private Grid<Team> teamGrid;
 
 	public TeamView(@Autowired ClubService clubService,
@@ -53,69 +55,27 @@ public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 		this.genderService = genderService;
 		this.teamService = teamService;
 		this.securityService = securityService;
+		this.header = new H2(this.getTranslation("team.pl"));
 		this.createTeamGrid();
-		this.add(new H2(this.getTranslation("team.pl")), this.teamGrid);
+		this.add(this.header, this.teamGrid);
 		if (this.securityService.getAuthenticatedUser() != null) {
-			var addTeamButton = new Button(this.getTranslation("add.new.team"));
-			addTeamButton.addClickListener(click -> this.openTeamDialog());
-			this.add(addTeamButton);
+			this.addButton = new Button(this.getTranslation("add.new.team"));
+			this.addButton.addClickListener(click -> this.openTeamDialog());
+			this.add(this.addButton);
 		}
 	}
 
 	private void createTeamGrid() {
 		this.teamGrid = new Grid<>(Team.class, false);
-		this.teamGrid.addColumn(team ->
-				                        team.getClub() == null || team.getClub().getCountry() == null ?
-				                        notSet : team.getClub().getCountry().getName())
-		             .setHeader(this.getTranslation("country"))
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.teamGrid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
-		             .setHeader(this.getTranslation("club") + " " + this.getTranslation("name"))
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.teamGrid.addColumn(
-				    club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
-		             .setHeader(this.getTranslation("age.group"))
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.teamGrid.addColumn(
-				    club -> club.getGender() == null ? notSet : club.getGender().getName())
-		             .setHeader(this.getTranslation("gender"))
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.teamGrid.addColumn(Team::getAmount)
-		             .setHeader(this.getTranslation("amount.of.players"))
-		             .setSortable(true)
-		             .setAutoWidth(true);
 		this.teamGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.updateGrid();
-		final GridContextMenu<Team> teamGridContextMenu = this.teamGrid.addContextMenu();
-		teamGridContextMenu.addItem(this.getTranslation("delete"), event -> {
-			final Dialog dialog = new Dialog();
-			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
-			final Button yesButton = new Button(this.getTranslation("yes"));
-			final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
-			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
-			dialog.add(buttons);
-			yesButton.addClickListener(click -> {
-				this.teamService.deleteById(event.getItem().get().getId());
-				this.updateGrid();
-				dialog.close();
-				teamGridContextMenu.close();
-			});
-			abortButton.addClickListener(click -> {
-				dialog.close();
-				teamGridContextMenu.close();
-			});
-			dialog.open();
-		});
-		teamGridContextMenu.addItem(this.getTranslation("refactor"));
 	}
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-		//TODO: Update grid headers
+		this.header.setText(this.getTranslation("team.pl"));
+		this.updateGrid();
+		this.addButton.setText(this.getTranslation("add.new.team"));
 	}
 
 	private void openTeamDialog() {
@@ -167,7 +127,55 @@ public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 	}
 
 	private void updateGrid() {
+		this.teamGrid.removeAllColumns();
+		this.teamGrid.addColumn(
+				    team -> team.getClub() == null || team.getClub().getCountry() == null ?
+				            notSet : team.getClub().getCountry().getName())
+		             .setHeader(this.getTranslation("country"))
+		             .setSortable(true)
+		             .setAutoWidth(true);
+		this.teamGrid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
+		             .setHeader(this.getTranslation("club"))
+		             .setSortable(true)
+		             .setAutoWidth(true);
+		this.teamGrid.addColumn(
+				    club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
+		             .setHeader(this.getTranslation("age.group"))
+		             .setSortable(true)
+		             .setAutoWidth(true);
+		this.teamGrid.addColumn(
+				    club -> club.getGender() == null ? notSet : club.getGender().getName())
+		             .setHeader(this.getTranslation("gender"))
+		             .setSortable(true)
+		             .setAutoWidth(true);
+		this.teamGrid.addColumn(Team::getAmount)
+		             .setHeader(this.getTranslation("amount.of.players"))
+		             .setSortable(true)
+		             .setAutoWidth(true);
 		this.teamGrid.setItems(this.teamService.findAll());
+		if (this.securityService.getAuthenticatedUser() != null) {
+			final GridContextMenu<Team> teamGridContextMenu = this.teamGrid.addContextMenu();
+			teamGridContextMenu.addItem(this.getTranslation("delete"), event -> {
+				final Dialog dialog = new Dialog();
+				dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+				final Button yesButton = new Button(this.getTranslation("yes"));
+				final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
+				final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+				dialog.add(buttons);
+				yesButton.addClickListener(click -> {
+					this.teamService.deleteById(event.getItem().get().getId());
+					this.updateGrid();
+					dialog.close();
+					teamGridContextMenu.close();
+				});
+				abortButton.addClickListener(click -> {
+					dialog.close();
+					teamGridContextMenu.close();
+				});
+				dialog.open();
+			});
+			teamGridContextMenu.addItem(this.getTranslation("refactor"));
+		}
 	}
 }
 

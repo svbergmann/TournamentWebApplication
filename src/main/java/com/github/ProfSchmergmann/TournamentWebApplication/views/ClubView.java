@@ -15,6 +15,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.i18n.LocaleChangeEvent;
+import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,37 +28,40 @@ import static com.github.ProfSchmergmann.TournamentWebApplication.views.Location
 @PermitAll
 @Route(value = "clubs", layout = MainLayout.class)
 @PageTitle("Clubs | Tournament")
-public class ClubView extends VerticalLayout {
+public class ClubView extends VerticalLayout implements LocaleChangeObserver {
 
 	private final CountryService countryService;
 	private final ClubService clubService;
-	private Grid<Club> clubGrid;
+	private final Button addButton;
+	private final H2 header;
+	private Grid<Club> grid;
 
 	public ClubView(@Autowired CountryService countryService, @Autowired ClubService clubService) {
 		this.countryService = countryService;
 		this.clubService = clubService;
 		this.createClubGrid();
-		var addClubButton = new Button("Add new Club");
-		addClubButton.addClickListener(click -> this.openClubDialog());
-		this.add(new H2("Clubs"),
-		         this.clubGrid,
-		         addClubButton);
+		this.header = new H2(this.getTranslation("club"));
+		this.addButton = new Button(this.getTranslation("add.new.club"));
+		this.addButton.addClickListener(click -> this.openClubDialog());
+		this.add(this.header,
+		         this.grid,
+		         this.addButton);
 	}
 
 	private void createClubGrid() {
-		this.clubGrid = new Grid<>(Club.class, false);
-		this.clubGrid.addColumn(Club::getName)
-		             .setHeader("Name")
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.clubGrid.addColumn(
+		this.grid = new Grid<>(Club.class, false);
+		this.grid.addColumn(Club::getName)
+		         .setHeader("Name")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(
 				    club -> club.getCountry() == null ? notSet : club.getCountry().getName())
-		             .setHeader("Country")
-		             .setSortable(true)
-		             .setAutoWidth(true);
-		this.clubGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+		         .setHeader("Country")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.updateGrid();
-		final GridContextMenu<Club> clubGridContextMenu = this.clubGrid.addContextMenu();
+		final GridContextMenu<Club> clubGridContextMenu = this.grid.addContextMenu();
 		clubGridContextMenu.addItem("delete", event -> {
 			final Dialog dialog = new Dialog();
 			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
@@ -77,6 +82,13 @@ public class ClubView extends VerticalLayout {
 			dialog.open();
 		});
 		clubGridContextMenu.addItem("refactor");
+	}
+
+	@Override
+	public void localeChange(LocaleChangeEvent event) {
+		this.header.setText(this.getTranslation("club"));
+		this.updateGrid();
+		this.addButton.setText(this.getTranslation("add.new.club"));
 	}
 
 	private void openClubDialog() {
@@ -110,6 +122,6 @@ public class ClubView extends VerticalLayout {
 	}
 
 	private void updateGrid() {
-		this.clubGrid.setItems(this.clubService.findAll());
+		this.grid.setItems(this.clubService.findAll());
 	}
 }
