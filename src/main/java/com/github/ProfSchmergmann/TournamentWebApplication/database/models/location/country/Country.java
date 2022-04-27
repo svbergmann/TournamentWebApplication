@@ -38,7 +38,7 @@ public class Country implements Serializable, IModel {
 		this.iso3Name = isoName;
 	}
 
-	public String getName() {
+	public String getName(Locale locale) {
 		return Arrays.stream(Locale.getAvailableLocales())
 		             .filter(l -> {
 			             try {
@@ -47,7 +47,7 @@ public class Country implements Serializable, IModel {
 				             return l.getCountry().equals(this.iso3Name);
 			             }
 		             })
-		             .map(Locale::getDisplayCountry)
+		             .map(l -> l.getDisplayCountry(locale))
 		             .findFirst()
 		             .orElse(null);
 	}
@@ -66,6 +66,6 @@ public class Country implements Serializable, IModel {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return this.getName(Locale.ENGLISH);
 	}
 }
