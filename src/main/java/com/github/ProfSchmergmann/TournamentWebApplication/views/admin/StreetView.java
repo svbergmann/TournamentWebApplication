@@ -6,7 +6,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.locat
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.StreetService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -27,7 +26,7 @@ import javax.annotation.security.PermitAll;
 import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 @PermitAll
-@Route(value = "streets", layout = MainLayout.class)
+@Route(value = "streets", layout = AdminMainLayout.class)
 @PageTitle("Streets | Tournament")
 public class StreetView extends VerticalLayout {
 

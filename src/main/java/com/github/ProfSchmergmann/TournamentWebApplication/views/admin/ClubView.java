@@ -4,7 +4,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -25,7 +24,7 @@ import javax.annotation.security.PermitAll;
 import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 @PermitAll
-@Route(value = "clubs", layout = MainLayout.class)
+@Route(value = "clubs", layout = AdminMainLayout.class)
 @PageTitle("Clubs | Tournament")
 public class ClubView extends VerticalLayout {
 

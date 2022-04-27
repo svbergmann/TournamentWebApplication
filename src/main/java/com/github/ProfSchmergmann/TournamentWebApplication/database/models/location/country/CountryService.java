@@ -15,7 +15,7 @@ public class CountryService implements IModelService<Country> {
 
 	@Override
 	public Country create(Country country) {
-		return this.repository.findByName(country.getName()) != null ?
+		return this.repository.findAll().stream().anyMatch(c -> c.equals(country)) ?
 		       null : this.repository.save(country);
 	}
 
@@ -26,7 +26,7 @@ public class CountryService implements IModelService<Country> {
 
 	@Override
 	public List<Country> findAll() {
-		return this.repository.findAll(Sort.by("name"));
+		return this.repository.findAll(Sort.by("iso3Name"));
 	}
 
 	@Override
@@ -36,7 +36,11 @@ public class CountryService implements IModelService<Country> {
 
 	@Override
 	public Country findByName(String name) {
-		return this.repository.findByName(name);
+		return this.repository.findAll()
+		                      .stream()
+		                      .filter(c -> c.getName().equals(name))
+		                      .findFirst()
+		                      .orElse(null);
 	}
 
 	@Override
@@ -45,9 +49,17 @@ public class CountryService implements IModelService<Country> {
 
 		if (countryDB.isPresent()) {
 			var c = countryDB.get();
-			c.setName(country.getName());
+			c.setIso3Name(country.getIso3Name());
 			return this.repository.save(c);
 		}
 		return null;
+	}
+
+	public Country findByISO3Name(String iso3Name) {
+		return this.repository.findAll()
+		                      .stream()
+		                      .filter(c -> c.getIso3Name().equals(iso3Name))
+		                      .findFirst()
+		                      .orElse(null);
 	}
 }

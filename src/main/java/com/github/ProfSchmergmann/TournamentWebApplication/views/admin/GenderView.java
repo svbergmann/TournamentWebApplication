@@ -2,7 +2,6 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -20,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "gender", layout = MainLayout.class)
+@Route(value = "gender", layout = AdminMainLayout.class)
 @PageTitle("Genders | Tournament")
 public class GenderView extends VerticalLayout {
 

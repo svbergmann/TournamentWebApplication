@@ -2,7 +2,6 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -20,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "", layout = MainLayout.class)
+@Route(value = "", layout = AdminMainLayout.class)
 @PageTitle("Age Groups | Tournament")
 public class AgeGroupView extends VerticalLayout {
 

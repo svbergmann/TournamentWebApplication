@@ -8,7 +8,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gende
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -30,7 +29,7 @@ import javax.annotation.security.PermitAll;
 import static com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView.notSet;
 
 @PermitAll
-@Route(value = "teams", layout = MainLayout.class)
+@Route(value = "teams", layout = AdminMainLayout.class)
 @PageTitle("Teams | Tournament")
 public class TeamView extends VerticalLayout {
 

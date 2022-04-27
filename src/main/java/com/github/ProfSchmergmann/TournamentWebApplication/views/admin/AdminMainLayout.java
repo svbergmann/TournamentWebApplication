@@ -1,15 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.admin;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.AgeGroupView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.CityView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.ClubView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.CountryView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GenderView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.GymView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.LocationView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.StreetView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.admin.TeamView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -34,13 +25,13 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class MainLayout extends AppLayout implements LocaleChangeObserver {
+public class AdminMainLayout extends AppLayout implements LocaleChangeObserver {
 
-	private static final Logger LOGGER = Logger.getLogger(MainLayout.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AdminMainLayout.class.getName());
 	private final I18NProvider i18NProvider;
 	private final SecurityService securityService;
 
-	public MainLayout(@Autowired I18NProvider i18NProvider, @Autowired SecurityService securityService) {
+	public AdminMainLayout(@Autowired I18NProvider i18NProvider, @Autowired SecurityService securityService) {
 		this.securityService = securityService;
 		this.i18NProvider = i18NProvider;
 		this.createHeader();

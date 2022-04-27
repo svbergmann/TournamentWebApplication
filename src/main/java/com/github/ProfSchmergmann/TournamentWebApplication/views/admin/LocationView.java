@@ -8,7 +8,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.locat
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.StreetService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -27,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "locations", layout = MainLayout.class)
+@Route(value = "locations", layout = AdminMainLayout.class)
 @PageTitle("Locations | Tournament")
 public class LocationView extends VerticalLayout {
 
