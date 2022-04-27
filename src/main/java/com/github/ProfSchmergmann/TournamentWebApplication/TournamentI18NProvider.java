@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import static java.util.Locale.ENGLISH;
-import static java.util.Locale.FRENCH;
 import static java.util.Locale.GERMAN;
 import static java.util.ResourceBundle.getBundle;
 

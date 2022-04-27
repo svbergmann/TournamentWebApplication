@@ -41,11 +41,11 @@ public class Country implements Serializable, IModel {
 	public String getName() {
 		return Arrays.stream(Locale.getAvailableLocales())
 		             .filter(l -> {
-									 try {
-										 return l.getISO3Country().equals(this.iso3Name);
-									 } catch (MissingResourceException e) {
-										 return l.getCountry().equals(this.iso3Name);
-									 }
+			             try {
+				             return l.getISO3Country().equals(this.iso3Name);
+			             } catch (MissingResourceException e) {
+				             return l.getCountry().equals(this.iso3Name);
+			             }
 		             })
 		             .map(Locale::getDisplayCountry)
 		             .findFirst()

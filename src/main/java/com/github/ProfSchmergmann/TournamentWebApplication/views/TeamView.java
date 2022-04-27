@@ -10,7 +10,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -116,7 +115,7 @@ public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-//		UI.getCurrent().getPage().reload();
+		//TODO: Update grid headers
 	}
 
 	private void openTeamDialog() {

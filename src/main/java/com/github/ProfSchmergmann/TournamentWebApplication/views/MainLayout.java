@@ -81,11 +81,12 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-
+		// TODO: Update Routerlinks
 	}
 
 	private void saveLocalePreference(Locale locale) {
 		UI.getCurrent().getSession().setLocale(locale);
+		//TODO: Save locale inside cookie
 	}
 
 }

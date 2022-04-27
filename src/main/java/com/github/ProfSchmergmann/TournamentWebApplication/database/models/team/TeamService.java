@@ -59,7 +59,7 @@ public class TeamService implements IModelService<Team> {
 
 	public List<Team> findAllFromAgeGroup(AgeGroup ageGroup) {
 		return this.repository.findAll().stream().filter(team -> team.getAgeGroup().equals(ageGroup))
-				.toList();
+		                      .toList();
 	}
 
 	public List<Team> findAllFromClub(Club club) {

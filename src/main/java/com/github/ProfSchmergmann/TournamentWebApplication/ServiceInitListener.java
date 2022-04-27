@@ -25,7 +25,7 @@ public class ServiceInitListener implements VaadinServiceInitListener {
 		Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
 		if (cookies != null) {
 			localeCookie = Arrays.stream(cookies).filter(cookie -> "locale".equals(cookie.getName()))
-					.findFirst();
+			                     .findFirst();
 		}
 
 		Locale locale;
