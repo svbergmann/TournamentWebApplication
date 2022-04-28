@@ -2,6 +2,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -21,8 +22,9 @@ import java.util.Locale;
 @PageTitle("Countries | Tournament")
 public class CountryView extends EntityView<Country> {
 
-	public CountryView(@Autowired CountryService countryService) {
-		super("country", new Grid<>(), countryService);
+	public CountryView(@Autowired CountryService countryService,
+	                   @Autowired SecurityService securityService) {
+		super("country.pl", new Grid<>(), countryService, securityService);
 	}
 
 	@Override
@@ -48,10 +50,17 @@ public class CountryView extends EntityView<Country> {
 	}
 
 	@Override
-	void updateGridHeaders() {
+	void setGridColumns() {
 		this.grid.addColumn(c -> c.getName(this.getLocale()))
 		         .setHeader(this.getTranslation("name"))
+		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
 	}
 }

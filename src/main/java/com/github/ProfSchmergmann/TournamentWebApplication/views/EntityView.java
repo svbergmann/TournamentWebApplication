@@ -2,10 +2,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -15,43 +12,48 @@ import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 
 public abstract class EntityView<T extends IModel> extends VerticalLayout implements LocaleChangeObserver {
 
+	public static final String notSet = "not set";
+	protected SecurityService securityService;
 	protected Button addButton;
 	protected H2 header;
 	protected String headerProperty;
 	protected Grid<T> grid;
 	protected IModelService<T> entityService;
 
-	public EntityView(String headerProperty, Grid<T> grid, IModelService<T> entityService) {
+	public EntityView(String headerProperty, Grid<T> grid,
+	                  IModelService<T> entityService, SecurityService securityService) {
+		this.securityService = securityService;
 		this.entityService = entityService;
 		this.headerProperty = headerProperty;
 		this.header = new H2(this.getTranslation(this.headerProperty));
 		this.grid = grid;
 		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		this.updateGrid();
-		this.addButton = new Button(this.getTranslation("add.new"));
-		this.addButton.addClickListener(click -> this.openAddDialog());
-		this.add(this.header,
-		         this.grid,
-		         this.addButton);
+		this.setGridColumns();
+		this.updateGridContextMenu();
+		this.updateGridItems();
+		this.add(this.header, this.grid);
+		if (this.securityService.getAuthenticatedUser() != null) {
+			this.addButton = new Button(this.getTranslation("add"));
+			this.addButton.addClickListener(click -> this.openAddDialog());
+			this.add(this.addButton);
+		}
 	}
+
+	abstract VerticalLayout getDialogComponents(Dialog dialog, Button addButton);
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
 		this.header.setText(this.getTranslation(this.headerProperty));
-		this.grid.removeAllColumns();
-		this.updateGridHeaders();
+		this.updateGridColumnHeaders();
 		this.updateGridContextMenu();
-		this.addButton.setText("add");
+		if (this.addButton != null) this.addButton.setText(this.getTranslation("add"));
 	}
 
-	abstract VerticalLayout getDialogComponents(Dialog dialog, Button addButton);
 	protected void openAddDialog() {
 		final Dialog dialog = new Dialog();
 		final Button addButton = new Button(this.getTranslation("add"));
@@ -63,12 +65,15 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		dialog.open();
 	}
 
+	abstract void setGridColumns();
+
 	protected void updateGrid() {
-		this.grid.removeAllColumns();
-		this.updateGridHeaders();
+		this.updateGridColumnHeaders();
 		this.updateGridItems();
 		this.updateGridContextMenu();
 	}
+
+	abstract void updateGridColumnHeaders();
 
 	protected void updateGridContextMenu() {
 		final GridContextMenu<T> gridContextMenu = this.grid.addContextMenu();
@@ -93,8 +98,6 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		});
 		gridContextMenu.addItem(this.getTranslation("abort"));
 	}
-
-	abstract void updateGridHeaders();
 
 	protected void updateGridItems() {
 		this.grid.setItems(this.entityService.findAll());

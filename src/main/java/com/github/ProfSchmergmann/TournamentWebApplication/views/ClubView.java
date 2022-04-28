@@ -4,6 +4,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -16,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.LocationView.notSet;
-
 @PermitAll
 @Route(value = "clubs", layout = MainLayout.class)
 @PageTitle("Clubs | Tournament")
@@ -26,8 +25,9 @@ public class ClubView extends EntityView<Club> {
 	private final CountryService countryService;
 
 	public ClubView(@Autowired CountryService countryService,
-	                @Autowired ClubService clubService) {
-		super("club", new Grid<>(), clubService);
+	                @Autowired ClubService clubService,
+	                @Autowired SecurityService securityService) {
+		super("club.pl", new Grid<>(), clubService, securityService);
 		this.countryService = countryService;
 	}
 
@@ -56,14 +56,24 @@ public class ClubView extends EntityView<Club> {
 	}
 
 	@Override
-	void updateGridHeaders() {
-		this.grid.addColumn(Club::getName)
-		         .setHeader(this.getTranslation("name"))
-		         .setSortable(true)
-		         .setAutoWidth(true);
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("country")
+		         .setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
+	}
+
+	@Override
+	void setGridColumns() {
 		this.grid.addColumn(
 				    club -> club.getCountry() == null ? notSet : club.getCountry().getName(this.getLocale()))
 		         .setHeader(this.getTranslation("country"))
+		         .setKey("country")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(Club::getName)
+		         .setHeader(this.getTranslation("name"))
+		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
 	}

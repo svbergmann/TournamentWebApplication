@@ -2,14 +2,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
-import com.vaadin.flow.component.Key;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -23,12 +19,13 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Age Groups | Tournament")
 public class AgeGroupView extends EntityView<AgeGroup> {
 
-	public AgeGroupView(@Autowired AgeGroupService ageGroupService) {
-		super("age.group", new Grid<>(), ageGroupService);
+	public AgeGroupView(@Autowired AgeGroupService ageGroupService,
+	                    @Autowired SecurityService securityService) {
+		super("age.group.pl", new Grid<>(), ageGroupService, securityService);
 	}
 
 	@Override
-	protected VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
+	VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
 		final TextField ageGroupTextField = new TextField(this.getTranslation("name"));
 		addButton.addClickListener(click -> {
 			var ageGroup = new AgeGroup();
@@ -44,10 +41,17 @@ public class AgeGroupView extends EntityView<AgeGroup> {
 	}
 
 	@Override
-	void updateGridHeaders() {
+	void setGridColumns() {
 		this.grid.addColumn(AgeGroup::getName)
 		         .setHeader(this.getTranslation("name"))
+		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
 	}
 }

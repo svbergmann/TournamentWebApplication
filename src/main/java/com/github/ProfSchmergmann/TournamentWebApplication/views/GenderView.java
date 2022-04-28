@@ -2,11 +2,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
-import com.vaadin.flow.component.Key;
+import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -20,8 +19,9 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Genders | Tournament")
 public class GenderView extends EntityView<Gender> {
 
-	public GenderView(@Autowired GenderService genderService) {
-		super("gender", new Grid<>(), genderService);
+	public GenderView(@Autowired GenderService genderService,
+	                  @Autowired SecurityService securityService) {
+		super("gender.pl", new Grid<>(), genderService, securityService);
 	}
 
 	@Override
@@ -41,10 +41,17 @@ public class GenderView extends EntityView<Gender> {
 	}
 
 	@Override
-	void updateGridHeaders() {
+	void setGridColumns() {
 		this.grid.addColumn(Gender::getName)
 		         .setHeader(this.getTranslation("name"))
+		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
 	}
 }
