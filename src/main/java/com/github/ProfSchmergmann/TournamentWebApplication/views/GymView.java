@@ -73,7 +73,7 @@ public class GymView extends VerticalLayout implements LocaleChangeObserver {
 		locationSelect.setLabel(this.getTranslation("location"));
 		locationSelect.setItems(this.locationService.findAll());
 		locationSelect.setItemLabelGenerator(l ->
-				                                     l.getCountry().getName() + ", "
+				                                     l.getCountry().getName(this.getLocale()) + ", "
 						                                     + l.getPostalCode() + ", "
 						                                     + l.getCity().getName() + ", "
 						                                     + l.getStreet().getName() + ", "
@@ -121,7 +121,7 @@ public class GymView extends VerticalLayout implements LocaleChangeObserver {
 		            .setAutoWidth(true);
 		this.gymGrid.addColumn(
 				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-				           notSet : gym.getLocation().getCountry().getName())
+				           notSet : gym.getLocation().getCountry().getName(this.getLocale()))
 		            .setHeader(this.getTranslation("country"))
 		            .setSortable(true)
 		            .setAutoWidth(true);

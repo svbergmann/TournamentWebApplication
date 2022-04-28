@@ -53,7 +53,7 @@ public class StreetView extends VerticalLayout {
 		this.streetGrid = new Grid<>(Street.class, false);
 		this.streetGrid.addColumn(
 				    s -> s.getCity() == null || s.getCity().getCountry() == null ?
-				         notSet : s.getCity().getCountry().getName())
+				         notSet : s.getCity().getCountry().getName(this.getLocale()))
 		               .setHeader("Country")
 		               .setSortable(true)
 		               .setAutoWidth(true);
@@ -95,7 +95,7 @@ public class StreetView extends VerticalLayout {
 		final Select<Country> countrySelect = new Select<>();
 		countrySelect.setLabel("Country");
 		countrySelect.setItems(this.countryService.findAll());
-		countrySelect.setItemLabelGenerator(Country::getName);
+		countrySelect.setItemLabelGenerator(c->c.getName(this.getLocale()));
 		final Select<City> citySelect = new Select<>();
 		citySelect.setLabel("City");
 		citySelect.setItemLabelGenerator(City::getName);

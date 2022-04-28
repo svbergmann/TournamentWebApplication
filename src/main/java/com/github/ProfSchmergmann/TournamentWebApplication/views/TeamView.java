@@ -130,7 +130,7 @@ public class TeamView extends VerticalLayout implements LocaleChangeObserver {
 		this.teamGrid.removeAllColumns();
 		this.teamGrid.addColumn(
 				    team -> team.getClub() == null || team.getClub().getCountry() == null ?
-				            notSet : team.getClub().getCountry().getName())
+				            notSet : team.getClub().getCountry().getName(this.getLocale()))
 		             .setHeader(this.getTranslation("country"))
 		             .setSortable(true)
 		             .setAutoWidth(true);

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class CountryService implements IModelService<Country> {
@@ -38,7 +39,7 @@ public class CountryService implements IModelService<Country> {
 	public Country findByName(String name) {
 		return this.repository.findAll()
 		                      .stream()
-		                      .filter(c -> c.getName().equals(name))
+		                      .filter(c -> c.getName(Locale.ENGLISH).equals(name))
 		                      .findFirst()
 		                      .orElse(null);
 	}

@@ -40,7 +40,7 @@ public class CityView extends EntityView<City> {
 		final Select<Country> countrySelect = new Select<>();
 		countrySelect.setLabel(this.getTranslation("country"));
 		countrySelect.setItems(this.countryService.findAll());
-		countrySelect.setItemLabelGenerator(Country::getName);
+		countrySelect.setItemLabelGenerator(c-> c.getName(this.getLocale()));
 		final TextField cityTextField = new TextField(this.getTranslation("name"));
 		final VerticalLayout fields = new VerticalLayout(countrySelect, cityTextField);
 		fields.setPadding(true);
@@ -62,7 +62,7 @@ public class CityView extends EntityView<City> {
 	@Override
 	void updateGridHeaders() {
 		this.grid.addColumn(c -> c.getCountry() == null ?
-		                         notSet : c.getCountry().getName())
+		                         notSet : c.getCountry().getName(this.getLocale()))
 		         .setHeader(this.getTranslation("country"))
 		         .setSortable(true)
 		         .setAutoWidth(true);

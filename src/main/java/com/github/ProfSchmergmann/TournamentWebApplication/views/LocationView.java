@@ -55,7 +55,7 @@ public class LocationView extends VerticalLayout {
 		this.locationGrid = new Grid<>(Location.class, false);
 		this.locationGrid.addColumn(
 				    l -> l.getCity() == null || l.getCity().getCountry() == null ?
-				         notSet : l.getCity().getCountry().getName())
+				         notSet : l.getCity().getCountry().getName(this.getLocale()))
 		                 .setHeader("Country")
 		                 .setSortable(true)
 		                 .setAutoWidth(true);
@@ -103,7 +103,7 @@ public class LocationView extends VerticalLayout {
 		final Select<Country> countrySelect = new Select<>();
 		countrySelect.setLabel("Country");
 		countrySelect.setItems(this.countryService.findAll());
-		countrySelect.setItemLabelGenerator(Country::getName);
+		countrySelect.setItemLabelGenerator(c-> c.getName(this.getLocale()));
 		final Select<City> citySelect = new Select<>();
 		citySelect.setLabel("City");
 		citySelect.setItemLabelGenerator(City::getName);
