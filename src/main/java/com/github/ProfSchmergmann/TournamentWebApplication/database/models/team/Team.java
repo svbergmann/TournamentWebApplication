@@ -27,6 +27,8 @@ public class Team implements Serializable, IModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	private String name;
+
 	public AgeGroup getAgeGroup() {
 		return this.ageGroup;
 	}
@@ -67,21 +69,38 @@ public class Team implements Serializable, IModel {
 		this.id = id;
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.amount, this.ageGroup, this.gender, this.club);
+		return Objects.hash(this.ageGroup, this.amount, this.club, this.gender, this.name);
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (!(o instanceof Team team)) {
-			return false;
-		}
-		return this.amount == team.amount && Objects.equals(this.ageGroup,
-		                                                    team.ageGroup) && Objects.equals(this.gender, team.gender) && Objects.equals(
-				this.club, team.club);
+		if (this == o) return true;
+		if (!(o instanceof Team team)) return false;
+		return this.amount == team.amount &&
+				Objects.equals(this.ageGroup, team.ageGroup) &&
+				Objects.equals(this.club, team.club) &&
+				Objects.equals(this.gender, team.gender) &&
+				Objects.equals(this.name, team.name);
+	}
+
+	@Override
+	public String toString() {
+		return "Team{" +
+				"ageGroup=" + this.ageGroup +
+				", amount=" + this.amount +
+				", club=" + this.club +
+				", gender=" + this.gender +
+				", name='" + this.name + '\'' +
+				'}';
 	}
 }

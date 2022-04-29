@@ -44,9 +44,7 @@ public class AgeGroupService implements IModelService<AgeGroup> {
 
 		if (ageGroupDB.isPresent()) {
 			var a = ageGroupDB.get();
-			a.setId(ageGroup.getId());
 			a.setName(ageGroup.getName());
-			this.repository.deleteById(id);
 			return this.repository.save(a);
 		}
 		return null;

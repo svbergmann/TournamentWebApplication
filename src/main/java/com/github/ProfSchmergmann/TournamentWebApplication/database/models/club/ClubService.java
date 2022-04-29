@@ -44,10 +44,8 @@ public class ClubService implements IModelService<Club> {
 
 		if (clubDB.isPresent()) {
 			var c = clubDB.get();
-			c.setId(club.getId());
 			c.setName(club.getName());
 			c.setCountry(club.getCountry());
-			this.repository.deleteById(id);
 			return this.repository.save(c);
 		}
 		return null;

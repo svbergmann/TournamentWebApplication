@@ -46,12 +46,10 @@ public class TeamService implements IModelService<Team> {
 
 		if (teamDB.isPresent()) {
 			var t = teamDB.get();
-			t.setId(team.getId());
 			t.setAmount(team.getAmount());
 			t.setAgeGroup(team.getAgeGroup());
 			t.setClub(team.getClub());
 			t.setGender(team.getGender());
-			this.repository.deleteById(id);
 			return this.repository.save(t);
 		}
 		return null;

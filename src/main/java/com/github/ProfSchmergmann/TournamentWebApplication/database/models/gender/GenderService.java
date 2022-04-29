@@ -44,9 +44,7 @@ public class GenderService implements IModelService<Gender> {
 
 		if (genderDB.isPresent()) {
 			var a = genderDB.get();
-			a.setId(gender.getId());
 			a.setName(gender.getName());
-			this.repository.deleteById(id);
 			return this.repository.save(a);
 		}
 		return null;

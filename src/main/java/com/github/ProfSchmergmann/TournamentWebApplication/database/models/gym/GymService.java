@@ -44,11 +44,9 @@ public class GymService implements IModelService<Gym> {
 
 		if (gymDB.isPresent()) {
 			var g = gymDB.get();
-			g.setId(gym.getId());
 			g.setName(gym.getName());
 			g.setCapacity(gym.getCapacity());
 			g.setLocation(gym.getLocation());
-			this.repository.deleteById(id);
 			return this.repository.save(g);
 		}
 		return null;

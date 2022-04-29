@@ -16,7 +16,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,20 +82,6 @@ public class TeamView extends EntityView<Team> {
 	}
 
 	@Override
-	void updateGridColumnHeaders() {
-		this.grid.getColumnByKey("country")
-		         .setHeader(this.getTranslation("country"));
-		this.grid.getColumnByKey("club")
-		         .setHeader(this.getTranslation("club"));
-		this.grid.getColumnByKey("age")
-		         .setHeader(this.getTranslation("age.group"));
-		this.grid.getColumnByKey("gender")
-		         .setHeader(this.getTranslation("gender"));
-		this.grid.getColumnByKey("amount")
-		         .setHeader(this.getTranslation("amount.of.players"));
-	}
-
-	@Override
 	void setGridColumns() {
 		this.grid.addColumn(
 				    team -> team.getClub() == null || team.getClub().getCountry() == null ?
@@ -108,6 +93,11 @@ public class TeamView extends EntityView<Team> {
 		this.grid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
 		         .setHeader(this.getTranslation("club"))
 		         .setKey("club")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(Team::getName)
+		         .setHeader(this.getTranslation("name"))
+		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
 		this.grid.addColumn(
@@ -127,6 +117,22 @@ public class TeamView extends EntityView<Team> {
 		         .setKey("amount")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("country")
+		         .setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("club")
+		         .setHeader(this.getTranslation("club"));
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
+		this.grid.getColumnByKey("age")
+		         .setHeader(this.getTranslation("age.group"));
+		this.grid.getColumnByKey("gender")
+		         .setHeader(this.getTranslation("gender"));
+		this.grid.getColumnByKey("amount")
+		         .setHeader(this.getTranslation("amount.of.players"));
 	}
 }
 

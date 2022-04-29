@@ -46,11 +46,9 @@ public class LocationService implements IModelService<Location> {
 			var l = locationDB.get();
 			l.setCity(location.getCity());
 			l.setCountry(location.getCountry());
-			l.setId(location.getId());
 			l.setNumber(location.getNumber());
 			l.setPostalCode(l.getPostalCode());
 			l.setStreet(location.getStreet());
-			this.repository.deleteById(id);
 			return this.repository.save(l);
 		}
 

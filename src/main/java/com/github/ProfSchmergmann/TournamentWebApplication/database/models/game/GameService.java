@@ -47,12 +47,10 @@ public class GameService implements IModelService<Game> {
 			g.setDate(game.getDate());
 			g.setFinished(game.isFinished());
 			g.setGym(game.getGym());
-			g.setId(game.getId());
 			g.setScoreTeamA(game.getScoreTeamA());
 			g.setScoreTeamB(game.getScoreTeamB());
 			g.setTeamA(game.getTeamA());
 			g.setTeamB(game.getTeamB());
-			this.repository.deleteById(id);
 			return this.repository.save(g);
 		}
 		return null;
