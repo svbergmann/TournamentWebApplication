@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @AnonymousAllowed
 @Route(value = "teams", layout = MainLayout.class)
-@PageTitle("Teams | Tournament")
 public class TeamView extends EntityView<Team> {
 
 	private final ClubService clubService;

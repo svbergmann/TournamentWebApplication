@@ -19,7 +19,6 @@ import java.util.Locale;
 
 @PermitAll
 @Route(value = "countries", layout = MainLayout.class)
-@PageTitle("Countries | Tournament")
 public class CountryView extends EntityView<Country> {
 
 	public CountryView(@Autowired CountryService countryService,

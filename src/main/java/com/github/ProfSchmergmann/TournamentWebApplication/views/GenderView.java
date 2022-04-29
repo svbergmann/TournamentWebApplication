@@ -16,7 +16,6 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "gender", layout = MainLayout.class)
-@PageTitle("Genders | Tournament")
 public class GenderView extends EntityView<Gender> {
 
 	public GenderView(@Autowired GenderService genderService,

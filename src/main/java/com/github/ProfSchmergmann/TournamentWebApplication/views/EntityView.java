@@ -4,6 +4,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IMode
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -14,8 +15,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
+import com.vaadin.flow.router.HasDynamicTitle;
 
-public abstract class EntityView<T extends IModel> extends VerticalLayout implements LocaleChangeObserver {
+public abstract class EntityView<T extends IModel> extends VerticalLayout implements LocaleChangeObserver, HasDynamicTitle {
 
 	public static final String notSet = "not set";
 	protected SecurityService securityService;
@@ -44,6 +46,13 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		}
 	}
 
+	@Override
+	public String getPageTitle() {
+		return this.getTranslation(this.headerProperty) +
+				" | " +
+				this.getTranslation("application.name");
+	}
+
 	abstract VerticalLayout getDialogComponents(Dialog dialog, Button addButton);
 
 	@Override
@@ -52,6 +61,9 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		this.updateGridColumnHeaders();
 		this.updateGridContextMenu();
 		if (this.addButton != null) this.addButton.setText(this.getTranslation("add"));
+		UI.getCurrent().getPage().setTitle(this.getTranslation(this.headerProperty) +
+				                                   " | " +
+				                                   this.getTranslation("application.name"));
 	}
 
 	protected void openAddDialog() {

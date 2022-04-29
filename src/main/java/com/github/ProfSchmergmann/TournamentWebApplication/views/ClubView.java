@@ -19,7 +19,6 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "clubs", layout = MainLayout.class)
-@PageTitle("Clubs | Tournament")
 public class ClubView extends EntityView<Club> {
 
 	private final CountryService countryService;

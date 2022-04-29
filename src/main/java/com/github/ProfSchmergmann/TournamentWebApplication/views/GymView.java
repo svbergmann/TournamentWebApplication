@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @AnonymousAllowed
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Gyms | Tournament")
 public class GymView extends EntityView<Gym> {
 	private final LocationService locationService;
 

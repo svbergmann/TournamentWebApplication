@@ -21,7 +21,6 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "streets", layout = MainLayout.class)
-@PageTitle("Streets | Tournament")
 public class StreetView extends EntityView<Street> {
 
 	private final CountryService countryService;

@@ -16,7 +16,6 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "agegroups", layout = MainLayout.class)
-@PageTitle("Age Groups | Tournament")
 public class AgeGroupView extends EntityView<AgeGroup> {
 
 	public AgeGroupView(@Autowired AgeGroupService ageGroupService,

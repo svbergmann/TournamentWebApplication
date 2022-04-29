@@ -23,7 +23,6 @@ import javax.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "locations", layout = MainLayout.class)
-@PageTitle("Locations | Tournament")
 public class LocationView extends EntityView<Location> {
 
 	private final CountryService countryService;
