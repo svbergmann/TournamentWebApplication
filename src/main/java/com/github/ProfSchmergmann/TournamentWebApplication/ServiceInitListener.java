@@ -7,13 +7,14 @@ import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
-@SpringComponent
+@Component
 public class ServiceInitListener implements VaadinServiceInitListener {
 
 	@Autowired
@@ -24,7 +25,8 @@ public class ServiceInitListener implements VaadinServiceInitListener {
 
 		Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
 		if (cookies != null) {
-			localeCookie = Arrays.stream(cookies).filter(cookie -> "locale".equals(cookie.getName()))
+			localeCookie = Arrays.stream(cookies)
+			                     .filter(cookie -> "locale".equals(cookie.getName()))
 			                     .findFirst();
 		}
 
