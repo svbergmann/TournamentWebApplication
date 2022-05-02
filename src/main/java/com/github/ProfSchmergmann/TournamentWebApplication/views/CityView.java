@@ -11,7 +11,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,14 +54,6 @@ public class CityView extends EntityView<City> {
 	}
 
 	@Override
-	void updateGridColumnHeaders() {
-		this.grid.getColumnByKey("country")
-		         .setHeader(this.getTranslation("country"));
-		this.grid.getColumnByKey("name")
-		         .setHeader(this.getTranslation("name"));
-	}
-
-	@Override
 	void setGridColumns() {
 		this.grid.addColumn(c -> c.getCountry() == null ?
 		                         notSet : c.getCountry().getName(this.getLocale()))
@@ -75,5 +66,13 @@ public class CityView extends EntityView<City> {
 		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("country")
+		         .setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
 	}
 }

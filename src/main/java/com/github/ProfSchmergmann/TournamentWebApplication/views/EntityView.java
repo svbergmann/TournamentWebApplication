@@ -46,14 +46,14 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		}
 	}
 
+	abstract VerticalLayout getDialogComponents(Dialog dialog, Button addButton);
+
 	@Override
 	public String getPageTitle() {
 		return this.getTranslation(this.headerProperty) +
 				" | " +
 				this.getTranslation("application.name");
 	}
-
-	abstract VerticalLayout getDialogComponents(Dialog dialog, Button addButton);
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {

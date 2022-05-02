@@ -13,7 +13,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,22 +70,6 @@ public class GymView extends EntityView<Gym> {
 	}
 
 	@Override
-	void updateGridColumnHeaders() {
-		this.grid.getColumnByKey("name")
-		         .setHeader(this.getTranslation("name"));
-		this.grid.getColumnByKey("country")
-		         .setHeader(this.getTranslation("country"));
-		this.grid.getColumnByKey("plz")
-		         .setHeader(this.getTranslation("plz"));
-		this.grid.getColumnByKey("city")
-		         .setHeader(this.getTranslation("city"));
-		this.grid.getColumnByKey("street")
-		         .setHeader(this.getTranslation("street"));
-		this.grid.getColumnByKey("number")
-		         .setHeader(this.getTranslation("number"));
-	}
-
-	@Override
 	void setGridColumns() {
 		this.grid.addColumn(Gym::getName)
 		         .setHeader(this.getTranslation("name"))
@@ -125,5 +108,21 @@ public class GymView extends EntityView<Gym> {
 		         .setKey("number")
 		         .setSortable(true)
 		         .setAutoWidth(true);
+	}
+
+	@Override
+	void updateGridColumnHeaders() {
+		this.grid.getColumnByKey("name")
+		         .setHeader(this.getTranslation("name"));
+		this.grid.getColumnByKey("country")
+		         .setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("plz")
+		         .setHeader(this.getTranslation("plz"));
+		this.grid.getColumnByKey("city")
+		         .setHeader(this.getTranslation("city"));
+		this.grid.getColumnByKey("street")
+		         .setHeader(this.getTranslation("street"));
+		this.grid.getColumnByKey("number")
+		         .setHeader(this.getTranslation("number"));
 	}
 }
