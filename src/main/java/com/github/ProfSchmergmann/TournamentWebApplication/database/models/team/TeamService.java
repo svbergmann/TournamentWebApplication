@@ -3,6 +3,7 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +56,28 @@ public class TeamService implements IModelService<Team> {
 		return null;
 	}
 
-	public List<Team> findAllFromAgeGroup(AgeGroup ageGroup) {
-		return this.repository.findAll().stream().filter(team -> team.getAgeGroup().equals(ageGroup))
+	public List<Team> findAll(AgeGroup ageGroup) {
+		return this.repository.findAll().stream()
+		                      .filter(team -> team.getAgeGroup().equals(ageGroup))
 		                      .toList();
 	}
 
-	public List<Team> findAllFromClub(Club club) {
-		return this.repository.findAll().stream().filter(team -> team.getClub().equals(club)).toList();
+	public List<Team> findAll(Gender gender) {
+		return this.repository.findAll().stream()
+		                      .filter(team -> team.getGender().equals(gender))
+		                      .toList();
+	}
+
+	public List<Team> findAll(Club club) {
+		return this.repository.findAll().stream()
+		                      .filter(team -> team.getClub().equals(club))
+		                      .toList();
+	}
+
+	public List<Team> findAll(AgeGroup ageGroup, Gender gender) {
+		return this.repository.findAll().stream()
+		                      .filter(team -> team.getGender().equals(gender))
+		                      .filter(team -> team.getAgeGroup().equals(ageGroup))
+		                      .toList();
 	}
 }

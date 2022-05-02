@@ -89,4 +89,16 @@ public class Match implements Serializable, IModel {
 				", teamB=" + this.teamB +
 				'}';
 	}
+
+	public boolean isFinished() {
+		if (this.scoreTeamA == 0 && this.scoreTeamB == 20 ||
+				this.scoreTeamA == 20 && this.scoreTeamB == 0)
+			return true;
+		if (this.scoreTeamA != 0 && this.scoreTeamB != 0)
+			return true;
+		if (this.scoreTeamA == 0 && this.scoreTeamB != 0 ||
+				this.scoreTeamA != 0 && this.scoreTeamB == 0)
+			return true;
+		return false;
+	}
 }

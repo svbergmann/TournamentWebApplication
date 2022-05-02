@@ -61,9 +61,7 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		this.updateGridColumnHeaders();
 		this.updateGridContextMenu();
 		if (this.addButton != null) this.addButton.setText(this.getTranslation("add"));
-		UI.getCurrent().getPage().setTitle(this.getTranslation(this.headerProperty) +
-				                                   " | " +
-				                                   this.getTranslation("application.name"));
+		UI.getCurrent().getPage().setTitle(this.getPageTitle());
 	}
 
 	protected void openAddDialog() {
