@@ -67,6 +67,7 @@ public class TeamView extends EntityView<Team> {
 		addButton.addClickListener(click -> {
 			if (teamTextField.getValue().length() > 3) {
 				var team = new Team();
+				team.setName(teamTextField.getValue());
 				team.setClub(clubSelect.getValue());
 				team.setAgeGroup(ageGroupSelect.getValue());
 				team.setGender(genderSelect.getValue());

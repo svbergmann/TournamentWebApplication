@@ -91,7 +91,7 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		final GridContextMenu<T> gridContextMenu = this.grid.addContextMenu();
 		gridContextMenu.addItem(this.getTranslation("delete"), event -> {
 			final Dialog dialog = new Dialog();
-			dialog.add("Are you sure you want to delete " + event.getItem() + "?");
+			dialog.add(this.getTranslation("delete.question", event.getItem().get()));
 			final Button yesButton = new Button(this.getTranslation("yes"));
 			final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
 			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
