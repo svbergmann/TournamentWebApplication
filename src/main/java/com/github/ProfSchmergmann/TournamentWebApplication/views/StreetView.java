@@ -22,8 +22,8 @@ import javax.annotation.security.PermitAll;
 @Route(value = "streets", layout = MainLayout.class)
 public class StreetView extends EntityView<Street> {
 
-	private final CountryService countryService;
 	private final CityService cityService;
+	private final CountryService countryService;
 
 	public StreetView(@Autowired CountryService countryService,
 	                  @Autowired CityService cityService,

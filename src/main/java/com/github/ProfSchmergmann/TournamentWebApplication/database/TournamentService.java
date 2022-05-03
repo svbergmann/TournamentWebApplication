@@ -16,14 +16,14 @@ public class TournamentService {
 	@Autowired
 	private GameService gameService;
 
-	@PostConstruct
-	public void init() {
-		this.gameService = game_Service;
-	}
-
 	public static int getPlayedGames(Team team) {
 		// TODO: Find games by team
 		throw new NotImplementedException();
+	}
+
+	@PostConstruct
+	public void init() {
+		this.gameService = game_Service;
 	}
 
 }

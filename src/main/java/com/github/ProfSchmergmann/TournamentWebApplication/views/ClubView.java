@@ -39,7 +39,7 @@ public class ClubView extends EntityView<Club> {
 		final VerticalLayout fields = new VerticalLayout(countrySelect, clubTextField);
 		fields.setPadding(true);
 		addButton.addClickListener(click -> {
-			if (clubTextField.getValue().length() > 3) {
+			if (clubTextField.getValue().length() > 1) {
 				var club = new Club();
 				club.setCountry(countrySelect.getValue());
 				club.setName(clubTextField.getValue());

@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(value = "teams", layout = MainLayout.class)
 public class TeamView extends EntityView<Team> {
 
-	private final ClubService clubService;
 	private final AgeGroupService ageGroupService;
+	private final ClubService clubService;
 	private final GenderService genderService;
 
 	public TeamView(@Autowired ClubService clubService,

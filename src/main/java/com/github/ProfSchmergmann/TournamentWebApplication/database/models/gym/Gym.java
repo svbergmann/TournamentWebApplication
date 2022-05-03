@@ -2,6 +2,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +15,10 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 public class Gym implements Serializable, IModel {
 
@@ -22,47 +30,6 @@ public class Gym implements Serializable, IModel {
 	private Location location;
 	private String name;
 	private int number;
-
-	public int getCapacity() {
-		return this.capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Location getLocation() {
-		return this.location;
-	}
-
-	public void setLocation(
-			Location location) {
-		this.location = location;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getNumber() {
-		return this.number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
 
 	@Override
 	public int hashCode() {
@@ -77,7 +44,8 @@ public class Gym implements Serializable, IModel {
 		if (!(o instanceof Gym gym)) {
 			return false;
 		}
-		return this.capacity == gym.capacity && Objects.equals(this.name, gym.name)
-				&& Objects.equals(this.location, gym.location);
+		return this.capacity == gym.capacity &&
+				Objects.equals(this.name, gym.name) &&
+				Objects.equals(this.location, gym.location);
 	}
 }

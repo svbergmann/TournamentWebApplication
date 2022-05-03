@@ -2,6 +2,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +15,10 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 public class City implements Serializable, IModel {
 
@@ -20,31 +28,6 @@ public class City implements Serializable, IModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String name;
-
-	public Country getCountry() {
-		return this.country;
-	}
-
-	public void setCountry(
-			Country country) {
-		this.country = country;
-	}
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public int hashCode() {
@@ -59,7 +42,7 @@ public class City implements Serializable, IModel {
 		if (!(o instanceof City city)) {
 			return false;
 		}
-		return Objects.equals(this.name, city.name) && Objects.equals(this.country,
-		                                                              city.country);
+		return Objects.equals(this.name, city.name) &&
+				Objects.equals(this.country, city.country);
 	}
 }

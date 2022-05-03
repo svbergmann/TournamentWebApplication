@@ -3,6 +3,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.game
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.Gym;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.Match;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 public class Game implements Serializable, IModel {
 
@@ -26,36 +35,15 @@ public class Game implements Serializable, IModel {
 	@ManyToOne
 	private Match match;
 
-	public Date getDate() {
-		return this.date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public Gym getGym() {
-		return this.gym;
-	}
-
-	public void setGym(Gym gym) {
-		this.gym = gym;
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.date, this.finished, this.gym, this.match);
 	}
 
 	@Override
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public boolean isFinished() {
-		return this.finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Game game)) return false;
+		return this.finished == game.finished && Objects.equals(this.date, game.date) && Objects.equals(this.gym, game.gym) && Objects.equals(this.match, game.match);
 	}
 }

@@ -1,6 +1,10 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +13,10 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 public class Gender implements Serializable, IModel {
 
@@ -17,22 +25,6 @@ public class Gender implements Serializable, IModel {
 	private long id;
 
 	private String name;
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public int hashCode() {

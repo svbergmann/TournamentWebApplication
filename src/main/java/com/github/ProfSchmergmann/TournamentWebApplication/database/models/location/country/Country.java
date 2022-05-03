@@ -1,6 +1,9 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +16,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 public class Country implements Serializable, IModel {
 
@@ -21,22 +27,6 @@ public class Country implements Serializable, IModel {
 	private long id;
 	@Column(unique = true)
 	private String iso3Name;
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getIso3Name() {
-		return this.iso3Name;
-	}
-
-	public void setIso3Name(String isoName) {
-		this.iso3Name = isoName;
-	}
 
 	public String getName(Locale locale) {
 		return Arrays.stream(Locale.getAvailableLocales())

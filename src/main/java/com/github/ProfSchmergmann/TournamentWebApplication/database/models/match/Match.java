@@ -2,6 +2,10 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.matc
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +15,14 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 public class Match implements Serializable, IModel {
 
+	private boolean finished;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -25,80 +34,18 @@ public class Match implements Serializable, IModel {
 	private Team teamB;
 
 	@Override
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public int getScoreTeamA() {
-		return this.scoreTeamA;
-	}
-
-	public void setScoreTeamA(int scoreTeamA) {
-		this.scoreTeamA = scoreTeamA;
-	}
-
-	public int getScoreTeamB() {
-		return this.scoreTeamB;
-	}
-
-	public void setScoreTeamB(int scoreTeamB) {
-		this.scoreTeamB = scoreTeamB;
-	}
-
-	public Team getTeamA() {
-		return this.teamA;
-	}
-
-	public void setTeamA(Team teamA) {
-		this.teamA = teamA;
-	}
-
-	public Team getTeamB() {
-		return this.teamB;
-	}
-
-	public void setTeamB(Team teamB) {
-		this.teamB = teamB;
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(this.scoreTeamA, this.scoreTeamB, this.teamA, this.teamB);
+		return Objects.hash(this.finished, this.scoreTeamA, this.scoreTeamB, this.teamA, this.teamB);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Match match)) return false;
-		return this.scoreTeamA == match.scoreTeamA &&
+		return this.finished == match.finished &&
+				this.scoreTeamA == match.scoreTeamA &&
 				this.scoreTeamB == match.scoreTeamB &&
 				Objects.equals(this.teamA, match.teamA) &&
 				Objects.equals(this.teamB, match.teamB);
-	}
-
-	@Override
-	public String toString() {
-		return "Match{" +
-				"scoreTeamA=" + this.scoreTeamA +
-				", scoreTeamB=" + this.scoreTeamB +
-				", teamA=" + this.teamA +
-				", teamB=" + this.teamB +
-				'}';
-	}
-
-	public boolean isFinished() {
-		if (this.scoreTeamA == 0 && this.scoreTeamB == 20 ||
-				this.scoreTeamA == 20 && this.scoreTeamB == 0)
-			return true;
-		if (this.scoreTeamA != 0 && this.scoreTeamB != 0)
-			return true;
-		if (this.scoreTeamA == 0 && this.scoreTeamB != 0 ||
-				this.scoreTeamA != 0 && this.scoreTeamB == 0)
-			return true;
-		return false;
 	}
 }

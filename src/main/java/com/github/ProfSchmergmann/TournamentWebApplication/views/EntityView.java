@@ -34,6 +34,8 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		this.headerProperty = headerProperty;
 		this.header = new H2(this.getTranslation(this.headerProperty));
 		this.grid = grid;
+		this.grid.setColumnReorderingAllowed(true);
+		this.grid.setAllRowsVisible(true);
 		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.setGridColumns();
 		this.updateGridContextMenu();

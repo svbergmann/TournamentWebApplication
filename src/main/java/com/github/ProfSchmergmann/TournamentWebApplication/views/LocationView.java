@@ -24,8 +24,8 @@ import javax.annotation.security.PermitAll;
 @Route(value = "locations", layout = MainLayout.class)
 public class LocationView extends EntityView<Location> {
 
-	private final CountryService countryService;
 	private final CityService cityService;
+	private final CountryService countryService;
 	private final StreetService streetService;
 
 	public LocationView(@Autowired CountryService countryService,

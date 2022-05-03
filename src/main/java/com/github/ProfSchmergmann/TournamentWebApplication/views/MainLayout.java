@@ -37,6 +37,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	private RouterLink locationRouterLink;
 	private Button logButton;
 	private H1 logo;
+	private RouterLink rankingLink;
 	private RouterLink streetRouterLink;
 	private RouterLink teamRouterLink;
 
@@ -67,8 +68,9 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 			));
 		}
 		this.gymRouterLink = new RouterLink(this.getTranslation("gym.pl"), GymView.class);
+		this.rankingLink = new RouterLink(this.getTranslation("ranking"), RankingView.class);
 		this.teamRouterLink = new RouterLink(this.getTranslation("team.pl"), TeamView.class);
-		this.addToDrawer(new VerticalLayout(this.gymRouterLink, this.teamRouterLink));
+		this.addToDrawer(new VerticalLayout(this.gymRouterLink, this.rankingLink, this.teamRouterLink));
 	}
 
 	private void createHeader() {
@@ -108,6 +110,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	public void localeChange(LocaleChangeEvent event) {
 		this.logo.setText(this.getTranslation("application.name"));
 		this.languageSelect.setLabel(this.getTranslation("language"));
+		this.languageSelect.setItemLabelGenerator(l -> l != null ? this.getTranslation(l.toLanguageTag()) : "");
 		var authenticated = this.securityService.getAuthenticatedUser() != null;
 		this.logButton.setText(authenticated ? this.getTranslation("log.out") :
 		                       this.getTranslation("log.in"));
@@ -121,6 +124,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 			this.streetRouterLink.setText(this.getTranslation("street.pl"));
 		}
 		this.gymRouterLink.setText(this.getTranslation("gym.pl"));
+		this.rankingLink.setText(this.getTranslation("ranking"));
 		this.teamRouterLink.setText(this.getTranslation("team.pl"));
 	}
 

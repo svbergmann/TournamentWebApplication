@@ -9,6 +9,8 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
@@ -29,8 +31,8 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 	private final GameService gameService;
 	private final Select<Gender> genderSelect;
 	private final GenderService genderService;
+	private final Grid<Team> grid;
 	private final TeamService teamService;
-	private Grid<Team> grid;
 
 	public RankingView(@Autowired AgeGroupService ageGroupService,
 	                   @Autowired GenderService genderService,
@@ -41,18 +43,41 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		this.teamService = teamService;
 		this.gameService = gameService;
 		this.ageGroupSelect = new Select<>();
-		this.ageGroupSelect.setLabel(this.getTranslation("age.group"));
-		this.ageGroupSelect.setItems(ageGroupService.findAll());
-		this.ageGroupSelect.setItemLabelGenerator(AgeGroup::getName);
 		this.genderSelect = new Select<>();
+		this.grid = new Grid<>(Team.class, false);
+		this.ageGroupSelect.setLabel(this.getTranslation("age.group"));
+		this.ageGroupSelect.setItems(this.ageGroupService.findAll());
+		this.ageGroupSelect.setItemLabelGenerator(AgeGroup::getName);
 		this.genderSelect.setLabel(this.getTranslation("gender"));
-		this.genderSelect.setItems(genderService.findAll());
+		this.genderSelect.setItems(this.genderService.findAll());
 		this.genderSelect.setItemLabelGenerator(Gender::getName);
 		this.generateGrid();
+		this.ageGroupSelect
+				.addValueChangeListener(event -> {
+					                        if (!this.genderSelect.isEmpty()) {
+						                        this.grid.setItems(this.teamService
+								                                           .findAll(event.getValue(),
+								                                                    this.genderSelect.getValue()));
+					                        }
+				                        }
+				);
+		this.genderSelect
+				.addValueChangeListener(event -> {
+					                        if (!this.ageGroupSelect.isEmpty()) {
+						                        this.grid.setItems(this.teamService
+								                                           .findAll(this.ageGroupSelect.getValue(),
+								                                                    event.getValue()));
+					                        }
+				                        }
+				);
+		this.add(new HorizontalLayout(this.ageGroupSelect, this.genderSelect));
+		this.add(this.grid);
 	}
 
 	private void generateGrid() {
-		this.grid = new Grid<>(Team.class, false);
+		this.grid.setColumnReorderingAllowed(true);
+		this.grid.setAllRowsVisible(true);
+		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
 		this.grid.addColumn(
 				    team -> team.getClub() == null || team.getClub().getCountry() == null ?
 				            notSet : team.getClub().getCountry().getName(this.getLocale()))
@@ -77,16 +102,28 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(Team::getName)
+		this.grid.addColumn(team -> this.gameService.getFinishedGames(team).toList().size())
 		         .setHeader(this.getTranslation("games.played"))
 		         .setKey("games.played")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(team -> this.gameService.getWonGames(team).toList().size())
+		         .setHeader("W")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(team -> this.gameService.getLostGames(team).toList().size())
+		         .setHeader("L")
+		         .setSortable(true)
+		         .setAutoWidth(true);
+		this.grid.addColumn(this.gameService::getPlusMinus)
+		         .setHeader("+/-")
 		         .setSortable(true)
 		         .setAutoWidth(true);
 	}
 
 	@Override
 	public String getPageTitle() {
-		return this.getTranslation("ranking" + " | " + this.getTranslation("application.name"));
+		return this.getTranslation("ranking") + " | " + this.getTranslation("application.name");
 	}
 
 	@Override
@@ -94,6 +131,14 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		this.ageGroupSelect.setLabel(this.getTranslation("age.group"));
 		this.ageGroupSelect.setItems(this.ageGroupService.findAll());
 		this.ageGroupSelect.setItemLabelGenerator(AgeGroup::getName);
+		this.genderSelect.setLabel(this.getTranslation("gender"));
+		this.genderSelect.setItems(this.genderService.findAll());
+		this.genderSelect.setItemLabelGenerator(Gender::getName);
+		this.grid.getColumnByKey("position").setHeader(this.getTranslation("position"));
+		this.grid.getColumnByKey("country").setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("club").setHeader(this.getTranslation("club"));
+		this.grid.getColumnByKey("name").setHeader(this.getTranslation("name"));
+		this.grid.getColumnByKey("games.played").setHeader(this.getTranslation("games.played"));
 		UI.getCurrent().getPage().setTitle(this.getPageTitle());
 	}
 }
