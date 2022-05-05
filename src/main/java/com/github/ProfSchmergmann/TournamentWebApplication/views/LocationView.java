@@ -82,7 +82,7 @@ public class LocationView extends EntityView<Location> {
 			numberIntegerField.setValue(0);
 		});
 		citySelect.addValueChangeListener(event -> {
-			streetSelect.setItems(this.streetService.findAllFromCity(event.getValue()));
+			streetSelect.setItems(this.streetService.findAll());
 			postalCodeNumberField.setValue(0);
 			numberIntegerField.setValue(0);
 		});

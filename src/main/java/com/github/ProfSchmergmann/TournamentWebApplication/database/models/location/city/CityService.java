@@ -3,41 +3,33 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CityService implements IModelService<City> {
+public class CityService extends IModelService<City> {
 
-	@Autowired
-	private CityRepository repository;
-
-	@Override
-	public City create(City city) {
-		return this.repository.findByName(city.getName()) != null ?
-		       null : this.repository.save(city);
+	public CityService(@Autowired CityRepository repository) {
+		super(repository);
 	}
 
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<City> findAll() {
-		return this.repository.findAll(Sort.by("name"));
-	}
-
-	@Override
-	public City findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public List<City> findAllFromCountry(Country country) {
+		return this.repository
+				.findAll()
+				.stream()
+				.filter(c -> c.getCountry().equals(country))
+				.toList();
 	}
 
 	@Override
 	public City findByName(String name) {
-		return this.repository.findByName(name);
+		return this.repository
+				.findAll()
+				.stream()
+				.filter(c -> c.getName().equals(name))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override
@@ -50,9 +42,5 @@ public class CityService implements IModelService<City> {
 			return this.repository.save(c);
 		}
 		return null;
-	}
-
-	public List<City> findAllFromCountry(Country country) {
-		return this.repository.findAll().stream().filter(c -> c.getCountry().equals(country)).toList();
 	}
 }

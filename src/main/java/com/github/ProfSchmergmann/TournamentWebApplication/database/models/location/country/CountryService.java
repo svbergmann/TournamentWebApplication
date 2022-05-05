@@ -3,36 +3,17 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.loca
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
 
 @Service
-public class CountryService implements IModelService<Country> {
+public class CountryService extends IModelService<Country> {
 
-	@Autowired
-	private CountryRepository repository;
-
-	@Override
-	public Country create(Country country) {
-		return this.repository.findAll().stream().anyMatch(c -> c.equals(country)) ?
-		       null : this.repository.save(country);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Country> findAll() {
-		return this.repository.findAll(Sort.by("iso3Name"));
-	}
-
-	@Override
-	public Country findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public CountryService(@Autowired CountryRepository repository) {
+		super(repository);
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class TeamView extends EntityView<Team> {
 		                                                 teamTextField);
 		fields.setPadding(true);
 		addButton.addClickListener(click -> {
-			if (teamTextField.getValue().length() > 3) {
+			if (teamTextField.getValue().length() > 2) {
 				var team = new Team();
 				team.setName(teamTextField.getValue());
 				team.setClub(clubSelect.getValue());

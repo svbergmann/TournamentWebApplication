@@ -4,33 +4,22 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IMode
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class LocationService implements IModelService<Location> {
+public class LocationService extends IModelService<Location> {
 
-	@Autowired
-	private LocationRepository repository;
-
-	@Override
-	public Location create(Location location) {
-		return this.findAll().stream().anyMatch(l -> l.equals(location)) ?
-		       null : this.repository.save(location);
+	public LocationService(@Autowired LocationRepository repository) {
+		super(repository);
 	}
 
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Location> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Location findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public Location find(int postalCode, String streetName, int number) {
+		return this.findAll()
+		           .stream()
+		           .filter(l ->
+				                   l.getStreet().getName().equals(streetName) &&
+						                   l.getPostalCode() == postalCode &&
+						                   l.getNumber() == number)
+		           .findFirst()
+		           .orElse(null);
 	}
 
 	@Override

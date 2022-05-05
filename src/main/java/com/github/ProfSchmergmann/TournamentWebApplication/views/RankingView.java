@@ -78,9 +78,7 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		this.grid.setColumnReorderingAllowed(true);
 		this.grid.setAllRowsVisible(true);
 		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		this.grid.addColumn(
-				    team -> team.getClub() == null || team.getClub().getCountry() == null ?
-				            notSet : team.getClub().getCountry().getName(this.getLocale()))
+		this.grid.addColumn(this.gameService::getPosition)
 		         .setHeader(this.getTranslation("position"))
 		         .setKey("position")
 		         .setSortable(true)

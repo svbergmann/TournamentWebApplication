@@ -31,6 +31,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	private RouterLink cityRouterLink;
 	private RouterLink clubRouterLink;
 	private RouterLink countryRouterLink;
+	private RouterLink gameRouterLink;
 	private RouterLink genderRouterLink;
 	private RouterLink gymRouterLink;
 	private Select<Locale> languageSelect;
@@ -67,10 +68,12 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 					this.streetRouterLink
 			));
 		}
+		this.gameRouterLink = new RouterLink(this.getTranslation("game.pl"), GameView.class);
 		this.gymRouterLink = new RouterLink(this.getTranslation("gym.pl"), GymView.class);
 		this.rankingLink = new RouterLink(this.getTranslation("ranking"), RankingView.class);
 		this.teamRouterLink = new RouterLink(this.getTranslation("team.pl"), TeamView.class);
-		this.addToDrawer(new VerticalLayout(this.gymRouterLink, this.rankingLink, this.teamRouterLink));
+		this.addToDrawer(new VerticalLayout(this.gameRouterLink, this.gymRouterLink,
+		                                    this.rankingLink, this.teamRouterLink));
 	}
 
 	private void createHeader() {
@@ -123,6 +126,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 			this.locationRouterLink.setText(this.getTranslation("location.pl"));
 			this.streetRouterLink.setText(this.getTranslation("street.pl"));
 		}
+		this.gameRouterLink.setText(this.getTranslation("game.pl"));
 		this.gymRouterLink.setText(this.getTranslation("gym.pl"));
 		this.rankingLink.setText(this.getTranslation("ranking"));
 		this.teamRouterLink.setText(this.getTranslation("team.pl"));

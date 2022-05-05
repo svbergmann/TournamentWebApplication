@@ -1,43 +1,23 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class StreetService implements IModelService<Street> {
-
-	@Autowired
-	private StreetRepository repository;
-
-	@Override
-	public Street create(Street street) {
-		return this.repository.findByName(street.getName()) != null ?
-		       null : this.repository.save(street);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Street> findAll() {
-		return this.repository.findAll(Sort.by("name"));
-	}
-
-	@Override
-	public Street findById(long id) {
-		return this.repository.findById(id).orElse(null);
+public class StreetService extends IModelService<Street> {
+	public StreetService(@Autowired StreetRepository repository) {
+		super(repository);
 	}
 
 	@Override
 	public Street findByName(String name) {
-		return this.repository.findByName(name);
+		return this.repository
+				.findAll()
+				.stream()
+				.filter(s -> s.getName().equals(name))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override
@@ -50,9 +30,5 @@ public class StreetService implements IModelService<Street> {
 			return this.repository.save(s);
 		}
 		return null;
-	}
-
-	public List<Street> findAllFromCity(City city) {
-		return this.repository.findAll().stream().filter(s -> s.getCity().equals(city)).toList();
 	}
 }

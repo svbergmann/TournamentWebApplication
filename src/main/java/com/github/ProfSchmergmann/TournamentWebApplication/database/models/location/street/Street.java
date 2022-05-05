@@ -1,7 +1,6 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -22,8 +20,6 @@ import java.util.Objects;
 @Entity
 public class Street implements Serializable, IModel {
 
-	@ManyToOne
-	private City city;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -31,7 +27,7 @@ public class Street implements Serializable, IModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.id, this.name, this.city);
+		return Objects.hash(this.name);
 	}
 
 	@Override
@@ -42,7 +38,6 @@ public class Street implements Serializable, IModel {
 		if (!(o instanceof Street street)) {
 			return false;
 		}
-		return Objects.equals(this.name, street.name) &&
-				Objects.equals(this.city, street.city);
+		return Objects.equals(this.name, street.name);
 	}
 }

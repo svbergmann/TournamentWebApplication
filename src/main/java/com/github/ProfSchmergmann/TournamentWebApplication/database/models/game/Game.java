@@ -44,6 +44,9 @@ public class Game implements Serializable, IModel {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Game game)) return false;
-		return this.finished == game.finished && Objects.equals(this.date, game.date) && Objects.equals(this.gym, game.gym) && Objects.equals(this.match, game.match);
+		return this.finished == game.finished &&
+				Objects.equals(this.date, game.date) &&
+				Objects.equals(this.gym, game.gym) &&
+				Objects.equals(this.match, game.match);
 	}
 }

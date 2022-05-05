@@ -76,11 +76,9 @@ public class GymView extends EntityView<Gym> {
 		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(
-				    gym -> gym.getLocation() == null || gym.getLocation().getCountry() == null ?
-				           notSet : gym.getLocation().getCountry().getName(this.getLocale()))
-		         .setHeader(this.getTranslation("country"))
-		         .setKey("country")
+		this.grid.addColumn(gym -> this.getTranslation("gym") + gym.getNumber())
+		         .setHeader(this.getTranslation("gym"))
+		         .setKey("gym")
 		         .setSortable(true)
 		         .setAutoWidth(true);
 		this.grid.addColumn(gym -> gym.getLocation() == null ?
@@ -114,8 +112,8 @@ public class GymView extends EntityView<Gym> {
 	void updateGridColumnHeaders() {
 		this.grid.getColumnByKey("name")
 		         .setHeader(this.getTranslation("name"));
-		this.grid.getColumnByKey("country")
-		         .setHeader(this.getTranslation("country"));
+		this.grid.getColumnByKey("gym")
+		         .setHeader(this.getTranslation("gym"));
 		this.grid.getColumnByKey("plz")
 		         .setHeader(this.getTranslation("plz"));
 		this.grid.getColumnByKey("city")

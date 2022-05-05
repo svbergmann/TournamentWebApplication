@@ -2,35 +2,16 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.matc
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MatchService implements IModelService<Match> {
+public class MatchService extends IModelService<Match> {
 
-	@Autowired
-	private MatchRepository repository;
-
-	@Override
-	public Match create(Match match) {
-		return this.findAll().stream().anyMatch(l -> l.equals(match)) ?
-		       null : this.repository.save(match);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Match> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Match findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public MatchService(@Autowired MatchRepository repository) {
+		super(repository);
 	}
 
 	@Override

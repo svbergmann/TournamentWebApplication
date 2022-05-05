@@ -1,19 +1,42 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
-public interface IModelService<T> {
+public abstract class IModelService<T> {
 
-	T create(T t);
+	protected JpaRepository<T, Long> repository;
 
-	void deleteById(long id);
+	public IModelService(JpaRepository<T, Long> repository) {
+		this.repository = repository;
+	}
 
-	List<T> findAll();
+	public T create(T t) {
+		for (T element : this.repository.findAll()) {
+			if (element.equals(t)) {
+				return element;
+			}
+		}
+		return this.repository.save(t);
+	}
 
-	T findById(long id);
+	public void deleteById(long id) {
+		this.repository.deleteById(id);
+	}
 
-	T findByName(String name);
+	public List<T> findAll() {
+		return this.repository.findAll();
+	}
 
-	T update(T t, long id);
+	public T findById(long id) {
+		return this.repository
+				.findById(id)
+				.orElse(null);
+	}
+
+	public abstract T findByName(String name);
+
+	public abstract T update(T t, long id);
 
 }

@@ -2,35 +2,16 @@ package com.github.ProfSchmergmann.TournamentWebApplication.database.models.club
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ClubService implements IModelService<Club> {
+public class ClubService extends IModelService<Club> {
 
-	@Autowired
-	private ClubRepository repository;
-
-	@Override
-	public Club create(Club club) {
-		return this.findAll().stream().anyMatch(l -> l.equals(club)) ?
-		       null : this.repository.save(club);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Club> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Club findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public ClubService(@Autowired ClubRepository repository) {
+		super(repository);
 	}
 
 	@Override

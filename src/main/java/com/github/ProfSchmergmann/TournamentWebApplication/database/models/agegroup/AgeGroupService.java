@@ -4,38 +4,20 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IMode
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class AgeGroupService implements IModelService<AgeGroup> {
+public class AgeGroupService extends IModelService<AgeGroup> {
 
-	@Autowired
-	private AgeGroupRepository repository;
-
-	@Override
-	public AgeGroup create(AgeGroup ageGroup) {
-		return this.findAll().stream().anyMatch(l -> l.equals(ageGroup)) ?
-		       null : this.repository.save(ageGroup);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<AgeGroup> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public AgeGroup findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public AgeGroupService(@Autowired AgeGroupRepository repository) {
+		super(repository);
 	}
 
 	@Override
 	public AgeGroup findByName(String name) {
-		return null;
+		return this.repository.findAll()
+		                      .stream()
+		                      .filter(a -> a.getName().equals(name))
+		                      .findFirst()
+		                      .orElse(null);
 	}
 
 	@Override

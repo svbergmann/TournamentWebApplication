@@ -1,6 +1,8 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.game;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,30 +11,24 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
-public class GameService implements IModelService<Game> {
+public class GameService extends IModelService<Game> {
 
-	@Autowired
-	private GameRepository repository;
-
-	@Override
-	public Game create(Game game) {
-		return this.findAll().stream().anyMatch(l -> l.equals(game)) ?
-		       null : this.repository.save(game);
+	public GameService(@Autowired GameRepository repository) {
+		super(repository);
 	}
 
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
+	public Stream<Game> findAll(Team team) {
+		return this.findAll()
+		           .stream()
+		           .filter(g -> g.getMatch().getTeamA().equals(team) ||
+				           g.getMatch().getTeamB().equals(team));
 	}
 
-	@Override
-	public List<Game> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Game findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public Stream<Game> findAll(AgeGroup ageGroup, Gender gender) {
+		return this.repository.findAll()
+		                      .stream()
+		                      .filter(game -> game.getMatch().getTeamA().getGender().equals(gender) &&
+				                      game.getMatch().getTeamA().getAgeGroup().equals(ageGroup));
 	}
 
 	@Override
@@ -56,14 +52,7 @@ public class GameService implements IModelService<Game> {
 	}
 
 	public Stream<Game> getFinishedGames(Team team) {
-		return this.getGames(team).filter(Game::isFinished);
-	}
-
-	public Stream<Game> getGames(Team team) {
-		return this.findAll()
-		           .stream()
-		           .filter(g -> g.getMatch().getTeamA().equals(team) ||
-				           g.getMatch().getTeamB().equals(team));
+		return this.findAll(team).filter(Game::isFinished);
 	}
 
 	public Stream<Game> getLostGames(Team team) {
@@ -85,6 +74,19 @@ public class GameService implements IModelService<Game> {
 			                  match.getScoreTeamB() - match.getScoreTeamA();
 		           })
 		           .sum();
+	}
+
+	public int getPosition(Team team) {
+		return this.getSortedTeams(team.getAgeGroup(), team.getGender()).indexOf(team) + 1;
+	}
+
+	public List<Team> getSortedTeams(AgeGroup ageGroup, Gender gender) {
+		return this.findAll(ageGroup, gender)
+		           .map(game -> game.getMatch().getTeamA())
+		           .sorted((t1, t2) ->
+				                   (int) this.getWonGames(t1).count() -
+						                   (int) this.getWonGames(t2).count())
+		           .toList();
 	}
 
 	public Stream<Game> getWonGames(Team team) {

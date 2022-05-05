@@ -43,6 +43,7 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 		this.add(this.header, this.grid);
 		if (this.securityService.getAuthenticatedUser() != null) {
 			this.addButton = new Button(this.getTranslation("add"));
+			this.addButton.setId("add.button");
 			this.addButton.addClickListener(click -> this.openAddDialog());
 			this.add(this.addButton);
 		}
@@ -88,27 +89,29 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 	abstract void updateGridColumnHeaders();
 
 	protected void updateGridContextMenu() {
-		final GridContextMenu<T> gridContextMenu = this.grid.addContextMenu();
-		gridContextMenu.addItem(this.getTranslation("delete"), event -> {
-			final Dialog dialog = new Dialog();
-			dialog.add(this.getTranslation("delete.question", event.getItem().get()));
-			final Button yesButton = new Button(this.getTranslation("yes"));
-			final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
-			final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
-			dialog.add(buttons);
-			yesButton.addClickListener(click -> {
-				this.entityService.deleteById(event.getItem().get().getId());
-				this.updateGridItems();
-				dialog.close();
-				gridContextMenu.close();
+		if (this.securityService.getAuthenticatedUser() != null) {
+			final GridContextMenu<T> gridContextMenu = this.grid.addContextMenu();
+			gridContextMenu.addItem(this.getTranslation("delete"), event -> {
+				final Dialog dialog = new Dialog();
+				dialog.add(this.getTranslation("delete.question", event.getItem().get()));
+				final Button yesButton = new Button(this.getTranslation("yes"));
+				final Button abortButton = new Button(this.getTranslation("abort"), e -> dialog.close());
+				final HorizontalLayout buttons = new HorizontalLayout(yesButton, abortButton);
+				dialog.add(buttons);
+				yesButton.addClickListener(click -> {
+					this.entityService.deleteById(event.getItem().get().getId());
+					this.updateGridItems();
+					dialog.close();
+					gridContextMenu.close();
+				});
+				abortButton.addClickListener(click -> {
+					dialog.close();
+					gridContextMenu.close();
+				});
+				dialog.open();
 			});
-			abortButton.addClickListener(click -> {
-				dialog.close();
-				gridContextMenu.close();
-			});
-			dialog.open();
-		});
-		gridContextMenu.addItem(this.getTranslation("abort"));
+			gridContextMenu.addItem(this.getTranslation("abort"));
+		}
 	}
 
 	protected void updateGridItems() {

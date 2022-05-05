@@ -5,35 +5,16 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegr
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TeamService implements IModelService<Team> {
+public class TeamService extends IModelService<Team> {
 
-	@Autowired
-	private TeamRepository repository;
-
-	@Override
-	public Team create(Team team) {
-		return this.findAll().stream().anyMatch(l -> l.equals(team)) ?
-		       null : this.repository.save(team);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Team> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Team findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public TeamService(@Autowired TeamRepository repository) {
+		super(repository);
 	}
 
 	@Override

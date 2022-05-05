@@ -39,6 +39,6 @@ public class AgeGroup implements Serializable, IModel {
 		if (!(o instanceof AgeGroup ageGroup)) {
 			return false;
 		}
-		return Objects.equals(this.name, ageGroup.name);
+		return Objects.equals(this.name.toLowerCase(), ageGroup.name.toLowerCase());
 	}
 }

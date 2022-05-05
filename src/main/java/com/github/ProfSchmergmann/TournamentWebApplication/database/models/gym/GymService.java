@@ -4,38 +4,21 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IMode
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class GymService implements IModelService<Gym> {
+public class GymService extends IModelService<Gym> {
 
-	@Autowired
-	private GymRepository repository;
-
-	@Override
-	public Gym create(Gym gym) {
-		return this.findAll().stream().anyMatch(l -> l.equals(gym)) ?
-		       null : this.repository.save(gym);
-	}
-
-	@Override
-	public void deleteById(long id) {
-		this.repository.deleteById(id);
-	}
-
-	@Override
-	public List<Gym> findAll() {
-		return this.repository.findAll();
-	}
-
-	@Override
-	public Gym findById(long id) {
-		return this.repository.findById(id).orElse(null);
+	public GymService(@Autowired GymRepository repository) {
+		super(repository);
 	}
 
 	@Override
 	public Gym findByName(String name) {
-		return null;
+		return this.repository
+				.findAll()
+				.stream()
+				.filter(g -> g.getName().equals(name))
+				.findFirst()
+				.orElse(null);
 	}
 
 	@Override
