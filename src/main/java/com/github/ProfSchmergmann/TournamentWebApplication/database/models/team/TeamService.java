@@ -5,7 +5,6 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegr
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,26 +14,6 @@ public class TeamService extends IModelService<Team> {
 
 	public TeamService(@Autowired TeamRepository repository) {
 		super(repository);
-	}
-
-	@Override
-	public Team findByName(String name) {
-		return null;
-	}
-
-	@Override
-	public Team update(Team team, long id) {
-		var teamDB = this.repository.findById(id);
-
-		if (teamDB.isPresent()) {
-			var t = teamDB.get();
-			t.setAmount(team.getAmount());
-			t.setAgeGroup(team.getAgeGroup());
-			t.setClub(team.getClub());
-			t.setGender(team.getGender());
-			return this.repository.save(t);
-		}
-		return null;
 	}
 
 	public List<Team> findAll(AgeGroup ageGroup) {
@@ -60,5 +39,25 @@ public class TeamService extends IModelService<Team> {
 		                      .filter(team -> team.getGender().equals(gender))
 		                      .filter(team -> team.getAgeGroup().equals(ageGroup))
 		                      .toList();
+	}
+
+	@Override
+	public Team findByName(String name) {
+		return null;
+	}
+
+	@Override
+	public Team update(Team team, long id) {
+		var teamDB = this.repository.findById(id);
+
+		if (teamDB.isPresent()) {
+			var t = teamDB.get();
+			t.setAmount(team.getAmount());
+			t.setAgeGroup(team.getAgeGroup());
+			t.setClub(team.getClub());
+			t.setGender(team.getGender());
+			return this.repository.save(t);
+		}
+		return null;
 	}
 }

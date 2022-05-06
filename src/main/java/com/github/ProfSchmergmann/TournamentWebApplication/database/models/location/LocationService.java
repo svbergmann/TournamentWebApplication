@@ -34,7 +34,6 @@ public class LocationService extends IModelService<Location> {
 		if (locationDB.isPresent()) {
 			var l = locationDB.get();
 			l.setCity(location.getCity());
-			l.setCountry(location.getCountry());
 			l.setNumber(location.getNumber());
 			l.setPostalCode(l.getPostalCode());
 			l.setStreet(location.getStreet());

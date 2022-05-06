@@ -35,7 +35,7 @@ public class GymView extends EntityView<Gym> {
 		locationSelect.setLabel(this.getTranslation("location"));
 		locationSelect.setItems(this.locationService.findAll());
 		locationSelect.setItemLabelGenerator(l ->
-				                                     l.getCountry().getName(this.getLocale()) + ", "
+				                                     l.getCity().getCountry().getName(this.getLocale()) + ", "
 						                                     + l.getPostalCode() + ", "
 						                                     + l.getCity().getName() + ", "
 						                                     + l.getStreet().getName() + ", "

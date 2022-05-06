@@ -31,7 +31,6 @@ public class Game implements Serializable, IModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
 	@ManyToOne
 	private Match match;
 

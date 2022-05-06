@@ -1,20 +1,25 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,6 +27,10 @@ import java.util.Objects;
 @Entity
 public class Country implements Serializable, IModel {
 
+	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<City> cities;
+	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Club> clubs;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

@@ -1,19 +1,24 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,6 +32,9 @@ public class City implements Serializable, IModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Exclude
+	private Set<Location> locations;
 	private String name;
 
 	@Override

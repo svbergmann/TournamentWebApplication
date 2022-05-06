@@ -4,18 +4,23 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IMode
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.Match;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +39,12 @@ public class Team implements Serializable, IModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@OneToMany(mappedBy = "teamA", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Exclude
+	private Set<Match> matchesA;
+	@OneToMany(mappedBy = "teamB", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Exclude
+	private Set<Match> matchesB;
 
 	private String name;
 

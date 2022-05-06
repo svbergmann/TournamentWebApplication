@@ -65,7 +65,6 @@ public class LocationView extends EntityView<Location> {
 		fields.setPadding(true);
 		addButton.addClickListener(click -> {
 			var location = new Location();
-			location.setCountry(countrySelect.getValue());
 			location.setCity(citySelect.getValue());
 			location.setStreet(streetSelect.getValue());
 			location.setPostalCode(postalCodeNumberField.getValue());
