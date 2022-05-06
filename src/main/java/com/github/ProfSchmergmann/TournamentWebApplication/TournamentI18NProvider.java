@@ -3,6 +3,8 @@ package com.github.ProfSchmergmann.TournamentWebApplication;
 import com.vaadin.flow.i18n.I18NProvider;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -34,10 +36,10 @@ public class TournamentI18NProvider implements I18NProvider {
 		}
 
 		if (!resourceBundle.containsKey(key)) {
-			LOGGER.info("missing resource key (i18n) " + key);
+			LOGGER.info("Missing resource key (i18n) " + key);
 			return key + " - " + locale;
 		} else {
-			return (resourceBundle.containsKey(key)) ? resourceBundle.getString(key) : key;
+			return resourceBundle.containsKey(key) ? resourceBundle.getString(key) : key;
 		}
 	}
 
