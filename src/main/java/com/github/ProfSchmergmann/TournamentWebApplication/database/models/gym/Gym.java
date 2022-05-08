@@ -23,7 +23,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Gym implements Serializable, IModel {
 

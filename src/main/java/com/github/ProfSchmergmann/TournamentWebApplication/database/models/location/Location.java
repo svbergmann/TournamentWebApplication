@@ -24,7 +24,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Location implements Serializable, IModel {
 

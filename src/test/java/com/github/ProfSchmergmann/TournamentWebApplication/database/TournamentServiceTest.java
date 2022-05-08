@@ -41,7 +41,6 @@ class TournamentServiceTest {
 			var game = new Game();
 			game.setMatch(m);
 			game.setDate(new Date());
-			game.setFinished(false);
 			game.setGym(gymService.findByName("OSZ Banken und Versicherungen"));
 			gameService.create(game);
 			games.add(game);

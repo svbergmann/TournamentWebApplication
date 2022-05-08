@@ -5,6 +5,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegr
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.GameService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.MatchService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
 import com.vaadin.flow.component.UI;
@@ -28,20 +29,21 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 
 	private final Select<AgeGroup> ageGroupSelect;
 	private final AgeGroupService ageGroupService;
-	private final GameService gameService;
 	private final Select<Gender> genderSelect;
 	private final GenderService genderService;
 	private final Grid<Team> grid;
+	private final MatchService matchService;
 	private final TeamService teamService;
 
 	public RankingView(@Autowired AgeGroupService ageGroupService,
 	                   @Autowired GenderService genderService,
 	                   @Autowired TeamService teamService,
-	                   @Autowired GameService gameService) {
+	                   @Autowired GameService gameService,
+	                   @Autowired MatchService matchService) {
 		this.ageGroupService = ageGroupService;
 		this.genderService = genderService;
 		this.teamService = teamService;
-		this.gameService = gameService;
+		this.matchService = matchService;
 		this.ageGroupSelect = new Select<>();
 		this.genderSelect = new Select<>();
 		this.grid = new Grid<>(Team.class, false);
@@ -78,7 +80,7 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		this.grid.setColumnReorderingAllowed(true);
 		this.grid.setAllRowsVisible(true);
 		this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-		this.grid.addColumn(this.gameService::getPosition)
+		this.grid.addColumn(this.matchService::getPosition)
 		         .setHeader(this.getTranslation("position"))
 		         .setKey("position")
 		         .setSortable(true)
@@ -100,20 +102,20 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
 		         .setKey("name")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(team -> this.gameService.getFinishedGames(team).toList().size())
+		this.grid.addColumn(team -> this.matchService.findByFinishedAndTeam(true, team).size())
 		         .setHeader(this.getTranslation("games.played"))
 		         .setKey("games.played")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(team -> this.gameService.getWonGames(team).toList().size())
+		this.grid.addColumn(team -> this.matchService.findWonMatchesByTeam(team).size())
 		         .setHeader("W")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(team -> this.gameService.getLostGames(team).toList().size())
+		this.grid.addColumn(team -> this.matchService.findLostMatchesByTeam(team).size())
 		         .setHeader("L")
 		         .setSortable(true)
 		         .setAutoWidth(true);
-		this.grid.addColumn(this.gameService::getPlusMinus)
+		this.grid.addColumn(this.matchService::getPlusMinus)
 		         .setHeader("+/-")
 		         .setSortable(true)
 		         .setAutoWidth(true);

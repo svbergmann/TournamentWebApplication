@@ -23,7 +23,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Match implements Serializable, IModel {
 

@@ -25,7 +25,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Team implements Serializable, IModel {
 

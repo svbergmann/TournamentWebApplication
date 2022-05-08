@@ -23,7 +23,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Club implements Serializable, IModel {
 

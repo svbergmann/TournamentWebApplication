@@ -45,13 +45,11 @@ public class LocationServiceTest {
 	                                     @Autowired CityService cityService,
 	                                     @Autowired LocationService locationService,
 	                                     @Autowired CountryService countryService) {
-		var de = countryService.findByISO3Name("DEU");
 		var berlin = cityService.findByName("Berlin");
 		var locations = new ArrayList<Location>();
-		for (var entry : this.STREET_NAMES_AND_PLZ.entrySet()) {
+		for (var entry : STREET_NAMES_AND_PLZ.entrySet()) {
 			var street = streetService.findByName(entry.getKey().getFirst());
 			var location = new Location();
-			location.setCountry(de);
 			location.setCity(berlin);
 			location.setPostalCode(entry.getValue());
 			location.setStreet(street);
@@ -66,12 +64,12 @@ public class LocationServiceTest {
 	@Test
 	@Order(3)
 	public void createEastercupStreets(@Autowired StreetService streetService) {
-		this.STREET_NAMES_AND_PLZ.keySet().forEach(streetName -> {
+		STREET_NAMES_AND_PLZ.keySet().forEach(streetName -> {
 			var s = new Street();
 			s.setName(streetName.getFirst());
 			streetService.create(s);
 		});
-		var counter = (int) this.STREET_NAMES_AND_PLZ.keySet()
+		var counter = (int) STREET_NAMES_AND_PLZ.keySet()
 		                                             .stream()
 		                                             .filter(name -> streetService.findByName(name.getFirst()) != null)
 		                                             .count();

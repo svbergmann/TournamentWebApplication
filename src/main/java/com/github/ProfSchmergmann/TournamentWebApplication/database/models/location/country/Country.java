@@ -23,7 +23,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 public class Country implements Serializable, IModel {
 

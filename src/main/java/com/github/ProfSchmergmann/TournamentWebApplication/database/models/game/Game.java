@@ -20,12 +20,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @Entity
 public class Game implements Serializable, IModel {
 
 	private Date date;
-	private boolean finished;
 	@ManyToOne
 	private Gym gym;
 	@Id
@@ -36,15 +34,14 @@ public class Game implements Serializable, IModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.date, this.finished, this.gym, this.match);
+		return Objects.hash(this.date, this.gym, this.match);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Game game)) return false;
-		return this.finished == game.finished &&
-				Objects.equals(this.date, game.date) &&
+		return Objects.equals(this.date, game.date) &&
 				Objects.equals(this.gym, game.gym) &&
 				Objects.equals(this.match, game.match);
 	}
