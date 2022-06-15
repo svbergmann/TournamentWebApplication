@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.7'
+	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'com.vaadin' version '23.0.6'
+	id 'com.vaadin' version '23.1.0'
 	id 'java'
 }
 
@@ -20,7 +20,7 @@ repositories {
 }
 
 ext {
-	set('vaadinVersion', "23.0.6")
+	set('vaadinVersion', "23.1.0")
 }
 
 dependencies {
@@ -47,7 +47,7 @@ tasks.named('test') {
 
 vaadin {
 	nodeAutoUpdate = true
-	nodeVersion = 'v18.0.0'
+	nodeVersion = 'v18.3.0'
 	optimizeBundle = true
 	pnpmEnable = true
 	productionMode = false

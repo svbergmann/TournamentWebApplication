@@ -5,16 +5,17 @@
  * This file will be overwritten on every run. Any custom changes should be made to vite.config.ts
  */
 import path from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync, writeFileSync } from 'fs';
 import * as net from 'net';
 
 import { processThemeResources } from './build/plugins/application-theme-plugin/theme-handle';
 import settings from './build/vaadin-dev-server-settings.json';
-import { defineConfig, mergeConfig, PluginOption, ResolvedConfig, UserConfigFn } from 'vite';
+import { defineConfig, mergeConfig, PluginOption, ResolvedConfig, UserConfigFn, OutputOptions, AssetInfo, ChunkInfo } from 'vite';
 import { injectManifest } from 'workbox-build';
 
 import * as rollup from 'rollup';
 import brotli from 'rollup-plugin-brotli';
+import replace from '@rollup/plugin-replace';
 import checker from 'vite-plugin-checker';
 
 const appShellUrl = '.';
@@ -23,6 +24,8 @@ const frontendFolder = path.resolve(__dirname, settings.frontendFolder);
 const themeFolder = path.resolve(frontendFolder, settings.themeFolder);
 const frontendBundleFolder = path.resolve(__dirname, settings.frontendBundleOutput);
 const addonFrontendFolder = path.resolve(__dirname, settings.addonFrontendFolder);
+const themeResourceFolder = path.resolve(__dirname, settings.themeResourceFolder);
+const statsFile = path.resolve(frontendBundleFolder, '..', 'config', 'stats.json');
 
 const projectStaticAssetsFolders = [
   path.resolve(__dirname, 'src', 'main', 'resources', 'META-INF', 'resources'),
@@ -37,23 +40,24 @@ const themeOptions = {
   devMode: false,
   // The following matches folder 'target/flow-frontend/themes/'
   // (not 'frontend/themes') for theme in JAR that is copied there
-  themeResourceFolder: path.resolve(__dirname, settings.themeResourceFolder),
+  themeResourceFolder: path.resolve(themeResourceFolder, settings.themeFolder),
   themeProjectFolders: themeProjectFolders,
   projectStaticAssetsOutputFolder: path.resolve(__dirname, settings.staticOutput),
   frontendGeneratedFolder: path.resolve(frontendFolder, settings.generatedFolder)
 };
 
+const hasExportedWebComponents = existsSync(path.resolve(frontendFolder, 'web-component.html'));
+
 // Block debug and trace logs.
 console.trace = () => {};
 console.debug = () => {};
 
-function transpileSWPlugin(): PluginOption {
+function buildSWPlugin(): PluginOption {
   let config: ResolvedConfig;
 
   return {
-    name: 'vaadin:transpile-sw',
+    name: 'vaadin:build-sw',
     enforce: 'post',
-    apply: 'build',
     async configResolved(resolvedConfig) {
       config = resolvedConfig;
     },
@@ -62,24 +66,37 @@ function transpileSWPlugin(): PluginOption {
         'alias',
         'vite:resolve',
         'vite:esbuild',
-        'replace',
-        'vite:define',
         'rollup-plugin-dynamic-import-variables',
         'vite:esbuild-transpile',
         'vite:terser'
       ];
-      const plugins = config.plugins.filter((p) => includedPluginNames.includes(p.name));
-      const bundle = await rollup.rollup({
-        input: path.resolve(settings.clientServiceWorkerSource),
-        plugins
+      const rollupPlugins: rollup.Plugin[] = config.plugins.filter((p) => {
+        return includedPluginNames.includes(p.name);
       });
+      rollupPlugins.push(
+        replace({
+          'process.env.NODE_ENV': JSON.stringify(config.mode),
+          ...config.define
+        })
+      );
+
+      const rollupOutput: rollup.OutputOptions = {
+        file: path.resolve(frontendBundleFolder, 'sw.js'),
+        format: 'es',
+        exports: 'none',
+        sourcemap: config.command === 'serve' || config.build.sourcemap,
+        inlineDynamicImports: true
+      };
+
+      const rollupConfig: rollup.RollupOptions = {
+        input: path.resolve(settings.clientServiceWorkerSource),
+        output: rollupOutput,
+        plugins: rollupPlugins
+      };
+
+      const bundle = await rollup.rollup(rollupConfig);
       try {
-        await bundle.write({
-          format: 'es',
-          exports: 'none',
-          inlineDynamicImports: true,
-          file: path.resolve(frontendBundleFolder, 'sw.js')
-        });
+        await bundle.write(rollupOutput);
       } finally {
         await bundle.close();
       }
@@ -116,6 +133,30 @@ function injectManifestToSWPlugin(): PluginOption {
   };
 }
 
+function statsExtracterPlugin(): PluginOption {
+  return {
+    name: 'vaadin:stats',
+    enforce: 'post',
+    async writeBundle(options: OutputOptions, bundle: { [fileName: string]: AssetInfo | ChunkInfo }) {
+      const modules = Object.values(bundle).flatMap((b) => (b.modules ? Object.keys(b.modules) : []));
+      const nodeModulesFolders = modules.filter((id) => id.includes('node_modules'));
+      const npmModules = nodeModulesFolders
+        .map((id) => id.replace(/.*node_modules./, ''))
+        .map((id) => {
+          const parts = id.split('/');
+          if (id.startsWith('@')) {
+            return parts[0] + '/' + parts[1];
+          } else {
+            return parts[0];
+          }
+        })
+        .sort()
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      writeFileSync(statsFile, JSON.stringify({ npmModules }, null, 1));
+    }
+  };
+}
 function vaadinBundlesPlugin(): PluginOption {
   type ExportInfo =
     | string
@@ -139,7 +180,7 @@ function vaadinBundlesPlugin(): PluginOption {
 
   const disabledMessage = 'Vaadin component dependency bundles are disabled.';
 
-  const modulesDirectory = path.posix.resolve(__dirname, 'node_modules');
+  const modulesDirectory = path.resolve(__dirname, 'node_modules').replace(/\\/g, '/');
 
   let vaadinBundleJson: BundleJson;
 
@@ -261,33 +302,54 @@ export { ${exports.map((binding) => `${binding} as ${binding}`).join(', ')} };`;
   };
 }
 
-function updateTheme(contextPath: string) {
-  const themePath = path.resolve(themeFolder);
-  if (contextPath.startsWith(themePath)) {
-    const changed = path.relative(themePath, contextPath);
-
-    console.debug('Theme file changed', changed);
-
-    if (changed.startsWith(settings.themeName)) {
+function themePlugin(): PluginOption {
+  return {
+    name: 'vaadin:theme',
+    config() {
       processThemeResources(themeOptions, console);
-    }
+    },
+    handleHotUpdate(context) {
+      const contextPath = path.resolve(context.file);
+      const themePath = path.resolve(themeFolder);
+      if (contextPath.startsWith(themePath)) {
+        const changed = path.relative(themePath, contextPath);
+
+        console.debug('Theme file changed', changed);
+
+        if (changed.startsWith(settings.themeName)) {
+          processThemeResources(themeOptions, console);
+        }
+      }
+    },
+    async resolveId(id) {
+      if (!id.startsWith(settings.themeFolder)) {
+        return;
+      }
+
+      for (const location of [themeResourceFolder, frontendFolder]) {
+        const result = await this.resolve(path.resolve(location, id));
+        if (result) {
+          return result;
+        }
+      }
+    },
   }
 }
 
-function runWatchDog(watchDogPort) {
+function runWatchDog(watchDogPort, watchDogHost) {
   const client = net.Socket();
   client.setEncoding('utf8');
-  client.on('error', function () {
-    console.log('Watchdog connection error. Terminating vite process...');
+  client.on('error', function (err) {
+    console.log('Watchdog connection error. Terminating vite process...', err);
     client.destroy();
     process.exit(0);
   });
   client.on('close', function () {
     client.destroy();
-    runWatchDog(watchDogPort);
+    runWatchDog(watchDogPort, watchDogHost);
   });
 
-  client.connect(watchDogPort, 'localhost');
+  client.connect(watchDogPort, watchDogHost || 'localhost');
 }
 
 let spaMiddlewareForceRemoved = false;
@@ -305,20 +367,21 @@ export const vaadinConfig: UserConfigFn = (env) => {
   if (devMode && process.env.watchDogPort) {
     // Open a connection with the Java dev-mode handler in order to finish
     // vite when it exits or crashes.
-    runWatchDog(process.env.watchDogPort);
+    runWatchDog(process.env.watchDogPort, process.env.watchDogHost);
   }
+
   return {
     root: 'frontend',
     base: '',
     resolve: {
       alias: {
-        themes: themeFolder,
         Frontend: frontendFolder
       },
       preserveSymlinks: true
     },
     define: {
-      OFFLINE_PATH: settings.offlinePath
+      OFFLINE_PATH: settings.offlinePath,
+      VITE_ENABLED: 'true'
     },
     server: {
       fs: {
@@ -330,7 +393,11 @@ export const vaadinConfig: UserConfigFn = (env) => {
       assetsDir: 'VAADIN/build',
       rollupOptions: {
         input: {
-          indexhtml: path.resolve(frontendFolder, 'index.html')
+          indexhtml: path.resolve(frontendFolder, 'index.html'),
+
+          ...hasExportedWebComponents
+            ? { webcomponenthtml: path.resolve(frontendFolder, 'web-component.html') }
+            : {}
         }
       }
     },
@@ -339,22 +406,19 @@ export const vaadinConfig: UserConfigFn = (env) => {
         // Pre-scan entrypoints in Vite to avoid reloading on first open
         'generated/vaadin.ts'
       ],
-      exclude: ['@vaadin/router']
+      exclude: [
+        '@vaadin/router',
+        '@vaadin/vaadin-license-checker',
+        '@vaadin/vaadin-usage-statistics',
+      ]
     },
     plugins: [
       !devMode && brotli(),
       devMode && vaadinBundlesPlugin(),
-      settings.pwaEnabled && transpileSWPlugin(),
-      settings.pwaEnabled && injectManifestToSWPlugin(),
-      {
-        name: 'vaadin:custom-theme',
-        config() {
-          processThemeResources(themeOptions, console);
-        },
-        handleHotUpdate(context) {
-          updateTheme(path.resolve(context.file));
-        }
-      },
+      settings.offlineEnabled && buildSWPlugin(),
+      settings.offlineEnabled && injectManifestToSWPlugin(),
+      !devMode && statsExtracterPlugin(),
+      themePlugin(),
       {
         name: 'vaadin:force-remove-spa-middleware',
         transformIndexHtml: {
@@ -370,8 +434,31 @@ export const vaadinConfig: UserConfigFn = (env) => {
           }
         }
       },
+      hasExportedWebComponents && {
+        name: 'vaadin:inject-entrypoints-to-web-component-html',
+        transformIndexHtml: {
+          enforce: 'pre',
+          transform(_html, { path, server }) {
+            if (path !== '/web-component.html') {
+              return;
+            }
+
+            const basePath = devMode
+              ? server?.config.base ?? ''
+              : './'
+
+            return [
+              {
+                tag: 'script',
+                attrs: { type: 'module', src: `${basePath}generated/vaadin-web-component.ts` },
+                injectTo: 'head'
+              }
+            ]
+          }
+        }
+      },
       {
-        name: 'vaadin:inject-entrypoint-script',
+        name: 'vaadin:inject-entrypoints-to-index-html',
         transformIndexHtml: {
           enforce: 'pre',
           transform(_html, { path, server }) {
