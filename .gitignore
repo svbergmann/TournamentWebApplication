@@ -343,3 +343,11 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,windows,gradle,vaadin,web,node
+/.npmrc
+/.pnpmfile.cjs
+/package.json
+/pnpm-lock.yaml
+/tsconfig.json
+/types.d.ts
+/vite.config.ts
+/vite.generated.ts
