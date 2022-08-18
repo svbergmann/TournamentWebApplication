@@ -8,20 +8,18 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@PWA(
-		name = "Tournament Web Application",
-		shortName = "Tournament"
-)
-public class TournamentWebApplication extends SpringBootServletInitializer implements AppShellConfigurator {
+@PWA(name = "Tournament Web Application", shortName = "Tournament")
+public class TournamentWebApplication extends SpringBootServletInitializer implements
+    AppShellConfigurator {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TournamentWebApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TournamentWebApplication.class, args);
+  }
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(TournamentWebApplication.class);
-	}
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(TournamentWebApplication.class);
+  }
 
 }
 
