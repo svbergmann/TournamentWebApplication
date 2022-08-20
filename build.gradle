@@ -76,7 +76,7 @@ vaadin {
     nodeVersion = 'v18.3.0'
     optimizeBundle = true
     pnpmEnable = true
-    productionMode = false
+    productionMode = true
     runNpmInstall = true
 }
 

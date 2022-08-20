@@ -172,8 +172,8 @@ Project Link: [https://github.com/ProfSchmergmann/TournamentWebApplication/](htt
 [Vaadin]: https://img.shields.io/badge/Vaadin-v23.1.3-00B4F0?&logo=vaadin&logoColor=white
 [Vaadin-url]: https://vaadin.com/
 
-[Gradle]: https://img.shields.io/badge/Gradle-v7.2-02303A?&logo=gradle&logoColor=white
-[Gradle-url]: https://gradle.org/
+[Gradle]: https://img.shields.io/badge/Gradle-v7-02303A?&logo=gradle&logoColor=white
+[Gradle-url]: https://services.gradle.org/distributions/
 
 [Java]: https://img.shields.io/badge/Java-v17-ED8B00?logo=java&logoColor=white
 [Java-17-url]: https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html
