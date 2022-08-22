@@ -33,12 +33,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User signUpUser(User user) {
-
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		final String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-
-		user.setPassword(encryptedPassword);
-
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		return this.userRepository.save(user);
 	}
 

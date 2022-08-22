@@ -1,8 +1,11 @@
 package com.github.ProfSchmergmann.TournamentWebApplication.views.security;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User.Role;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.UserService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GymView;
 import com.vaadin.flow.component.HasValueAndElement;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -11,7 +14,6 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -43,7 +45,7 @@ public class RegistrationView extends VerticalLayout {
 
 	public static class RegistrationForm extends FormLayout {
 
-		private final EmailField email;
+		private final TextField email;
 		private final Span errorMessageField;
 		private final TextField firstName;
 		private final TextField lastName;
@@ -56,19 +58,21 @@ public class RegistrationView extends VerticalLayout {
 			this.title = new H3("Signup form");
 			this.firstName = new TextField("First name");
 			this.lastName = new TextField("Last name");
-			this.email = new EmailField();
+			this.email = new TextField();
 			this.email.setLabel("Email address");
 			this.email.getElement().setAttribute("name", "email");
 			this.email.setErrorMessage("Please enter a valid email address");
 			this.email.setClearButtonVisible(true);
-
 			this.passwordField = new PasswordField("Password");
 			this.passwordField.setHelperText("A password must be at least 8 characters. It has to have at least one letter and one digit.");
 			this.passwordField.setPattern("^(?=.*[0-9])(?=.*[a-zA-Z]).{8}.*$");
 			this.passwordField.setErrorMessage("Not a valid password");
 			this.passwordConfirm = new PasswordField("Confirm password");
 
-			this.setRequiredIndicatorVisible(this.firstName, this.lastName, this.email, this.passwordField,
+			this.setRequiredIndicatorVisible(this.firstName,
+			                                 this.lastName,
+			                                 this.email,
+			                                 this.passwordField,
 			                                 this.passwordConfirm);
 
 			this.errorMessageField = new Span();
@@ -76,25 +80,20 @@ public class RegistrationView extends VerticalLayout {
 			this.submitButton = new Button("Join the community");
 			this.submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-			this.add(this.title, this.firstName, this.lastName, this.email, this.passwordField,
-			         this.passwordConfirm, this.errorMessageField,
-			         this.submitButton);
+			var verticalLayout = new VerticalLayout(this.title,
+			                                        this.firstName,
+			                                        this.lastName,
+			                                        this.email,
+			                                        this.passwordField,
+			                                        this.passwordConfirm,
+			                                        this.errorMessageField,
+			                                        this.submitButton);
+			verticalLayout.setPadding(true);
+
+			this.add(verticalLayout);
 
 			// Max width of the Form
 			this.setMaxWidth("500px");
-
-			// Allow the form layout to be responsive.
-			// On device widths 0-490px we have one column.
-			// Otherwise, we have two columns.
-			this.setResponsiveSteps(
-					new ResponsiveStep("0", 1, ResponsiveStep.LabelsPosition.TOP),
-					new ResponsiveStep("490px", 2, ResponsiveStep.LabelsPosition.TOP));
-
-			// These components always take full width
-			this.setColspan(this.title, 2);
-			this.setColspan(this.email, 2);
-			this.setColspan(this.errorMessageField, 2);
-			this.setColspan(this.submitButton, 2);
 		}
 
 		public Span getErrorMessageField() {
@@ -141,73 +140,47 @@ public class RegistrationView extends VerticalLayout {
 		public void addBindingAndValidation() {
 			var binder = new BeanValidationBinder<>(User.class);
 			binder.bindInstanceFields(this.registrationForm);
-
-			// A custom validator for password fields
 			binder.forField(this.registrationForm.getPasswordField())
 			      .withValidator(this::passwordValidator).bind("password");
 
-			// The second password field is not connected to the Binder, but we
-			// want the binder to re-check the password validator when the field
-			// value changes. The easiest way is just to do that manually.
 			this.registrationForm.getPasswordConfirmField().addValueChangeListener(e -> {
-				// The user has modified the second field, now we can validate and show errors.
-				// See passwordValidator() for how this flag is used.
 				this.enablePasswordValidation = true;
-
 				binder.validate();
 			});
 
-			// Set the label where bean-level error messages go
 			binder.setStatusLabel(this.registrationForm.getErrorMessageField());
 
-			// And finally the submit button
 			this.registrationForm.getSubmitButton().addClickListener(event -> {
 				try {
-					// Create empty bean to store the details into
 					var userBean = new User();
 
-					// Run validators and write the values to the bean
 					binder.writeBean(userBean);
 					userBean.setUserName(userBean.getEmail());
-
-					userBean = this.userService.signUpUser(userBean);
-
-					// Typically, you would here call backend to store the bean
-
-					// Show success message if everything went well
-					this.showSuccess(userBean);
+					userBean.setRole(Role.USER);
+					var signedUpUser = this.userService.signUpUser(userBean);
+					this.showSuccess(signedUpUser);
 				} catch (ValidationException exception) {
 					// validation errors are already visible for each field,
 					// and bean-level errors are shown in the status label.
 					// We could show additional messages here if we want, do logging, etc.
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
 			});
 		}
 
-		/**
-		 * Method to validate that:
-		 * <p>
-		 * 1) Password is at least 8 characters long
-		 * <p>
-		 * 2) Values in both fields match each other
-		 */
 		private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
-			/*
-			 * Just a simple length check. A real version should check for password
-			 * complexity as well!
-			 */
 
 			if (pass1 == null || pass1.length() < 8) {
 				return ValidationResult.error("Password should be at least 8 characters long");
 			}
 
 			if (!this.enablePasswordValidation) {
-				// user hasn't visited the field yet, so don't validate just yet, but next time.
 				this.enablePasswordValidation = true;
 				return ValidationResult.ok();
 			}
 
-			String pass2 = this.registrationForm.getPasswordConfirmField().getValue();
+			var pass2 = this.registrationForm.getPasswordConfirmField().getValue();
 
 			if (pass1.equals(pass2)) {
 				return ValidationResult.ok();
@@ -224,10 +197,7 @@ public class RegistrationView extends VerticalLayout {
 					Notification.show("Data saved, welcome " + user.getFirstName());
 			notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
-			// Here you'd typically redirect the user to another view
+			UI.getCurrent().navigate(GymView.class);
 		}
-
-
 	}
-
 }
