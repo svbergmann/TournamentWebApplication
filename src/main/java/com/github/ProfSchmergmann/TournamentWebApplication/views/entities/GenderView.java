@@ -1,8 +1,9 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,33 +14,33 @@ import javax.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PermitAll
-@Route(value = "agegroups", layout = MainLayout.class)
-public class AgeGroupView extends EntityView<AgeGroup> {
+@Route(value = "gender", layout = MainLayout.class)
+public class GenderView extends EntityView<Gender> {
 
-  public AgeGroupView(@Autowired AgeGroupService ageGroupService,
+  public GenderView(@Autowired GenderService genderService,
       @Autowired SecurityService securityService) {
-    super("age.group.pl", new Grid<>(), ageGroupService, securityService);
+    super("gender.pl", new Grid<>(), genderService, securityService);
   }
 
   @Override
   VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
-    final TextField ageGroupTextField = new TextField(this.getTranslation("name"));
+    final TextField genderTextField = new TextField(this.getTranslation("name"));
     addButton.addClickListener(click -> {
-      var ageGroup = new AgeGroup();
-      ageGroup.setName(ageGroupTextField.getValue());
+      var gender = new Gender();
+      gender.setName(genderTextField.getValue());
       if (this.entityService.findAll().stream()
-          .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
-        this.entityService.create(ageGroup);
-        this.updateGridItems();
+          .noneMatch(ageGroup1 -> ageGroup1.equals(gender))) {
+        this.entityService.create(gender);
+        this.updateGrid();
       }
       dialog.close();
     });
-    return new VerticalLayout(ageGroupTextField);
+    return new VerticalLayout(genderTextField);
   }
 
   @Override
   void setGridColumns() {
-    this.grid.addColumn(AgeGroup::getName)
+    this.grid.addColumn(Gender::getName)
         .setHeader(this.getTranslation("name"))
         .setKey("name")
         .setSortable(true)

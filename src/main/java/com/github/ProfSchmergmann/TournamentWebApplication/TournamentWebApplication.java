@@ -9,8 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @PWA(name = "Tournament Web Application",
-		shortName = "Tournament",
-		iconPath = "images/basketball_icon.png")
+		shortName = "Tournament")
 public class TournamentWebApplication extends SpringBootServletInitializer implements
 		AppShellConfigurator {
 

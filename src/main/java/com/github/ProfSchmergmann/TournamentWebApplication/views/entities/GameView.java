@@ -1,9 +1,10 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.Game;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.GameService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.MatchService;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;

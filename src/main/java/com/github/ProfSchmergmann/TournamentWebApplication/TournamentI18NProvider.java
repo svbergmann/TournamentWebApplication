@@ -24,9 +24,9 @@ public class TournamentI18NProvider implements I18NProvider {
 
 	public static StreamResource getImageStreamResourceFromLocale(Locale locale) {
 		if (GERMAN.equals(locale)) {
-			return new StreamResource("de.svg", () -> TournamentI18NProvider.class.getResourceAsStream("/images/de.svg"));
+			return new StreamResource("de.svg", () -> TournamentI18NProvider.class.getResourceAsStream("/META-INF/resources/images/de.svg"));
 		} else if (ENGLISH.equals(locale)) {
-			return new StreamResource("gb.svg", () -> TournamentI18NProvider.class.getResourceAsStream("/images/gb.svg"));
+			return new StreamResource("gb.svg", () -> TournamentI18NProvider.class.getResourceAsStream("/META-INF/resources/images/gb.svg"));
 		}
 		return null;
 	}

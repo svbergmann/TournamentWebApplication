@@ -2,6 +2,18 @@ package com.github.ProfSchmergmann.TournamentWebApplication.views;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.TournamentI18NProvider;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.AgeGroupView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.CityView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.ClubView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.CountryView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GameView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GenderView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GymView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.LocationView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.RankingView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.StreetView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.TeamView;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.security.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -37,9 +49,9 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	private RouterLink gameRouterLink;
 	private RouterLink genderRouterLink;
 	private RouterLink gymRouterLink;
+	private H1 headerText;
 	private RouterLink locationRouterLink;
 	private Button logButton;
-	private H1 logo;
 	private RouterLink rankingLink;
 	private RouterLink streetRouterLink;
 	private RouterLink teamRouterLink;
@@ -70,14 +82,10 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 	}
 
 	private void createHeader() {
-		this.logo = new H1(this.getTranslation("application.name"));
-		this.logo.addClassNames("text-l", "m-m");
-
-		var authenticated = this.securityService.getAuthenticatedUser() != null;
-		this.logButton = new Button(authenticated ? this.getTranslation("log.out") : this.getTranslation("log.in"), authenticated ? e -> this.securityService.logout() : e -> UI.getCurrent().navigate(LoginView.class));
+		this.headerText = new H1(this.getTranslation("application.name"));
+		this.headerText.addClassNames("text-l", "m-m");
 
 		Select<Locale> languageSelect = new Select<>();
-		languageSelect.setHeight(this.logButton.getHeight());
 		languageSelect.setWidth("5rem");
 		languageSelect.setRenderer(new ComponentRenderer<>(locale -> {
 			var img = new Image(TournamentI18NProvider.getImageStreamResourceFromLocale(locale), locale.toLanguageTag());
@@ -90,11 +98,13 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 		languageSelect.setValue(this.i18NProvider.getProvidedLocales().contains(currentLocale) ? currentLocale : this.i18NProvider.getProvidedLocales().get(0));
 		languageSelect.addValueChangeListener(event -> this.saveLocalePreference(event.getValue()));
 
+		var authenticated = this.securityService.getAuthenticatedUser() != null;
+		this.logButton = new Button(authenticated ? this.getTranslation("log.out") : this.getTranslation("log.in"), authenticated ? e -> this.securityService.logout() : e -> UI.getCurrent().navigate(LoginView.class));
 
-		var header = new HorizontalLayout(new DrawerToggle(), this.logo, languageSelect, this.logButton);
+		var header = new HorizontalLayout(new DrawerToggle(), this.headerText, languageSelect, this.logButton);
 
 		header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-		header.expand(this.logo);
+		header.expand(this.headerText);
 		header.setWidth("100%");
 		header.addClassNames("py-0", "px-m");
 		header.setPadding(true);
@@ -104,7 +114,7 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
 
 	@Override
 	public void localeChange(LocaleChangeEvent event) {
-		this.logo.setText(this.getTranslation("application.name"));
+		this.headerText.setText(this.getTranslation("application.name"));
 		var authenticated = this.securityService.getAuthenticatedUser() != null;
 		this.logButton.setText(authenticated ? this.getTranslation("log.out") : this.getTranslation("log.in"));
 		if (authenticated) {

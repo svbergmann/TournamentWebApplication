@@ -1,6 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.EntityView.notSet;
+import static com.github.ProfSchmergmann.TournamentWebApplication.views.entities.EntityView.notSet;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
@@ -10,6 +10,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gende
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.MatchService;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;

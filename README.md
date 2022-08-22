@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://github.com/ProfSchmergmann/TournamentWebApplication">
-    <img src="src/main/resources/images/basketball_icon.svg" alt="Logo" width="80" height="80">
+    <img src="src/main/resources/META-INF/resources/icons/basketball_icon.svg" alt="Logo" width="80" height="80">
   </a>
 <h2 align="center">TournamentWebApplication</h2>
   <p>
@@ -57,6 +57,8 @@ Basically this is just for planning a tournament and let the participants view t
 [![Checkstyle]][Checkstyle-url]
 
 [![Jib]][Jib-url]
+
+[![Google-Icons]][Google-Icons-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -200,3 +202,7 @@ Link: [https://github.com/ProfSchmergmann/TournamentWebApplication/](https://git
 [Jib]: https://img.shields.io/badge/Jib-v3.2.1-orange?logo=jib&logoColor=white
 
 [Jib-url]: https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+
+[Google-Icons]: https://img.shields.io/badge/Google_Icons--yellow?logo=google&logoColor=white
+
+[Google-Icons-url]: https://fonts.google.com/icons

@@ -1,0 +1,233 @@
+package com.github.ProfSchmergmann.TournamentWebApplication.views.security;
+
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User;
+import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.UserService;
+import com.vaadin.flow.component.HasValueAndElement;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.stream.Stream;
+
+@Route("register")
+@PageTitle("Register | Tournament")
+@AnonymousAllowed
+public class RegistrationView extends VerticalLayout {
+
+	private final UserService userService;
+
+	public RegistrationView(@Autowired UserService userService) {
+		this.userService = userService;
+		var form = new RegistrationForm();
+		this.setHorizontalComponentAlignment(Alignment.CENTER, form);
+		this.add(form);
+		var binder = new RegistrationFormBinder(form, userService);
+		binder.addBindingAndValidation();
+	}
+
+	public static class RegistrationForm extends FormLayout {
+
+		private final EmailField email;
+		private final Span errorMessageField;
+		private final TextField firstName;
+		private final TextField lastName;
+		private final PasswordField passwordConfirm;
+		private final PasswordField passwordField;
+		private final Button submitButton;
+		private final H3 title;
+
+		public RegistrationForm() {
+			this.title = new H3("Signup form");
+			this.firstName = new TextField("First name");
+			this.lastName = new TextField("Last name");
+			this.email = new EmailField();
+			this.email.setLabel("Email address");
+			this.email.getElement().setAttribute("name", "email");
+			this.email.setErrorMessage("Please enter a valid email address");
+			this.email.setClearButtonVisible(true);
+
+			this.passwordField = new PasswordField("Password");
+			this.passwordField.setHelperText("A password must be at least 8 characters. It has to have at least one letter and one digit.");
+			this.passwordField.setPattern("^(?=.*[0-9])(?=.*[a-zA-Z]).{8}.*$");
+			this.passwordField.setErrorMessage("Not a valid password");
+			this.passwordConfirm = new PasswordField("Confirm password");
+
+			this.setRequiredIndicatorVisible(this.firstName, this.lastName, this.email, this.passwordField,
+			                                 this.passwordConfirm);
+
+			this.errorMessageField = new Span();
+
+			this.submitButton = new Button("Join the community");
+			this.submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+			this.add(this.title, this.firstName, this.lastName, this.email, this.passwordField,
+			         this.passwordConfirm, this.errorMessageField,
+			         this.submitButton);
+
+			// Max width of the Form
+			this.setMaxWidth("500px");
+
+			// Allow the form layout to be responsive.
+			// On device widths 0-490px we have one column.
+			// Otherwise, we have two columns.
+			this.setResponsiveSteps(
+					new ResponsiveStep("0", 1, ResponsiveStep.LabelsPosition.TOP),
+					new ResponsiveStep("490px", 2, ResponsiveStep.LabelsPosition.TOP));
+
+			// These components always take full width
+			this.setColspan(this.title, 2);
+			this.setColspan(this.email, 2);
+			this.setColspan(this.errorMessageField, 2);
+			this.setColspan(this.submitButton, 2);
+		}
+
+		public Span getErrorMessageField() {
+			return this.errorMessageField;
+		}
+
+		public PasswordField getPasswordConfirmField() {
+			return this.passwordConfirm;
+		}
+
+		public PasswordField getPasswordField() {
+			return this.passwordField;
+		}
+
+		public Button getSubmitButton() {
+			return this.submitButton;
+		}
+
+		private void setRequiredIndicatorVisible(HasValueAndElement<?, ?>... components) {
+			Stream.of(components).forEach(comp -> comp.setRequiredIndicatorVisible(true));
+		}
+
+	}
+
+	public static class RegistrationFormBinder {
+
+		private final RegistrationForm registrationForm;
+		private final UserService userService;
+		/**
+		 * Flag for disabling first run for password validation
+		 */
+		private boolean enablePasswordValidation;
+
+		public RegistrationFormBinder(RegistrationForm registrationForm,
+		                              UserService userService) {
+			this.registrationForm = registrationForm;
+			this.userService = userService;
+		}
+
+		/**
+		 * Method to add the data binding and validation logics
+		 * to the registration form
+		 */
+		public void addBindingAndValidation() {
+			var binder = new BeanValidationBinder<>(User.class);
+			binder.bindInstanceFields(this.registrationForm);
+
+			// A custom validator for password fields
+			binder.forField(this.registrationForm.getPasswordField())
+			      .withValidator(this::passwordValidator).bind("password");
+
+			// The second password field is not connected to the Binder, but we
+			// want the binder to re-check the password validator when the field
+			// value changes. The easiest way is just to do that manually.
+			this.registrationForm.getPasswordConfirmField().addValueChangeListener(e -> {
+				// The user has modified the second field, now we can validate and show errors.
+				// See passwordValidator() for how this flag is used.
+				this.enablePasswordValidation = true;
+
+				binder.validate();
+			});
+
+			// Set the label where bean-level error messages go
+			binder.setStatusLabel(this.registrationForm.getErrorMessageField());
+
+			// And finally the submit button
+			this.registrationForm.getSubmitButton().addClickListener(event -> {
+				try {
+					// Create empty bean to store the details into
+					var userBean = new User();
+
+					// Run validators and write the values to the bean
+					binder.writeBean(userBean);
+					userBean.setUserName(userBean.getEmail());
+
+					userBean = this.userService.signUpUser(userBean);
+
+					// Typically, you would here call backend to store the bean
+
+					// Show success message if everything went well
+					this.showSuccess(userBean);
+				} catch (ValidationException exception) {
+					// validation errors are already visible for each field,
+					// and bean-level errors are shown in the status label.
+					// We could show additional messages here if we want, do logging, etc.
+				}
+			});
+		}
+
+		/**
+		 * Method to validate that:
+		 * <p>
+		 * 1) Password is at least 8 characters long
+		 * <p>
+		 * 2) Values in both fields match each other
+		 */
+		private ValidationResult passwordValidator(String pass1, ValueContext ctx) {
+			/*
+			 * Just a simple length check. A real version should check for password
+			 * complexity as well!
+			 */
+
+			if (pass1 == null || pass1.length() < 8) {
+				return ValidationResult.error("Password should be at least 8 characters long");
+			}
+
+			if (!this.enablePasswordValidation) {
+				// user hasn't visited the field yet, so don't validate just yet, but next time.
+				this.enablePasswordValidation = true;
+				return ValidationResult.ok();
+			}
+
+			String pass2 = this.registrationForm.getPasswordConfirmField().getValue();
+
+			if (pass1.equals(pass2)) {
+				return ValidationResult.ok();
+			}
+
+			return ValidationResult.error("Passwords do not match");
+		}
+
+		/**
+		 * We call this method when form submission has succeeded
+		 */
+		private void showSuccess(User user) {
+			Notification notification =
+					Notification.show("Data saved, welcome " + user.getFirstName());
+			notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+			// Here you'd typically redirect the user to another view
+		}
+
+
+	}
+
+}
