@@ -13,27 +13,27 @@ import com.vaadin.flow.router.RouterLink;
 @PageTitle("Login | Tournament")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-	private final LoginForm login = new LoginForm();
+  private final LoginForm login = new LoginForm();
 
-	public LoginView() {
-		this.addClassName("login-view");
-		this.setSizeFull();
-		this.setAlignItems(Alignment.CENTER);
-		this.setJustifyContentMode(JustifyContentMode.CENTER);
+  public LoginView() {
+    this.addClassName("login-view");
+    this.setSizeFull();
+    this.setAlignItems(Alignment.CENTER);
+    this.setJustifyContentMode(JustifyContentMode.CENTER);
 
-		this.login.setAction("login");
+    this.login.setAction("login");
 
-		this.add(new H1("Tournament"), this.login, new RouterLink("register", RegistrationView.class));
-	}
+    this.add(new H1("Tournament"), this.login, new RouterLink("register", RegistrationView.class));
+  }
 
-	@Override
-	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-		// inform the user about an authentication error
-		if (beforeEnterEvent.getLocation()
-		                    .getQueryParameters()
-		                    .getParameters()
-		                    .containsKey("error")) {
-			this.login.setError(true);
-		}
-	}
+  @Override
+  public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+    // inform the user about an authentication error
+    if (beforeEnterEvent.getLocation()
+        .getQueryParameters()
+        .getParameters()
+        .containsKey("error")) {
+      this.login.setError(true);
+    }
+  }
 }

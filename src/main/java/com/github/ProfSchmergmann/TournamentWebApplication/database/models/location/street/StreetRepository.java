@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StreetRepository extends JpaRepository<Street, Long> {
 
-	Street findByName(String name);
+  Street findByName(String name);
 }
