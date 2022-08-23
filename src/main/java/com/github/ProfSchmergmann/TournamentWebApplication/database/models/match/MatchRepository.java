@@ -31,13 +31,13 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
   Set<Match> findDistinctByTeam(Team team);
 
   @Query("select distinct m from Match m " +
-      "where (m.teamA = ?1 and m.scoreTeamA > m.scoreTeamB) " +
-      "or (m.teamB = ?1 and m.scoreTeamB > m.scoreTeamA)")
-  Set<Match> findWonMatches(Team team);
-
-  @Query("select distinct m from Match m " +
       "where (m.teamA = ?1 and m.scoreTeamA < m.scoreTeamB) " +
       "or (m.teamB = ?1 and m.scoreTeamB < m.scoreTeamA)")
   Set<Match> findLostMatches(Team team);
+
+  @Query("select distinct m from Match m " +
+      "where (m.teamA = ?1 and m.scoreTeamA > m.scoreTeamB) " +
+      "or (m.teamB = ?1 and m.scoreTeamB > m.scoreTeamA)")
+  Set<Match> findWonMatches(Team team);
 
 }

@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
 
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.LocationService;
@@ -9,6 +9,7 @@ import com.github.ProfSchmergmann.TournamentWebApplication.database.models.locat
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
 import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.StreetService;
 import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
+import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;

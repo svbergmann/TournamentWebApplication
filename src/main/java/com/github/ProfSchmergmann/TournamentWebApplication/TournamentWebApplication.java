@@ -9,19 +9,18 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 @PWA(name = "Tournament Web Application",
-		shortName = "Tournament",
-		iconPath = "images/basketball_icon.png")
+    shortName = "Tournament")
 public class TournamentWebApplication extends SpringBootServletInitializer implements
-		AppShellConfigurator {
+    AppShellConfigurator {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TournamentWebApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TournamentWebApplication.class, args);
+  }
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(TournamentWebApplication.class);
-	}
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(TournamentWebApplication.class);
+  }
 
 }
 

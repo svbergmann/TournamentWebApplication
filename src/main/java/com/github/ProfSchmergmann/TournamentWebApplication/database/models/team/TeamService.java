@@ -11,33 +11,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeamService extends IModelService<Team> {
 
+  private final TeamRepository teamRepository;
+
   public TeamService(@Autowired TeamRepository repository) {
     super(repository);
+    this.teamRepository = repository;
   }
 
   public List<Team> findAll(AgeGroup ageGroup) {
-    return this.repository.findAll().stream()
-        .filter(team -> team.getAgeGroup().equals(ageGroup))
-        .toList();
+    return this.teamRepository.findByAgeGroup(ageGroup);
   }
 
   public List<Team> findAll(Gender gender) {
-    return this.repository.findAll().stream()
-        .filter(team -> team.getGender().equals(gender))
-        .toList();
+    return this.teamRepository.findByGender(gender);
   }
 
   public List<Team> findAll(Club club) {
-    return this.repository.findAll().stream()
-        .filter(team -> team.getClub().equals(club))
-        .toList();
+    return this.teamRepository.findByClub(club);
   }
 
   public List<Team> findAll(AgeGroup ageGroup, Gender gender) {
-    return this.repository.findAll().stream()
-        .filter(team -> team.getGender().equals(gender))
-        .filter(team -> team.getAgeGroup().equals(ageGroup))
-        .toList();
+    return this.teamRepository.findByAgeGroupAndGender(ageGroup, gender);
   }
 
   @Override

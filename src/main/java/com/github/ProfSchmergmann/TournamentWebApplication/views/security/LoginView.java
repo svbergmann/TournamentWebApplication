@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.ProfSchmergmann.TournamentWebApplication.views.security;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -7,6 +7,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 
 @Route("login")
 @PageTitle("Login | Tournament")
@@ -22,7 +23,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     this.login.setAction("login");
 
-    this.add(new H1("Tournament"), this.login);
+    this.add(new H1("Tournament"), this.login, new RouterLink("register", RegistrationView.class));
   }
 
   @Override

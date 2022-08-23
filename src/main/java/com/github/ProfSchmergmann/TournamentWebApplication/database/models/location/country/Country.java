@@ -10,7 +10,6 @@ import java.util.MissingResourceException;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +30,6 @@ public class Country implements Serializable, IModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-  @Column(unique = true)
   private String iso3Name;
 
   public String getName(Locale locale) {
