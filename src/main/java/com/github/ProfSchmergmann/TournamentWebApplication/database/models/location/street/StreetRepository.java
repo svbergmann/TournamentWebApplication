@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.street;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

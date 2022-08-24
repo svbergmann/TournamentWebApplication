@@ -1,8 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team;
+package com.github.profschmergmann.tournamentwebapplication.database.models.team;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

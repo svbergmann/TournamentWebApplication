@@ -1,15 +1,15 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroupService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.ClubService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.GenderService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.TeamService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -29,10 +29,8 @@ public class TeamView extends EntityView<Team> {
   private final ClubService clubService;
   private final GenderService genderService;
 
-  public TeamView(@Autowired ClubService clubService,
-      @Autowired AgeGroupService ageGroupService,
-      @Autowired GenderService genderService,
-      @Autowired TeamService teamService,
+  public TeamView(@Autowired ClubService clubService, @Autowired AgeGroupService ageGroupService,
+      @Autowired GenderService genderService, @Autowired TeamService teamService,
       @Autowired SecurityService securityService) {
     super("team.pl", new Grid<>(), teamService, securityService);
     this.clubService = clubService;
@@ -60,11 +58,8 @@ public class TeamView extends EntityView<Team> {
     amountIntegerField.setStep(1);
     amountIntegerField.setHasControls(true);
     final TextField teamTextField = new TextField(this.getTranslation("name"));
-    final VerticalLayout fields = new VerticalLayout(clubSelect,
-        ageGroupSelect,
-        genderSelect,
-        amountIntegerField,
-        teamTextField);
+    final VerticalLayout fields = new VerticalLayout(clubSelect, ageGroupSelect, genderSelect,
+        amountIntegerField, teamTextField);
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       if (teamTextField.getValue().length() > 2) {
@@ -87,55 +82,19 @@ public class TeamView extends EntityView<Team> {
   @Override
   void setGridColumns() {
     this.grid.addColumn(
-            team -> team.getClub() == null || team.getClub().getCountry() == null ?
-                notSet : team.getClub().getCountry().getName(this.getLocale()))
-        .setHeader(this.getTranslation("country"))
-        .setKey("country")
-        .setSortable(true)
-        .setAutoWidth(true);
+            team -> team.getClub() == null || team.getClub().getCountry() == null ? notSet
+                : team.getClub().getCountry().getName(this.getLocale()))
+        .setKey("country");
     this.grid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
-        .setHeader(this.getTranslation("club"))
-        .setKey("club")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setKey("club");
     this.grid.addColumn(Team::getName)
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
-    this.grid.addColumn(
-            club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
-        .setHeader(this.getTranslation("age.group"))
-        .setKey("age")
-        .setSortable(true)
-        .setAutoWidth(true);
-    this.grid.addColumn(
-            club -> club.getGender() == null ? notSet : club.getGender().getName())
-        .setHeader(this.getTranslation("gender"))
-        .setKey("gender")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setKey("name");
+    this.grid.addColumn(club -> club.getAgeGroup() == null ? notSet : club.getAgeGroup().getName())
+        .setKey("age");
+    this.grid.addColumn(club -> club.getGender() == null ? notSet : club.getGender().getName())
+        .setKey("gender");
     this.grid.addColumn(Team::getAmount)
-        .setHeader(this.getTranslation("amount.of.players"))
-        .setKey("amount")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("country")
-        .setHeader(this.getTranslation("country"));
-    this.grid.getColumnByKey("club")
-        .setHeader(this.getTranslation("club"));
-    this.grid.getColumnByKey("name")
-        .setHeader(this.getTranslation("name"));
-    this.grid.getColumnByKey("age")
-        .setHeader(this.getTranslation("age.group"));
-    this.grid.getColumnByKey("gender")
-        .setHeader(this.getTranslation("gender"));
-    this.grid.getColumnByKey("amount")
-        .setHeader(this.getTranslation("amount.of.players"));
+        .setKey("amount");
   }
 }
 

@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database;
+package com.github.profschmergmann.tournamentwebapplication.database;
 
 import java.sql.Types;
 import org.hibernate.dialect.Dialect;
@@ -7,9 +7,9 @@ import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.type.StringType;
 
-public class SQLiteDialect extends Dialect {
+public class SqLiteDialect extends Dialect {
 
-  public SQLiteDialect() {
+  public SqLiteDialect() {
     this.registerColumnType(Types.BIT, "integer");
     this.registerColumnType(Types.TINYINT, "tinyint");
     this.registerColumnType(Types.SMALLINT, "smallint");

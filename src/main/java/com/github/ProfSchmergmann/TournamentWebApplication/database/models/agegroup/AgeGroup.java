@@ -1,8 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup;
+package com.github.profschmergmann.tournamentwebapplication.database.models.agegroup;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -15,12 +14,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
-public class AgeGroup implements Serializable, IModel {
+public class AgeGroup implements Model {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

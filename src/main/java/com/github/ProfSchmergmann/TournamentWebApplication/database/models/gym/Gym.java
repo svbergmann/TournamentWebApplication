@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym;
+package com.github.profschmergmann.tournamentwebapplication.database.models.gym;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.Game;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.game.Game;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.Location;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,7 +21,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Gym implements Serializable, IModel {
+public class Gym implements Model {
 
   private int capacity;
   @OneToMany(mappedBy = "gym", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,8 +48,7 @@ public class Gym implements Serializable, IModel {
     if (!(o instanceof Gym gym)) {
       return false;
     }
-    return this.capacity == gym.capacity &&
-        Objects.equals(this.name, gym.name) &&
-        Objects.equals(this.location, gym.location);
+    return this.capacity == gym.capacity && Objects.equals(this.name, gym.name) && Objects.equals(
+        this.location, gym.location);
   }
 }

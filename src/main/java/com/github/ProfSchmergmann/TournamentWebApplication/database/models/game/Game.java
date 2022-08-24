@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.game;
+package com.github.profschmergmann.tournamentwebapplication.database.models.game;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.Gym;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.Match;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gym.Gym;
+import com.github.profschmergmann.tournamentwebapplication.database.models.match.Match;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -19,7 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Game implements Serializable, IModel {
+public class Game implements Model {
 
   private Date date;
   @ManyToOne

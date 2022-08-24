@@ -1,15 +1,15 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team;
+package com.github.profschmergmann.tournamentwebapplication.database.models.team;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TeamService extends IModelService<Team> {
+public class TeamService extends ModelService<Team> {
 
   private final TeamRepository teamRepository;
 
@@ -41,10 +41,10 @@ public class TeamService extends IModelService<Team> {
 
   @Override
   public Team update(Team team, long id) {
-    var teamDB = this.repository.findById(id);
+    var teamDb = this.repository.findById(id);
 
-    if (teamDB.isPresent()) {
-      var t = teamDB.get();
+    if (teamDb.isPresent()) {
+      var t = teamDb.get();
       t.setAmount(team.getAmount());
       t.setAgeGroup(team.getAgeGroup());
       t.setClub(team.getClub());

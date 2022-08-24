@@ -1,8 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -17,7 +17,7 @@ import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.HasDynamicTitle;
 
-public abstract class EntityView<T extends IModel> extends VerticalLayout implements
+public abstract class EntityView<T extends Model> extends VerticalLayout implements
     LocaleChangeObserver, HasDynamicTitle {
 
   public static final String notSet = "not set";
@@ -26,10 +26,10 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
   protected H2 header;
   protected String headerProperty;
   protected Grid<T> grid;
-  protected IModelService<T> entityService;
+  protected ModelService<T> entityService;
 
-  public EntityView(String headerProperty, Grid<T> grid,
-      IModelService<T> entityService, SecurityService securityService) {
+  public EntityView(String headerProperty, Grid<T> grid, ModelService<T> entityService,
+      SecurityService securityService) {
     this.securityService = securityService;
     this.entityService = entityService;
     this.headerProperty = headerProperty;
@@ -39,6 +39,8 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
     this.grid.setAllRowsVisible(true);
     this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
     this.setGridColumns();
+    this.setGridColumnsProperties();
+    this.updateGridColumnHeaders();
     this.updateGridContextMenu();
     this.updateGridItems();
     this.add(this.header, this.grid);
@@ -54,9 +56,8 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 
   @Override
   public String getPageTitle() {
-    return this.getTranslation(this.headerProperty) +
-        " | " +
-        this.getTranslation("application.name");
+    return this.getTranslation(this.headerProperty) + " | " + this.getTranslation(
+        "application.name");
   }
 
   @Override
@@ -83,13 +84,23 @@ public abstract class EntityView<T extends IModel> extends VerticalLayout implem
 
   abstract void setGridColumns();
 
+  protected void setGridColumnsProperties() {
+    this.grid.getColumns().forEach(column -> {
+      column.setSortable(true);
+      column.setAutoWidth(true);
+    });
+  }
+
   protected void updateGrid() {
     this.updateGridColumnHeaders();
     this.updateGridItems();
     this.updateGridContextMenu();
   }
 
-  abstract void updateGridColumnHeaders();
+  protected void updateGridColumnHeaders() {
+    this.grid.getColumns()
+        .forEach(column -> column.setHeader(this.getTranslation(column.getKey())));
+  }
 
   protected void updateGridContextMenu() {
     if (this.securityService.getAuthenticatedUser() != null) {

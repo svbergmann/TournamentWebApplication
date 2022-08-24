@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database;
+package com.github.profschmergmann.tournamentwebapplication.database;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;

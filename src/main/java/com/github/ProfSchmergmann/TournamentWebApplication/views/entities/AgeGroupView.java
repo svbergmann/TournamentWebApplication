@@ -1,9 +1,9 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroupService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -26,9 +26,10 @@ public class AgeGroupView extends EntityView<AgeGroup> {
   VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
     final TextField ageGroupTextField = new TextField(this.getTranslation("name"));
     addButton.addClickListener(click -> {
-      var ageGroup = new AgeGroup();
-      ageGroup.setName(ageGroupTextField.getValue());
-      if (this.entityService.findAll().stream()
+      var ageGroup = new AgeGroup()
+          .setName(ageGroupTextField.getValue());
+      if (this.entityService.findAll()
+          .stream()
           .noneMatch(ageGroup1 -> ageGroup1.equals(ageGroup))) {
         this.entityService.create(ageGroup);
         this.updateGridItems();
@@ -41,15 +42,6 @@ public class AgeGroupView extends EntityView<AgeGroup> {
   @Override
   void setGridColumns() {
     this.grid.addColumn(AgeGroup::getName)
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("name")
-        .setHeader(this.getTranslation("name"));
+        .setKey("name");
   }
 }

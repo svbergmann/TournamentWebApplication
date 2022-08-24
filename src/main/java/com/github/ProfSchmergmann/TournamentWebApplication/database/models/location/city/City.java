@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.city;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.Location;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,7 +21,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class City implements Serializable, IModel {
+public class City implements Model {
 
   @ManyToOne
   private Country country;
@@ -47,7 +46,6 @@ public class City implements Serializable, IModel {
     if (!(o instanceof City city)) {
       return false;
     }
-    return Objects.equals(this.name, city.name) &&
-        Objects.equals(this.country, city.country);
+    return Objects.equals(this.name, city.name) && Objects.equals(this.country, city.country);
   }
 }

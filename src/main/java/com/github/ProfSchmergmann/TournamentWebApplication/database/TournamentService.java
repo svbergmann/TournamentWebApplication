@@ -1,7 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database;
+package com.github.profschmergmann.tournamentwebapplication.database;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.GameService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
+import com.github.profschmergmann.tournamentwebapplication.database.models.game.GameService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.club;
+package com.github.profschmergmann.tournamentwebapplication.database.models.club;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,7 +21,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Club implements Serializable, IModel {
+public class Club implements Model {
 
   @ManyToOne
   private Country country;

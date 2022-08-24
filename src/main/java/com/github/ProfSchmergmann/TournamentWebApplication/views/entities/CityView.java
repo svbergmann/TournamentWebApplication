@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.City;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.CityService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.CountryService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -22,8 +22,7 @@ public class CityView extends EntityView<City> {
 
   private final CountryService countryService;
 
-  public CityView(@Autowired CountryService countryService,
-      @Autowired CityService cityService,
+  public CityView(@Autowired CountryService countryService, @Autowired CityService cityService,
       @Autowired SecurityService securityService) {
     super("city.pl", new Grid<>(), cityService, securityService);
     this.countryService = countryService;
@@ -55,24 +54,10 @@ public class CityView extends EntityView<City> {
 
   @Override
   void setGridColumns() {
-    this.grid.addColumn(c -> c.getCountry() == null ?
-            notSet : c.getCountry().getName(this.getLocale()))
-        .setHeader(this.getTranslation("country"))
-        .setKey("country")
-        .setSortable(true)
-        .setAutoWidth(true);
+    this.grid.addColumn(
+            c -> c.getCountry() == null ? notSet : c.getCountry().getName(this.getLocale()))
+        .setKey("country");
     this.grid.addColumn(City::getName)
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("country")
-        .setHeader(this.getTranslation("country"));
-    this.grid.getColumnByKey("name")
-        .setHeader(this.getTranslation("name"));
+        .setKey("name");
   }
 }

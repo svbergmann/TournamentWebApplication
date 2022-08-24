@@ -1,16 +1,16 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.match;
+package com.github.profschmergmann.tournamentwebapplication.database.models.match;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MatchService extends IModelService<Match> {
+public class MatchService extends ModelService<Match> {
 
   private final MatchRepository matchRepository;
 
@@ -46,10 +46,10 @@ public class MatchService extends IModelService<Match> {
 
   @Override
   public Match update(Match match, long id) {
-    var gameDB = this.repository.findById(id);
+    var gameDb = this.repository.findById(id);
 
-    if (gameDB.isPresent()) {
-      var m = gameDB.get();
+    if (gameDb.isPresent()) {
+      var m = gameDb.get();
       m.setScoreTeamA(match.getScoreTeamA());
       m.setScoreTeamB(match.getScoreTeamB());
       m.setTeamA(match.getTeamA());
@@ -72,11 +72,12 @@ public class MatchService extends IModelService<Match> {
   }
 
   public int getPlusMinus(Team team) {
-    return this.matchRepository.findDistinctByTeam(team)
+    return this.matchRepository
+        .findDistinctByTeam(team)
         .stream()
-        .mapToInt(m -> m.getTeamA().equals(team) ?
-            m.getScoreTeamA() - m.getScoreTeamB() :
-            m.getScoreTeamB() - m.getScoreTeamA())
+        .mapToInt(
+            m -> m.getTeamA().equals(team) ? m.getScoreTeamA() - m.getScoreTeamB()
+                : m.getScoreTeamB() - m.getScoreTeamA())
         .sum();
   }
 
@@ -85,12 +86,12 @@ public class MatchService extends IModelService<Match> {
   }
 
   public List<Team> getSortedTeams(AgeGroup ageGroup, Gender gender) {
-    return this.matchRepository.findDistinctByGenderAndAgeGroup(gender, ageGroup)
+    return this.matchRepository
+        .findDistinctByGenderAndAgeGroup(gender, ageGroup)
         .stream()
         .map(Match::getTeamA)
-        .sorted((t1, t2) ->
-            this.matchRepository.findWonMatches(t1).size() -
-                this.matchRepository.findWonMatches(t2).size())
+        .sorted((t1, t2) -> this.matchRepository.findWonMatches(t1).size()
+            - this.matchRepository.findWonMatches(t2).size())
         .toList();
   }
 }

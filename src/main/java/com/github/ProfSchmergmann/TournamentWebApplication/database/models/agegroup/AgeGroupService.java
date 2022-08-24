@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup;
+package com.github.profschmergmann.tournamentwebapplication.database.models.agegroup;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AgeGroupService extends IModelService<AgeGroup> {
+public class AgeGroupService extends ModelService<AgeGroup> {
 
   public AgeGroupService(@Autowired AgeGroupRepository repository) {
     super(repository);
@@ -22,10 +22,10 @@ public class AgeGroupService extends IModelService<AgeGroup> {
 
   @Override
   public AgeGroup update(AgeGroup ageGroup, long id) {
-    var ageGroupDB = this.repository.findById(id);
+    var ageGroupDb = this.repository.findById(id);
 
-    if (ageGroupDB.isPresent()) {
-      var a = ageGroupDB.get();
+    if (ageGroupDb.isPresent()) {
+      var a = ageGroupDb.get();
       a.setName(ageGroup.getName());
       return this.repository.save(a);
     }

@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.country;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.City;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Country implements Serializable, IModel {
+public class Country implements Model {
 
   @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<City> cities;
@@ -33,17 +32,13 @@ public class Country implements Serializable, IModel {
   private String iso3Name;
 
   public String getName(Locale locale) {
-    return Arrays.stream(Locale.getAvailableLocales())
-        .filter(l -> {
-          try {
-            return l.getISO3Country().equals(this.iso3Name);
-          } catch (MissingResourceException e) {
-            return l.getCountry().equals(this.iso3Name);
-          }
-        })
-        .map(l -> l.getDisplayCountry(locale))
-        .findFirst()
-        .orElse(null);
+    return Arrays.stream(Locale.getAvailableLocales()).filter(l -> {
+      try {
+        return l.getISO3Country().equals(this.iso3Name);
+      } catch (MissingResourceException e) {
+        return l.getCountry().equals(this.iso3Name);
+      }
+    }).map(l -> l.getDisplayCountry(locale)).findFirst().orElse(null);
   }
 
   @Override

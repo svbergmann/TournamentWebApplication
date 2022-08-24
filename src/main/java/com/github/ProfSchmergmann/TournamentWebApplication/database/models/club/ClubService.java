@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.club;
+package com.github.profschmergmann.tournamentwebapplication.database.models.club;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ClubService extends IModelService<Club> {
+public class ClubService extends ModelService<Club> {
 
   public ClubService(@Autowired ClubRepository repository) {
     super(repository);
@@ -18,10 +18,10 @@ public class ClubService extends IModelService<Club> {
 
   @Override
   public Club update(Club club, long id) {
-    var clubDB = this.repository.findById(id);
+    var clubDb = this.repository.findById(id);
 
-    if (clubDB.isPresent()) {
-      var c = clubDB.get();
+    if (clubDb.isPresent()) {
+      var c = clubDb.get();
       c.setName(club.getName());
       c.setCountry(club.getCountry());
       return this.repository.save(c);

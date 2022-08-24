@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.security;
+package com.github.profschmergmann.tournamentwebapplication.views.security;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -29,10 +29,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
   @Override
   public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
     // inform the user about an authentication error
-    if (beforeEnterEvent.getLocation()
-        .getQueryParameters()
-        .getParameters()
-        .containsKey("error")) {
+    if (beforeEnterEvent.getLocation().getQueryParameters().getParameters().containsKey("error")) {
       this.login.setError(true);
     }
   }

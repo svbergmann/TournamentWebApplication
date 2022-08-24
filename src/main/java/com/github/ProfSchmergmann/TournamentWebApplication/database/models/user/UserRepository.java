@@ -1,6 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.user;
+package com.github.profschmergmann.tournamentwebapplication.database.models.user;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User.Role;
+import com.github.profschmergmann.tournamentwebapplication.database.models.user.User.Role;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

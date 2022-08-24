@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication;
+package com.github.profschmergmann.tournamentwebapplication;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.i18n.I18NProvider;
@@ -23,8 +23,7 @@ public class ServiceInitListener implements VaadinServiceInitListener {
 
     Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
     if (cookies != null) {
-      localeCookie = Arrays.stream(cookies)
-          .filter(cookie -> "locale".equals(cookie.getName()))
+      localeCookie = Arrays.stream(cookies).filter(cookie -> "locale".equals(cookie.getName()))
           .findFirst();
     }
 

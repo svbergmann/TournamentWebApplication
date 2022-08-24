@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.club;
+package com.github.profschmergmann.tournamentwebapplication.database.models.club;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.game;
+package com.github.profschmergmann.tournamentwebapplication.database.models.game;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GameService extends IModelService<Game> {
+public class GameService extends ModelService<Game> {
 
   public GameService(@Autowired GameRepository repository) {
     super(repository);
@@ -18,10 +18,10 @@ public class GameService extends IModelService<Game> {
 
   @Override
   public Game update(Game game, long id) {
-    var gameDB = this.repository.findById(id);
+    var gameDb = this.repository.findById(id);
 
-    if (gameDB.isPresent()) {
-      var g = gameDB.get();
+    if (gameDb.isPresent()) {
+      var g = gameDb.get();
       g.setDate(game.getDate());
       g.setGym(game.getGym());
       g.setMatch(game.getMatch());

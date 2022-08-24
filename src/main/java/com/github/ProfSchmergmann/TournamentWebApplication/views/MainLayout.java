@@ -1,19 +1,19 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views;
+package com.github.profschmergmann.tournamentwebapplication.views;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.TournamentI18NProvider;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.AgeGroupView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.CityView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.ClubView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.CountryView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GameView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GenderView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GymView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.LocationView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.RankingView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.StreetView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.TeamView;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.security.LoginView;
+import com.github.profschmergmann.tournamentwebapplication.TournamentI18NProvider;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.AgeGroupView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.CityView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.ClubView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.CountryView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.GameView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.GenderView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.GymView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.LocationView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.RankingView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.StreetView;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.TeamView;
+import com.github.profschmergmann.tournamentwebapplication.views.security.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MainLayout extends AppLayout implements LocaleChangeObserver {
 
   private static final Logger LOGGER = Logger.getLogger(MainLayout.class.getName());
-  private final I18NProvider i18NProvider;
+  private final I18NProvider i18nProvider;
   private final SecurityService securityService;
   private RouterLink ageGroupRouterLink;
   private RouterLink cityRouterLink;
@@ -55,10 +55,10 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
   private RouterLink streetRouterLink;
   private RouterLink teamRouterLink;
 
-  public MainLayout(@Autowired I18NProvider i18NProvider,
+  public MainLayout(@Autowired I18NProvider i18nProvider,
       @Autowired SecurityService securityService) {
     this.securityService = securityService;
-    this.i18NProvider = i18NProvider;
+    this.i18nProvider = i18nProvider;
     this.createHeader();
     this.createDrawer();
   }
@@ -100,11 +100,11 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver {
       img.setWidth("var(--lumo-size-s)");
       return img;
     }));
-    languageSelect.setItems(this.i18NProvider.getProvidedLocales());
+    languageSelect.setItems(this.i18nProvider.getProvidedLocales());
     var currentLocale = UI.getCurrent().getLocale();
     languageSelect.setValue(
-        this.i18NProvider.getProvidedLocales().contains(currentLocale) ? currentLocale
-            : this.i18NProvider.getProvidedLocales().get(0));
+        this.i18nProvider.getProvidedLocales().contains(currentLocale) ? currentLocale
+            : this.i18nProvider.getProvidedLocales().get(0));
     languageSelect.addValueChangeListener(event -> this.saveLocalePreference(event.getValue()));
 
     var authenticated = this.securityService.getAuthenticatedUser() != null;

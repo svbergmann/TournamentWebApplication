@@ -1,8 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.street;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.Location;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -20,7 +19,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Street implements Serializable, IModel {
+public class Street implements Model {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

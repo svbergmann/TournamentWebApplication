@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.ClubService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.ClubService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.CountryService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -22,8 +22,7 @@ public class ClubView extends EntityView<Club> {
 
   private final CountryService countryService;
 
-  public ClubView(@Autowired CountryService countryService,
-      @Autowired ClubService clubService,
+  public ClubView(@Autowired CountryService countryService, @Autowired ClubService clubService,
       @Autowired SecurityService securityService) {
     super("club.pl", new Grid<>(), clubService, securityService);
     this.countryService = countryService;
@@ -56,23 +55,10 @@ public class ClubView extends EntityView<Club> {
   @Override
   void setGridColumns() {
     this.grid.addColumn(
-            club -> club.getCountry() == null ? notSet : club.getCountry().getName(this.getLocale()))
-        .setHeader(this.getTranslation("country"))
-        .setKey("country")
-        .setSortable(true)
-        .setAutoWidth(true);
+            club -> club.getCountry() == null
+                ? notSet : club.getCountry().getName(this.getLocale()))
+        .setKey("country");
     this.grid.addColumn(Club::getName)
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("country")
-        .setHeader(this.getTranslation("country"));
-    this.grid.getColumnByKey("name")
-        .setHeader(this.getTranslation("name"));
+        .setKey("name");
   }
 }

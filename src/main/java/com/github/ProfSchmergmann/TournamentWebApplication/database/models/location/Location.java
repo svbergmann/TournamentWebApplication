@@ -1,10 +1,9 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym.Gym;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gym.Gym;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.City;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.street.Street;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -23,7 +22,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Location implements Serializable, IModel {
+public class Location implements Model {
 
   @ManyToOne
   private City city;
@@ -51,9 +50,7 @@ public class Location implements Serializable, IModel {
     if (!(o instanceof Location location)) {
       return false;
     }
-    return this.number == location.number &&
-        this.postalCode == location.postalCode &&
-        Objects.equals(this.city, location.city) &&
-        Objects.equals(this.street, location.street);
+    return this.number == location.number && this.postalCode == location.postalCode
+        && Objects.equals(this.city, location.city) && Objects.equals(this.street, location.street);
   }
 }

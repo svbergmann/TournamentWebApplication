@@ -1,11 +1,10 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.team;
+package com.github.profschmergmann.tournamentwebapplication.database.models.team;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.club.Club;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.Match;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.club.Club;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.match.Match;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -24,7 +23,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Team implements Serializable, IModel {
+public class Team implements Model {
 
   @ManyToOne
   private AgeGroup ageGroup;
@@ -58,10 +57,8 @@ public class Team implements Serializable, IModel {
     if (!(o instanceof Team team)) {
       return false;
     }
-    return this.amount == team.amount &&
-        Objects.equals(this.ageGroup, team.ageGroup) &&
-        Objects.equals(this.club, team.club) &&
-        Objects.equals(this.gender, team.gender) &&
-        Objects.equals(this.name, team.name);
+    return this.amount == team.amount && Objects.equals(this.ageGroup, team.ageGroup)
+        && Objects.equals(this.club, team.club) && Objects.equals(this.gender, team.gender)
+        && Objects.equals(this.name, team.name);
   }
 }

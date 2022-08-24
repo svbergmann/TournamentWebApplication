@@ -1,5 +1,6 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.user;
+package com.github.profschmergmann.tournamentwebapplication.database.models.user;
 
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,8 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class User implements UserDetails {
+public class User implements UserDetails, Model {
 
   @Email
   private String email;

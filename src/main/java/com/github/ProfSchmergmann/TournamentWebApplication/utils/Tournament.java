@@ -1,7 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.utils;
+package com.github.profschmergmann.tournamentwebapplication.utils;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.Match;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
+import com.github.profschmergmann.tournamentwebapplication.database.models.match.Match;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

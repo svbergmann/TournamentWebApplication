@@ -1,7 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.security;
+package com.github.profschmergmann.tournamentwebapplication.security;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.UserService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.security.LoginView;
+import com.github.profschmergmann.tournamentwebapplication.database.models.user.UserService;
+import com.github.profschmergmann.tournamentwebapplication.views.security.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

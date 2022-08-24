@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication;
+package com.github.profschmergmann.tournamentwebapplication;
 
 import static java.util.Locale.ENGLISH;
 import static java.util.Locale.GERMAN;

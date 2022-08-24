@@ -1,4 +1,4 @@
-package com.github.ProfSchmergmann.TournamentWebApplication;
+package com.github.profschmergmann.tournamentwebapplication;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.server.PWA;
@@ -8,8 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@PWA(name = "Tournament Web Application",
-    shortName = "Tournament")
+@PWA(name = "Tournament Web Application", shortName = "Tournament")
 public class TournamentWebApplication extends SpringBootServletInitializer implements
     AppShellConfigurator {
 

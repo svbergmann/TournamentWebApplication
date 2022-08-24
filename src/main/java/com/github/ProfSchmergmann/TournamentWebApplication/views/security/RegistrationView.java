@@ -1,9 +1,9 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.security;
+package com.github.profschmergmann.tournamentwebapplication.views.security;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.User.Role;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.user.UserService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.entities.GymView;
+import com.github.profschmergmann.tournamentwebapplication.database.models.user.User;
+import com.github.profschmergmann.tournamentwebapplication.database.models.user.User.Role;
+import com.github.profschmergmann.tournamentwebapplication.database.models.user.UserService;
+import com.github.profschmergmann.tournamentwebapplication.views.entities.GymView;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -64,30 +64,22 @@ public class RegistrationView extends VerticalLayout {
       this.email.setClearButtonVisible(true);
       this.passwordField = new PasswordField("Password");
       this.passwordField.setHelperText(
-          "A password must be at least 8 characters. It has to have at least one letter and one digit.");
+          "A password must be at least 8 characters. "
+              + "It has to have at least one letter and one digit.");
       this.passwordField.setPattern("^(?=.*[0-9])(?=.*[a-zA-Z]).{8}.*$");
       this.passwordField.setErrorMessage("Not a valid password");
       this.passwordConfirm = new PasswordField("Confirm password");
 
-      this.setRequiredIndicatorVisible(this.firstName,
-          this.lastName,
-          this.email,
-          this.passwordField,
-          this.passwordConfirm);
+      this.setRequiredIndicatorVisible(this.firstName, this.lastName, this.email,
+          this.passwordField, this.passwordConfirm);
 
       this.errorMessageField = new Span();
 
       this.submitButton = new Button("Join the community");
       this.submitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-      var verticalLayout = new VerticalLayout(this.title,
-          this.firstName,
-          this.lastName,
-          this.email,
-          this.passwordField,
-          this.passwordConfirm,
-          this.errorMessageField,
-          this.submitButton);
+      var verticalLayout = new VerticalLayout(this.title, this.firstName, this.lastName, this.email,
+          this.passwordField, this.passwordConfirm, this.errorMessageField, this.submitButton);
       verticalLayout.setPadding(true);
 
       this.add(verticalLayout);
@@ -122,20 +114,13 @@ public class RegistrationView extends VerticalLayout {
 
     private final RegistrationForm registrationForm;
     private final UserService userService;
-    /**
-     * Flag for disabling first run for password validation
-     */
     private boolean enablePasswordValidation;
 
-    public RegistrationFormBinder(RegistrationForm registrationForm,
-        UserService userService) {
+    public RegistrationFormBinder(RegistrationForm registrationForm, UserService userService) {
       this.registrationForm = registrationForm;
       this.userService = userService;
     }
 
-    /**
-     * Method to add the data binding and validation logics to the registration form
-     */
     public void addBindingAndValidation() {
       var binder = new BeanValidationBinder<>(User.class);
       binder.bindInstanceFields(this.registrationForm);
@@ -188,12 +173,8 @@ public class RegistrationView extends VerticalLayout {
       return ValidationResult.error("Passwords do not match");
     }
 
-    /**
-     * We call this method when form submission has succeeded
-     */
     private void showSuccess(User user) {
-      Notification notification =
-          Notification.show("Data saved, welcome " + user.getFirstName());
+      Notification notification = Notification.show("Data saved, welcome " + user.getFirstName());
       notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
       UI.getCurrent().navigate(GymView.class);

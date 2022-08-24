@@ -1,8 +1,7 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
+package com.github.profschmergmann.tournamentwebapplication.database.models.gender;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -20,7 +19,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Gender implements Serializable, IModel {
+public class Gender implements Model {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

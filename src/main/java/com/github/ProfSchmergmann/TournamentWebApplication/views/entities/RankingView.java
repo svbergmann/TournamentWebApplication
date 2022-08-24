@@ -1,16 +1,16 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import static com.github.ProfSchmergmann.TournamentWebApplication.views.entities.EntityView.notSet;
+import static com.github.profschmergmann.tournamentwebapplication.views.entities.EntityView.notSet;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroup;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.agegroup.AgeGroupService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.GameService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.Gender;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender.GenderService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.match.MatchService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.TeamService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroup;
+import com.github.profschmergmann.tournamentwebapplication.database.models.agegroup.AgeGroupService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.game.GameService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.Gender;
+import com.github.profschmergmann.tournamentwebapplication.database.models.gender.GenderService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.match.MatchService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.TeamService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -37,10 +37,8 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
   private final TeamService teamService;
 
   public RankingView(@Autowired AgeGroupService ageGroupService,
-      @Autowired GenderService genderService,
-      @Autowired TeamService teamService,
-      @Autowired GameService gameService,
-      @Autowired MatchService matchService) {
+      @Autowired GenderService genderService, @Autowired TeamService teamService,
+      @Autowired GameService gameService, @Autowired MatchService matchService) {
     this.ageGroupService = ageGroupService;
     this.genderService = genderService;
     this.teamService = teamService;
@@ -55,24 +53,18 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
     this.genderSelect.setItems(this.genderService.findAll());
     this.genderSelect.setItemLabelGenerator(Gender::getName);
     this.generateGrid();
-    this.ageGroupSelect
-        .addValueChangeListener(event -> {
-              if (!this.genderSelect.isEmpty()) {
-                this.grid.setItems(this.teamService
-                    .findAll(event.getValue(),
-                        this.genderSelect.getValue()));
-              }
-            }
-        );
-    this.genderSelect
-        .addValueChangeListener(event -> {
-              if (!this.ageGroupSelect.isEmpty()) {
-                this.grid.setItems(this.teamService
-                    .findAll(this.ageGroupSelect.getValue(),
-                        event.getValue()));
-              }
-            }
-        );
+    this.ageGroupSelect.addValueChangeListener(event -> {
+      if (!this.genderSelect.isEmpty()) {
+        this.grid.setItems(
+            this.teamService.findAll(event.getValue(), this.genderSelect.getValue()));
+      }
+    });
+    this.genderSelect.addValueChangeListener(event -> {
+      if (!this.ageGroupSelect.isEmpty()) {
+        this.grid.setItems(
+            this.teamService.findAll(this.ageGroupSelect.getValue(), event.getValue()));
+      }
+    });
     this.add(new HorizontalLayout(this.ageGroupSelect, this.genderSelect));
     this.add(this.grid);
   }
@@ -81,44 +73,25 @@ public class RankingView extends VerticalLayout implements LocaleChangeObserver,
     this.grid.setColumnReorderingAllowed(true);
     this.grid.setAllRowsVisible(true);
     this.grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-    this.grid.addColumn(this.matchService::getPosition)
-        .setHeader(this.getTranslation("position"))
-        .setKey("position")
-        .setSortable(true)
-        .setAutoWidth(true);
+    this.grid.addColumn(this.matchService::getPosition).setHeader(this.getTranslation("position"))
+        .setKey("position").setSortable(true).setAutoWidth(true);
     this.grid.addColumn(
-            team -> team.getClub() == null || team.getClub().getCountry() == null ?
-                notSet : team.getClub().getCountry().getName(this.getLocale()))
-        .setHeader(this.getTranslation("country"))
-        .setKey("country")
-        .setSortable(true)
+            team -> team.getClub() == null || team.getClub().getCountry() == null ? notSet
+                : team.getClub().getCountry().getName(this.getLocale()))
+        .setHeader(this.getTranslation("country")).setKey("country").setSortable(true)
         .setAutoWidth(true);
     this.grid.addColumn(team -> team.getClub() == null ? notSet : team.getClub().getName())
-        .setHeader(this.getTranslation("club"))
-        .setKey("club")
-        .setSortable(true)
-        .setAutoWidth(true);
-    this.grid.addColumn(Team::getName)
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setHeader(this.getTranslation("club")).setKey("club").setSortable(true).setAutoWidth(true);
+    this.grid.addColumn(Team::getName).setHeader(this.getTranslation("name")).setKey("name")
+        .setSortable(true).setAutoWidth(true);
     this.grid.addColumn(team -> this.matchService.findByFinishedAndTeam(true, team).size())
-        .setHeader(this.getTranslation("games.played"))
-        .setKey("games.played")
-        .setSortable(true)
+        .setHeader(this.getTranslation("games.played")).setKey("games.played").setSortable(true)
         .setAutoWidth(true);
-    this.grid.addColumn(team -> this.matchService.findWonMatchesByTeam(team).size())
-        .setHeader("W")
-        .setSortable(true)
-        .setAutoWidth(true);
-    this.grid.addColumn(team -> this.matchService.findLostMatchesByTeam(team).size())
-        .setHeader("L")
-        .setSortable(true)
-        .setAutoWidth(true);
-    this.grid.addColumn(this.matchService::getPlusMinus)
-        .setHeader("+/-")
-        .setSortable(true)
+    this.grid.addColumn(team -> this.matchService.findWonMatchesByTeam(team).size()).setHeader("W")
+        .setSortable(true).setAutoWidth(true);
+    this.grid.addColumn(team -> this.matchService.findLostMatchesByTeam(team).size()).setHeader("L")
+        .setSortable(true).setAutoWidth(true);
+    this.grid.addColumn(this.matchService::getPlusMinus).setHeader("+/-").setSortable(true)
         .setAutoWidth(true);
   }
 

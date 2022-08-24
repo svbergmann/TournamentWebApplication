@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gym;
+package com.github.profschmergmann.tournamentwebapplication.database.models.gym;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GymService extends IModelService<Gym> {
+public class GymService extends ModelService<Gym> {
 
   public GymService(@Autowired GymRepository repository) {
     super(repository);
@@ -23,10 +23,10 @@ public class GymService extends IModelService<Gym> {
 
   @Override
   public Gym update(Gym gym, long id) {
-    var gymDB = this.repository.findById(id);
+    var gymDb = this.repository.findById(id);
 
-    if (gymDB.isPresent()) {
-      var g = gymDB.get();
+    if (gymDb.isPresent()) {
+      var g = gymDb.get();
       g.setName(gym.getName());
       g.setCapacity(gym.getCapacity());
       g.setLocation(gym.getLocation());

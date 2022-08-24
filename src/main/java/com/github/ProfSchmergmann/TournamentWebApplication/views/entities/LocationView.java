@@ -1,15 +1,15 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.Location;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.LocationService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.City;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city.CityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.Street;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street.StreetService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.Location;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.LocationService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.City;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.city.CityService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.CountryService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.street.Street;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.street.StreetService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -28,10 +28,8 @@ public class LocationView extends EntityView<Location> {
   private final CountryService countryService;
   private final StreetService streetService;
 
-  public LocationView(@Autowired CountryService countryService,
-      @Autowired CityService cityService,
-      @Autowired StreetService streetService,
-      @Autowired LocationService locationService,
+  public LocationView(@Autowired CountryService countryService, @Autowired CityService cityService,
+      @Autowired StreetService streetService, @Autowired LocationService locationService,
       @Autowired SecurityService securityService) {
     super("location.pl", new Grid<>(), locationService, securityService);
     this.countryService = countryService;
@@ -57,11 +55,8 @@ public class LocationView extends EntityView<Location> {
     final IntegerField numberIntegerField = new IntegerField("Number");
     numberIntegerField.setHelperText("Only Numbers");
     numberIntegerField.setMin(0);
-    final VerticalLayout fields = new VerticalLayout(countrySelect,
-        citySelect,
-        streetSelect,
-        postalCodeNumberField,
-        numberIntegerField);
+    final VerticalLayout fields = new VerticalLayout(countrySelect, citySelect, streetSelect,
+        postalCodeNumberField, numberIntegerField);
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       var location = new Location();
@@ -90,46 +85,16 @@ public class LocationView extends EntityView<Location> {
 
   @Override
   void setGridColumns() {
-    this.grid.addColumn(
-            l -> l.getCity() == null || l.getCity().getCountry() == null ?
-                notSet : l.getCity().getCountry().getName(this.getLocale()))
-        .setHeader(this.getTranslation("country"))
-        .setKey("country")
-        .setSortable(true)
-        .setAutoWidth(true);
+    this.grid.addColumn(l -> l.getCity() == null || l.getCity().getCountry() == null ? notSet
+            : l.getCity().getCountry().getName(this.getLocale()))
+        .setKey("country");
     this.grid.addColumn(Location::getPostalCode)
-        .setHeader(this.getTranslation("plz"))
-        .setKey("plz")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setKey("plz");
     this.grid.addColumn(l -> l.getCity() == null ? notSet : l.getCity().getName())
-        .setHeader(this.getTranslation("city"))
-        .setKey("city")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setKey("city");
     this.grid.addColumn(l -> l.getStreet() == null ? notSet : l.getStreet().getName())
-        .setHeader(this.getTranslation("street"))
-        .setKey("street")
-        .setSortable(true)
-        .setAutoWidth(true);
+        .setKey("street");
     this.grid.addColumn(Location::getNumber)
-        .setHeader(this.getTranslation("number"))
-        .setKey("number")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("country")
-        .setHeader(this.getTranslation("country"));
-    this.grid.getColumnByKey("plz")
-        .setHeader(this.getTranslation("plz"));
-    this.grid.getColumnByKey("city")
-        .setHeader(this.getTranslation("city"));
-    this.grid.getColumnByKey("street")
-        .setHeader(this.getTranslation("street"));
-    this.grid.getColumnByKey("number")
-        .setHeader(this.getTranslation("number"));
+        .setKey("number");
   }
 }

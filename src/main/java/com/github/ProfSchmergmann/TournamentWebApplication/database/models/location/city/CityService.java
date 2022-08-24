@@ -1,13 +1,13 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.city;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.city;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CityService extends IModelService<City> {
+public class CityService extends ModelService<City> {
 
   public CityService(@Autowired CityRepository repository) {
     super(repository);
@@ -33,10 +33,10 @@ public class CityService extends IModelService<City> {
 
   @Override
   public City update(City city, long cityId) {
-    var cityDB = this.repository.findById(cityId);
+    var cityDb = this.repository.findById(cityId);
 
-    if (cityDB.isPresent()) {
-      var c = cityDB.get();
+    if (cityDb.isPresent()) {
+      var c = cityDb.get();
       c.setName(city.getName());
       return this.repository.save(c);
     }

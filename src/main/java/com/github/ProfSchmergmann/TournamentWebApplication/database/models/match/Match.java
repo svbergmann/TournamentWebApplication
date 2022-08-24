@@ -1,9 +1,8 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.match;
+package com.github.profschmergmann.tournamentwebapplication.database.models.match;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModel;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.game.Game;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.team.Team;
-import java.io.Serializable;
+import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.github.profschmergmann.tournamentwebapplication.database.models.game.Game;
+import com.github.profschmergmann.tournamentwebapplication.database.models.team.Team;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,7 +21,7 @@ import lombok.ToString.Exclude;
 @Setter
 @ToString
 @Entity
-public class Match implements Serializable, IModel {
+public class Match implements Model {
 
   private boolean finished;
   @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,10 +50,8 @@ public class Match implements Serializable, IModel {
     if (!(o instanceof Match match)) {
       return false;
     }
-    return this.finished == match.finished &&
-        this.scoreTeamA == match.scoreTeamA &&
-        this.scoreTeamB == match.scoreTeamB &&
-        Objects.equals(this.teamA, match.teamA) &&
-        Objects.equals(this.teamB, match.teamB);
+    return this.finished == match.finished && this.scoreTeamA == match.scoreTeamA
+        && this.scoreTeamB == match.scoreTeamB && Objects.equals(this.teamA, match.teamA)
+        && Objects.equals(this.teamB, match.teamB);
   }
 }

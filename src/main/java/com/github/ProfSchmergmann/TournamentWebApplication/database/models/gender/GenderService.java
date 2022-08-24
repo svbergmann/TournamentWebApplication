@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.gender;
+package com.github.profschmergmann.tournamentwebapplication.database.models.gender;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GenderService extends IModelService<Gender> {
+public class GenderService extends ModelService<Gender> {
 
   public GenderService(@Autowired GenderRepository genderRepository) {
     super(genderRepository);
@@ -23,10 +23,10 @@ public class GenderService extends IModelService<Gender> {
 
   @Override
   public Gender update(Gender gender, long id) {
-    var genderDB = this.repository.findById(id);
+    var genderDb = this.repository.findById(id);
 
-    if (genderDB.isPresent()) {
-      var g = genderDB.get();
+    if (genderDb.isPresent()) {
+      var g = genderDb.get();
       g.setName(gender.getName());
       return this.repository.save(g);
     }

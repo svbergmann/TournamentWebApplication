@@ -1,9 +1,9 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.views.entities;
+package com.github.profschmergmann.tournamentwebapplication.views.entities;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.Country;
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.country.CountryService;
-import com.github.ProfSchmergmann.TournamentWebApplication.security.SecurityService;
-import com.github.ProfSchmergmann.TournamentWebApplication.views.MainLayout;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.Country;
+import com.github.profschmergmann.tournamentwebapplication.database.models.location.country.CountryService;
+import com.github.profschmergmann.tournamentwebapplication.security.SecurityService;
+import com.github.profschmergmann.tournamentwebapplication.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -29,9 +29,7 @@ public class CountryView extends EntityView<Country> {
   VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
     final ComboBox<Locale> countryComboBox = new ComboBox<>(this.getTranslation("name"));
     countryComboBox.setItems(Arrays.stream(Locale.getISOCountries())
-        .map(code -> new Locale(UI.getCurrent().getLocale().getLanguage(), code))
-        .toList()
-    );
+        .map(code -> new Locale(UI.getCurrent().getLocale().getLanguage(), code)).toList());
     countryComboBox.setItemLabelGenerator(locale -> locale.getDisplayCountry(this.getLocale()));
     addButton.addClickListener(click -> {
       if (countryComboBox.getLabel() != null) {
@@ -50,15 +48,6 @@ public class CountryView extends EntityView<Country> {
   @Override
   void setGridColumns() {
     this.grid.addColumn(c -> c.getName(this.getLocale()))
-        .setHeader(this.getTranslation("name"))
-        .setKey("name")
-        .setSortable(true)
-        .setAutoWidth(true);
-  }
-
-  @Override
-  void updateGridColumnHeaders() {
-    this.grid.getColumnByKey("name")
-        .setHeader(this.getTranslation("name"));
+        .setKey("name");
   }
 }

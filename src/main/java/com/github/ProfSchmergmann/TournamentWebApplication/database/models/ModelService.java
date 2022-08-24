@@ -1,13 +1,13 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models;
+package com.github.profschmergmann.tournamentwebapplication.database.models;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class IModelService<T> {
+public abstract class ModelService<T> {
 
   protected JpaRepository<T, Long> repository;
 
-  public IModelService(JpaRepository<T, Long> repository) {
+  public ModelService(JpaRepository<T, Long> repository) {
     this.repository = repository;
   }
 

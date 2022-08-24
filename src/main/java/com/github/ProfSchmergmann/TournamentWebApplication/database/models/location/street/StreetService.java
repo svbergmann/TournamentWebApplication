@@ -1,11 +1,11 @@
-package com.github.ProfSchmergmann.TournamentWebApplication.database.models.location.street;
+package com.github.profschmergmann.tournamentwebapplication.database.models.location.street;
 
-import com.github.ProfSchmergmann.TournamentWebApplication.database.models.IModelService;
+import com.github.profschmergmann.tournamentwebapplication.database.models.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StreetService extends IModelService<Street> {
+public class StreetService extends ModelService<Street> {
 
   public StreetService(@Autowired StreetRepository repository) {
     super(repository);
@@ -23,10 +23,10 @@ public class StreetService extends IModelService<Street> {
 
   @Override
   public Street update(Street street, long id) {
-    var streetDB = this.repository.findById(id);
+    var streetDb = this.repository.findById(id);
 
-    if (streetDB.isPresent()) {
-      var s = streetDB.get();
+    if (streetDb.isPresent()) {
+      var s = streetDb.get();
       s.setName(street.getName());
       return this.repository.save(s);
     }
