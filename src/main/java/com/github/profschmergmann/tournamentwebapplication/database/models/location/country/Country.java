@@ -16,9 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @Entity
 public class Country implements Model {
 
@@ -32,13 +34,17 @@ public class Country implements Model {
   private String iso3Name;
 
   public String getName(Locale locale) {
-    return Arrays.stream(Locale.getAvailableLocales()).filter(l -> {
-      try {
-        return l.getISO3Country().equals(this.iso3Name);
-      } catch (MissingResourceException e) {
-        return l.getCountry().equals(this.iso3Name);
-      }
-    }).map(l -> l.getDisplayCountry(locale)).findFirst().orElse(null);
+    return Arrays.stream(Locale.getAvailableLocales())
+        .filter(l -> {
+          try {
+            return l.getISO3Country().equals(this.iso3Name);
+          } catch (MissingResourceException e) {
+            return l.getCountry().equals(this.iso3Name);
+          }
+        })
+        .map(l -> l.getDisplayCountry(locale))
+        .findFirst()
+        .orElse(null);
   }
 
   @Override
@@ -54,7 +60,7 @@ public class Country implements Model {
     if (!(o instanceof Country country)) {
       return false;
     }
-    return Objects.equals(this.iso3Name, country.iso3Name);
+    return this.iso3Name.equalsIgnoreCase(country.iso3Name);
   }
 
   @Override

@@ -18,9 +18,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Team implements Model {
@@ -57,8 +59,10 @@ public class Team implements Model {
     if (!(o instanceof Team team)) {
       return false;
     }
-    return this.amount == team.amount && Objects.equals(this.ageGroup, team.ageGroup)
-        && Objects.equals(this.club, team.club) && Objects.equals(this.gender, team.gender)
-        && Objects.equals(this.name, team.name);
+    return this.amount == team.amount
+        && this.ageGroup.equals(team.ageGroup)
+        && this.club.equals(team.club)
+        && this.gender.equals(team.gender)
+        && this.name.equalsIgnoreCase(team.name);
   }
 }

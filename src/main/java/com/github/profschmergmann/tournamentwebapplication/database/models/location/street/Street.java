@@ -14,9 +14,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Street implements Model {
@@ -42,6 +44,6 @@ public class Street implements Model {
     if (!(o instanceof Street street)) {
       return false;
     }
-    return Objects.equals(this.name, street.name);
+    return this.name.equalsIgnoreCase(street.name);
   }
 }

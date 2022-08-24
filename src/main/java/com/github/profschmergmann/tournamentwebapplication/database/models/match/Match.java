@@ -16,9 +16,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Match implements Model {
@@ -50,8 +52,10 @@ public class Match implements Model {
     if (!(o instanceof Match match)) {
       return false;
     }
-    return this.finished == match.finished && this.scoreTeamA == match.scoreTeamA
-        && this.scoreTeamB == match.scoreTeamB && Objects.equals(this.teamA, match.teamA)
-        && Objects.equals(this.teamB, match.teamB);
+    return this.finished == match.finished
+        && this.scoreTeamA == match.scoreTeamA
+        && this.scoreTeamB == match.scoreTeamB
+        && this.teamA.equals(match.teamA)
+        && this.teamB.equals(match.teamB);
   }
 }

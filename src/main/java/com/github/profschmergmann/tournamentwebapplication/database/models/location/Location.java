@@ -50,7 +50,9 @@ public class Location implements Model {
     if (!(o instanceof Location location)) {
       return false;
     }
-    return this.number == location.number && this.postalCode == location.postalCode
-        && Objects.equals(this.city, location.city) && Objects.equals(this.street, location.street);
+    return this.number == location.number
+        && this.postalCode == location.postalCode
+        && this.city.equals(location.city)
+        && this.street.equals(location.street);
   }
 }

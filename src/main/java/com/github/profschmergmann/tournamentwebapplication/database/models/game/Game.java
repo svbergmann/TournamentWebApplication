@@ -13,9 +13,11 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Game implements Model {
@@ -42,8 +44,8 @@ public class Game implements Model {
     if (!(o instanceof Game game)) {
       return false;
     }
-    return Objects.equals(this.date, game.date) &&
-        Objects.equals(this.gym, game.gym) &&
-        Objects.equals(this.match, game.match);
+    return this.date.equals(game.date)
+        && this.gym.equals(game.gym)
+        && this.match.equals(game.match);
   }
 }

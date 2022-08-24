@@ -1,6 +1,7 @@
 package com.github.profschmergmann.tournamentwebapplication.database.models.user;
 
 import com.github.profschmergmann.tournamentwebapplication.database.models.Model;
+import com.google.common.base.Objects;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.Entity;
@@ -13,13 +14,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity
 @Getter
 @Setter
+@Accessors(chain = true)
+@ToString
+@Entity
 public class User implements UserDetails, Model {
 
   @Email
@@ -68,8 +73,27 @@ public class User implements UserDetails, Model {
     return true;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof User user)) {
+      return false;
+    }
+    return this.email.equalsIgnoreCase(user.email)
+        && this.firstName.equalsIgnoreCase(user.firstName)
+        && this.lastName.equalsIgnoreCase(user.lastName)
+        && this.role == user.role
+        && this.userName.equalsIgnoreCase(user.userName);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.email, this.firstName, this.lastName, this.role, this.userName);
+  }
+
   public enum Role {
     USER, ADMIN, TEAM_CAPTAIN, COURT_MANAGER, PLAYER, TRAINER
   }
-
 }

@@ -44,6 +44,6 @@ public class AgeGroup implements Model {
     if (!(o instanceof AgeGroup ageGroup)) {
       return false;
     }
-    return Objects.equals(this.name.toLowerCase(), ageGroup.name.toLowerCase());
+    return this.name.equalsIgnoreCase(ageGroup.name);
   }
 }

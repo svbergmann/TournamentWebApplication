@@ -14,9 +14,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Gender implements Model {
@@ -42,6 +44,6 @@ public class Gender implements Model {
     if (!(o instanceof Gender gender)) {
       return false;
     }
-    return Objects.equals(this.name, gender.name);
+    return this.name.equalsIgnoreCase(gender.name);
   }
 }
