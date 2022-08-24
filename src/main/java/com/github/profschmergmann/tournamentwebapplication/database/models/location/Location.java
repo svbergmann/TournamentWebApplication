@@ -17,9 +17,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @ToString
 @Entity
 public class Location implements Model {

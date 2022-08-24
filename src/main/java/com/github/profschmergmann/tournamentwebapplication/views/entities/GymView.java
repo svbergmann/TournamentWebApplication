@@ -51,10 +51,10 @@ public class GymView extends EntityView<Gym> {
     final VerticalLayout fields = new VerticalLayout(locationSelect, gymLayout);
     fields.setPadding(true);
     addButton.addClickListener(click -> {
-      var gym = new Gym();
-      gym.setLocation(locationSelect.getValue());
-      gym.setNumber(gymIntegerField.getValue());
-      gym.setName(gymLabel.getText() + " " + gym.getNumber());
+      var gym = new Gym()
+          .setLocation(locationSelect.getValue())
+          .setNumber(gymIntegerField.getValue())
+          .setName(gymLabel.getText() + " " + gymIntegerField.getValue());
       if (this.entityService.findAll().stream().noneMatch(g -> g.getNumber() == gym.getNumber())) {
         this.entityService.create(gym);
         this.updateGrid();

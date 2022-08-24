@@ -29,8 +29,8 @@ public class StreetView extends EntityView<Street> {
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       if (streetTextField.getValue().trim().length() > 3) {
-        var street = new Street();
-        street.setName(streetTextField.getValue());
+        var street = new Street()
+            .setName(streetTextField.getValue());
         if (this.entityService.findAll().stream().noneMatch(s -> s.equals(street))) {
           this.entityService.create(street);
           this.updateGrid();

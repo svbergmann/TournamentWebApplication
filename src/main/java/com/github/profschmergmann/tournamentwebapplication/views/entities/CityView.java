@@ -39,9 +39,9 @@ public class CityView extends EntityView<City> {
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       if (cityTextField.getValue().length() > 3) {
-        var city = new City();
-        city.setCountry(countrySelect.getValue());
-        city.setName(cityTextField.getValue());
+        var city = new City()
+            .setCountry(countrySelect.getValue())
+            .setName(cityTextField.getValue());
         if (this.entityService.findAll().stream().noneMatch(c -> c.equals(city))) {
           this.entityService.create(city);
           this.updateGrid();

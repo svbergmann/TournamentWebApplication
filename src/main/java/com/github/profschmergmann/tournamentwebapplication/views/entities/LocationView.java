@@ -59,11 +59,11 @@ public class LocationView extends EntityView<Location> {
         postalCodeNumberField, numberIntegerField);
     fields.setPadding(true);
     addButton.addClickListener(click -> {
-      var location = new Location();
-      location.setCity(citySelect.getValue());
-      location.setStreet(streetSelect.getValue());
-      location.setPostalCode(postalCodeNumberField.getValue());
-      location.setNumber(numberIntegerField.getValue());
+      var location = new Location()
+          .setCity(citySelect.getValue())
+          .setStreet(streetSelect.getValue())
+          .setPostalCode(postalCodeNumberField.getValue())
+          .setNumber(numberIntegerField.getValue());
       if (this.entityService.findAll().stream().noneMatch(l -> l.equals(location))) {
         this.entityService.create(location);
         this.updateGrid();

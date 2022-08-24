@@ -33,8 +33,8 @@ public class CountryView extends EntityView<Country> {
     countryComboBox.setItemLabelGenerator(locale -> locale.getDisplayCountry(this.getLocale()));
     addButton.addClickListener(click -> {
       if (countryComboBox.getLabel() != null) {
-        var country = new Country();
-        country.setIso3Name(countryComboBox.getValue().getISO3Country());
+        var country = new Country()
+            .setIso3Name(countryComboBox.getValue().getISO3Country());
         if (this.entityService.findAll().stream().noneMatch(c -> c.equals(country))) {
           this.entityService.create(country);
           this.updateGrid();

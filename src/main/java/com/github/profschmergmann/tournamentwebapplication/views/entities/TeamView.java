@@ -63,12 +63,12 @@ public class TeamView extends EntityView<Team> {
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       if (teamTextField.getValue().length() > 2) {
-        var team = new Team();
-        team.setName(teamTextField.getValue());
-        team.setClub(clubSelect.getValue());
-        team.setAgeGroup(ageGroupSelect.getValue());
-        team.setGender(genderSelect.getValue());
-        team.setAmount(amountIntegerField.getValue());
+        var team = new Team()
+            .setName(teamTextField.getValue())
+            .setClub(clubSelect.getValue())
+            .setAgeGroup(ageGroupSelect.getValue())
+            .setGender(genderSelect.getValue())
+            .setAmount(amountIntegerField.getValue());
         if (this.entityService.findAll().stream().noneMatch(t -> t.equals(team))) {
           this.entityService.create(team);
           this.updateGrid();

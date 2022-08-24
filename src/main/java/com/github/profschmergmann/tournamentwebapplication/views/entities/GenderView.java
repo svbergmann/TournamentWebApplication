@@ -26,8 +26,8 @@ public class GenderView extends EntityView<Gender> {
   VerticalLayout getDialogComponents(Dialog dialog, Button addButton) {
     final TextField genderTextField = new TextField(this.getTranslation("name"));
     addButton.addClickListener(click -> {
-      var gender = new Gender();
-      gender.setName(genderTextField.getValue());
+      var gender = new Gender()
+          .setName(genderTextField.getValue());
       if (this.entityService.findAll().stream().noneMatch(ageGroup1 -> ageGroup1.equals(gender))) {
         this.entityService.create(gender);
         this.updateGrid();

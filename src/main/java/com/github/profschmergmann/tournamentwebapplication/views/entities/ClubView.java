@@ -39,9 +39,9 @@ public class ClubView extends EntityView<Club> {
     fields.setPadding(true);
     addButton.addClickListener(click -> {
       if (clubTextField.getValue().length() > 1) {
-        var club = new Club();
-        club.setCountry(countrySelect.getValue());
-        club.setName(clubTextField.getValue());
+        var club = new Club()
+            .setCountry(countrySelect.getValue())
+            .setName(clubTextField.getValue());
         if (this.entityService.findAll().stream().noneMatch(c -> c.equals(club))) {
           this.entityService.create(club);
           this.updateGrid();
@@ -54,9 +54,8 @@ public class ClubView extends EntityView<Club> {
 
   @Override
   void setGridColumns() {
-    this.grid.addColumn(
-            club -> club.getCountry() == null
-                ? notSet : club.getCountry().getName(this.getLocale()))
+    this.grid.addColumn(club ->
+            club.getCountry() == null ? notSet : club.getCountry().getName(this.getLocale()))
         .setKey("country");
     this.grid.addColumn(Club::getName)
         .setKey("name");
